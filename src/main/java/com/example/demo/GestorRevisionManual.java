@@ -1,17 +1,29 @@
 package com.example.demo;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class GestorRevisionManual {
+
+    private ArrayList<EventoSismico> eventoSismico;
+    private ArrayList<Estado> estadosSistema;
+
+    public GestorRevisionManual(EventoSismico eventoSismico, Estado estadosSistema) {
+        this.eventoSismico = new ArrayList<>();
+        this.estadosSistema = new ArrayList<>();
+    }
+
     public void registrarRevisionManual() {
 
     }
-    
-    public void buscarEventosSismicosNoRevisados() {
 
-    }
-
-    public void buscarEstadoNoRevisadoOAutodetectado() {
-
+    public ArrayList<EventoSismico> buscarEventosSismicosNoRevisados() {
+        ArrayList<EventoSismico> eventosNoRevisados = new ArrayList<>();
+        for (EventoSismico eve : eventoSismico) {
+            if (eve.esAutoDetectadoOPendienteRevision() == true) {
+                eventosNoRevisados.add(eve);
+            }
+        }
+        return eventosNoRevisados;
     }
 
     public void ordenarPorFechaHoraOcurrencia() {
@@ -41,5 +53,5 @@ public class GestorRevisionManual {
     public void actualizarEventoSismicoARechazado() {
 
     }
-    
+
 }

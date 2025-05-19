@@ -81,11 +81,11 @@ public class EventoSismico {
         return valorMagnitud;
     }
 
-    public EventoSismico esAutoDetectadoOPendienteRevision() {
+    public boolean esAutoDetectadoOPendienteRevision() {
 
         for (CambioEstado c : cambioEstado) {
             if (c.sosAutoDetectado() || c.sosPendienteRevision()) {
-                return this;
+                return true;
             }
         }
 
