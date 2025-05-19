@@ -1,0 +1,576 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" version="27.0.6">
+  <diagram name="Page-1" id="13e1069c-82ec-6db2-03f1-153e76fe0fe0">
+    <mxGraphModel dx="1481" dy="1470" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="7baba1c4bc27f4b0-2" value="&lt;u&gt;:Pantalla RegistrarRevision&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" parent="1" vertex="1">
+          <mxGeometry x="300" y="170" width="110" height="3230" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-4" value="habilitarVentana()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="7baba1c4bc27f4b0-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="55" y="70" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="85" y="100" />
+            </Array>
+            <mxPoint x="60" y="100" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7baba1c4bc27f4b0-4" value=":&lt;u&gt;Estado&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" parent="1" vertex="1">
+          <mxGeometry x="840" y="80" width="100" height="3320" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-143" value="*esRechazado()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="7baba1c4bc27f4b0-4" target="7baba1c4bc27f4b0-4">
+          <mxGeometry x="-0.0008" width="80" relative="1" as="geometry">
+            <mxPoint x="-301.1666666666665" y="3000" as="sourcePoint" />
+            <mxPoint x="220" y="3000" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7baba1c4bc27f4b0-5" value=":&lt;u&gt;EventoSismico&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" parent="1" vertex="1">
+          <mxGeometry x="1060" y="80" width="110" height="3320" as="geometry" />
+        </mxCell>
+        <mxCell id="7baba1c4bc27f4b0-6" value=":&lt;u&gt;CambioEstado&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" parent="1" vertex="1">
+          <mxGeometry x="1270" y="80" width="100" height="3320" as="geometry" />
+        </mxCell>
+        <mxCell id="7baba1c4bc27f4b0-7" value="Actual:&lt;u&gt;CambioEstado&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" parent="1" vertex="1">
+          <mxGeometry x="1450" y="80" width="150" height="3320" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-38" value="*sosAutodetectado()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="7baba1c4bc27f4b0-7" target="7baba1c4bc27f4b0-7">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="-330" y="650" as="sourcePoint" />
+            <mxPoint x="70" y="650" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-76" value="new()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="7baba1c4bc27f4b0-7" source="7baba1c4bc27f4b0-7">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="90" y="1560" as="sourcePoint" />
+            <mxPoint x="650" y="1560" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7baba1c4bc27f4b0-8" value="&lt;u&gt;:&lt;span style=&quot;font-family: Helvetica; text-wrap-mode: nowrap;&quot;&gt;Analista en sismos&lt;/span&gt;&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" parent="1" vertex="1">
+          <mxGeometry x="90" y="80" width="120" height="3320" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-137" value="tomarRechazoModificacion()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="7baba1c4bc27f4b0-8">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="60" y="2830" as="sourcePoint" />
+            <mxPoint x="264.79999999999995" y="2830" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7baba1c4bc27f4b0-11" value="Opc. registrarRevision&lt;div&gt;Manual()&lt;/div&gt;" style="html=1;verticalAlign=bottom;endArrow=block;entryX=0;entryY=0;labelBackgroundColor=none;fontFamily=Verdana;fontSize=12;edgeStyle=elbowEdgeStyle;elbow=vertical;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="155" y="190" as="sourcePoint" />
+            <mxPoint x="295" y="190" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-1" value="" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="135" y="10" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-5" value="registrarRevision&lt;div&gt;Manual()&lt;/div&gt;" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="360" y="320" as="sourcePoint" />
+            <mxPoint x="485" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7baba1c4bc27f4b0-3" value="&lt;u&gt;:Gestor RevisionManual&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" parent="1" vertex="1">
+          <mxGeometry x="490" y="300" width="100" height="3100" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-7" value="buscarEventosSismicosNoRevisados()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="7baba1c4bc27f4b0-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="50" y="65" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="80" y="95" />
+            </Array>
+            <mxPoint x="55" y="95.0322580645161" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-11" value="buscarEstadoNoRevisadosOAutodetectado()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="7baba1c4bc27f4b0-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="50" y="130" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="80" y="160" />
+            </Array>
+            <mxPoint x="55" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-52" value="obtenerDatosPrincipales()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="7baba1c4bc27f4b0-3" target="WcNJV-GFzRyfONkTKfkJ-40">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="50" y="630" as="sourcePoint" />
+            <mxPoint x="130" y="630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-62" value="ordenarPorFechaHoraOcurrencia()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="7baba1c4bc27f4b0-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="55" y="880" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="85" y="880" />
+              <mxPoint x="85" y="910" />
+            </Array>
+            <mxPoint x="60" y="910" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-63" value="mostarEventosSismicos&lt;div&gt;YSolicitarSeleccion()&lt;/div&gt;" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="7baba1c4bc27f4b0-3">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="49.5" y="950" as="sourcePoint" />
+            <mxPoint x="-135.83333333333326" y="950" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-65" value="tomarSeleccion&lt;div&gt;EventoSismico()&lt;/div&gt;" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="7baba1c4bc27f4b0-3">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="-135.45238095238074" y="1010" as="sourcePoint" />
+            <mxPoint x="49.5" y="1010" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-67" value="bloquearEventoSismicoSeleccionado()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="7baba1c4bc27f4b0-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="50" y="1030" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="80" y="1060" />
+            </Array>
+            <mxPoint x="55" y="1060.0476190476188" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-69" value="getFechaHoraActual()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="7baba1c4bc27f4b0-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="50" y="1080" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="80" y="1110" />
+            </Array>
+            <mxPoint x="55" y="1110.0476190476188" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-70" value="*sosBloqueadoEnRevision()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="7baba1c4bc27f4b0-3" target="7baba1c4bc27f4b0-4">
+          <mxGeometry x="-0.002" width="80" relative="1" as="geometry">
+            <mxPoint x="50" y="1140" as="sourcePoint" />
+            <mxPoint x="130" y="1140" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-72" value="bloquearPorRevision()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="7baba1c4bc27f4b0-3" target="WcNJV-GFzRyfONkTKfkJ-43">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="50" y="1190" as="sourcePoint" />
+            <mxPoint x="130" y="1190" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-89" value="buscarDatosRegistrados()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="7baba1c4bc27f4b0-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="50" y="1630" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="80" y="1660" />
+            </Array>
+            <mxPoint x="55" y="1660" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-131" value="ordenarPorEstacionSismologica()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="7baba1c4bc27f4b0-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="50" y="2380" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="80" y="2410" />
+            </Array>
+            <mxPoint x="55" y="2410.0769230769233" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-136" value="solicitarModificaciónDatosSismicos()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="7baba1c4bc27f4b0-3">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="49.5" y="2580" as="sourcePoint" />
+            <mxPoint x="-135.29999999999995" y="2580" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-140" value="validarDatosSismicos()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="7baba1c4bc27f4b0-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="50" y="2645" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="80" y="2675" />
+            </Array>
+            <mxPoint x="55" y="2675" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-142" value="actualizarEventoSisimicoARechazado()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="7baba1c4bc27f4b0-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="50" y="2700" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="80" y="2730" />
+            </Array>
+            <mxPoint x="55" y="2730" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-8" value="" style="ellipse;shape=umlEntity;whiteSpace=wrap;html=1;fillColor=#B5739D;" vertex="1" parent="1">
+          <mxGeometry x="850" y="-10" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-17" value="sosPendienteRevision()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="540" y="550" as="sourcePoint" />
+            <mxPoint x="889.5" y="550" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-18" value="sosAutodetectado()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="540" y="590" as="sourcePoint" />
+            <mxPoint x="890" y="590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-9" value="esAmbitoEventoSismico()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="539.6666666666667" y="520" as="sourcePoint" />
+            <mxPoint x="889.5" y="520" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="800" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-19" value="Loop:Estados" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;" vertex="1" parent="1">
+          <mxGeometry x="440" y="490" width="470" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-20" value="Mientras&amp;nbsp;&lt;div&gt;haya estados&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="440" y="520" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-21" value="" style="ellipse;shape=umlEntity;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1075" y="-10" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-25" value="esAutoDetectadoOPendienteRevision()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="539.3235294117649" y="670" as="sourcePoint" />
+            <mxPoint x="1114.4999999999995" y="670" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-26" value="" style="ellipse;shape=umlEntity;whiteSpace=wrap;html=1;fillColor=#B5739D;" vertex="1" parent="1">
+          <mxGeometry x="1280" y="-10" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-27" value="*esActual()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="1114.5" y="700" as="sourcePoint" />
+            <mxPoint x="1319.5" y="700" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-28" value="" style="ellipse;shape=umlEntity;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1485" y="-10" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-36" value="sosPendienteRevision()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="1524.5" y="840" as="sourcePoint" />
+            <mxPoint x="889.5" y="840" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1030" y="840" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-39" value="*sosPendienteRevision()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="1114.13" y="800" as="sourcePoint" />
+            <mxPoint x="1525.88" y="800" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-34" value="sosAutoDetectado()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="1520" y="770" as="sourcePoint" />
+            <mxPoint x="890.0999999999999" y="770" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1270" y="770" />
+              <mxPoint x="960" y="770" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-40" value="PendienteRevision:&lt;u&gt;EventoSismico&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1650" y="80" width="220" height="3320" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-54" value="getFechaHoraOcurrencia()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="WcNJV-GFzRyfONkTKfkJ-40">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="110" y="850" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="140" y="880" />
+            </Array>
+            <mxPoint x="115" y="880.0344827586209" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-56" value="getLatitudEpicentro()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="WcNJV-GFzRyfONkTKfkJ-40">
+          <mxGeometry x="0.0061" relative="1" as="geometry">
+            <mxPoint x="110" y="920" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="140" y="920" />
+              <mxPoint x="140" y="950" />
+            </Array>
+            <mxPoint x="115" y="950.0344827586209" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-57" value="getLongitudEpicentro()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="WcNJV-GFzRyfONkTKfkJ-40">
+          <mxGeometry x="0.0061" relative="1" as="geometry">
+            <mxPoint x="110" y="970" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="140" y="970" />
+              <mxPoint x="140" y="1000" />
+            </Array>
+            <mxPoint x="115" y="1000.0344827586209" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-58" value="getLatitudHipocentro()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;entryX=1.003;entryY=0.566;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="WcNJV-GFzRyfONkTKfkJ-40">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="110" y="1020" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="140" y="1020" />
+              <mxPoint x="140" y="1049" />
+            </Array>
+            <mxPoint x="115.0300000000002" y="1049.42" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-59" value="getLongitudHipocentro()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="WcNJV-GFzRyfONkTKfkJ-40">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="110" y="1070" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="140" y="1070" />
+              <mxPoint x="140" y="1100" />
+            </Array>
+            <mxPoint x="115" y="1100.034482758621" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-75" value="setFechaHoraFin()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="WcNJV-GFzRyfONkTKfkJ-40" source="WcNJV-GFzRyfONkTKfkJ-43">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="349.5" y="1520" as="sourcePoint" />
+            <mxPoint x="-125.61111111111131" y="1520" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-43" value="seleccion:&lt;u&gt;EventoSismico&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1920" y="80" width="190" height="2570" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-95" value="getNombre()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="WcNJV-GFzRyfONkTKfkJ-43" target="WcNJV-GFzRyfONkTKfkJ-49">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="100" y="1950" as="sourcePoint" />
+            <mxPoint x="330" y="1950" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-97" value="getNombre()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="WcNJV-GFzRyfONkTKfkJ-43" target="WcNJV-GFzRyfONkTKfkJ-47">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="100" y="2010" as="sourcePoint" />
+            <mxPoint x="415.928571428572" y="2010" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-126" value="Loop:SerieTemporal" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;" vertex="1" parent="WcNJV-GFzRyfONkTKfkJ-43">
+          <mxGeometry x="-70" y="2020" width="2480" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-74" value="*sosActual()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="WcNJV-GFzRyfONkTKfkJ-43">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="94.49999999999955" y="1460" as="sourcePoint" />
+            <mxPoint x="-601.166666666667" y="1460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-127" value="Mientras&lt;div&gt;haya&lt;/div&gt;&lt;div&gt;Series&lt;/div&gt;&lt;div&gt;Temporales&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="WcNJV-GFzRyfONkTKfkJ-43">
+          <mxGeometry x="-70" y="2050" width="90" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-45" value=":&lt;u&gt;ClasificaciónSismo&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="2500" y="80" width="150" height="2880" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-47" value=":&lt;u&gt;OrigenDeGeneracion&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="2720" y="80" width="170" height="2880" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-49" value=":&lt;u&gt;AlcanceSismo&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="2260" y="80" width="150" height="3320" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-51" value="" style="ellipse;shape=umlEntity;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1720" y="-10" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-64" value="tomarSeleccion&lt;div&gt;EventoSismico()&lt;/div&gt;" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="149.54761904761926" y="1290" as="sourcePoint" />
+            <mxPoint x="354.5" y="1290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-68" value="" style="ellipse;shape=umlEntity;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1960" y="-10" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-77" value="" style="ellipse;shape=umlEntity;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="2120" y="1600" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-78" value="Nuevo:&lt;u&gt;CambioEstado&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="2085" y="1690" width="150" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-82" value="setFechaHoraInicio()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="WcNJV-GFzRyfONkTKfkJ-78">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="75" y="60" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="105" y="90" />
+            </Array>
+            <mxPoint x="80" y="90" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-84" value="setEstado()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="WcNJV-GFzRyfONkTKfkJ-78">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="75" y="110" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="105" y="140" />
+            </Array>
+            <mxPoint x="80" y="140" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-90" value="buscarDatosRegistrados()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1" target="WcNJV-GFzRyfONkTKfkJ-43">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="539.25" y="2000" as="sourcePoint" />
+            <mxPoint x="810.75" y="2000" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-91" value=":&lt;u&gt;SerieTemporal&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="2960" y="80" width="150" height="2880" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-111" value="getDatos()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="WcNJV-GFzRyfONkTKfkJ-91" target="WcNJV-GFzRyfONkTKfkJ-98">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="74.07142857142844" y="2080" as="sourcePoint" />
+            <mxPoint x="290" y="2080" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-92" value="&lt;span style=&quot;color: rgba(0, 0, 0, 0); font-family: monospace; font-size: 0px; text-align: start; text-wrap-mode: nowrap;&quot;&gt;%3CmxGraphModel%3E%3Croot%3E%3CmxCell%20id%3D%220%22%2F%3E%3CmxCell%20id%3D%221%22%20parent%3D%220%22%2F%3E%3CmxCell%20id%3D%222%22%20value%3D%22%22%20style%3D%22ellipse%3Bshape%3DumlEntity%3BwhiteSpace%3Dwrap%3Bhtml%3D1%3B%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%221960%22%20y%3D%22-10%22%20width%3D%2280%22%20height%3D%2280%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3C%2Froot%3E%3C%2FmxGraphModel%3E&lt;/span&gt;" style="ellipse;shape=umlEntity;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="2295" y="-10" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-93" value="" style="ellipse;shape=umlEntity;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="2535" y="-10" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-94" value="" style="ellipse;shape=umlEntity;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="2765" y="-10" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-96" value="getNombre()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="2013.8333333333335" y="2060" as="sourcePoint" />
+            <mxPoint x="2574.5" y="2060" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-98" value=":&lt;u&gt;MuestraSismica&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="3170" y="80" width="150" height="2880" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-99" value="" style="ellipse;shape=umlEntity;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="2995" y="-10" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-100" value="getDatos()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1" target="WcNJV-GFzRyfONkTKfkJ-91">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="2020" y="2120" as="sourcePoint" />
+            <mxPoint x="2805" y="2120" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-101" value=":&lt;u&gt;DetalleMuestraSismica&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="3390" y="80" width="150" height="2880" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-102" value=":&lt;u&gt;TipoDeDato&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="3610" y="80" width="150" height="2880" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-103" value=":&lt;u&gt;Sismografo&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="3840" y="80" width="150" height="2880" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-104" value=":&lt;u&gt;EstaciónSismologica&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="4080" y="80" width="150" height="2880" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-105" value="GenerarSismograma" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="4320" y="2680" width="240" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-106" value="" style="ellipse;shape=umlEntity;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="3205" y="-10" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-107" value="" style="ellipse;shape=umlEntity;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="3425" y="-10" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-108" value="" style="ellipse;shape=umlEntity;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="3640" y="-10" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-109" value="" style="ellipse;shape=umlEntity;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="3875" y="-10" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-110" value="" style="ellipse;shape=umlEntity;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="4110" y="-10" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-112" value="Loop:MuestraSismica" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;" vertex="1" parent="1">
+          <mxGeometry x="2930" y="2140" width="1380" height="480" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-113" value="getDatos()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="3243.5" y="2220" as="sourcePoint" />
+            <mxPoint x="3464.5" y="2220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-114" value="Loop:DetalleMuestra" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;" vertex="1" parent="1">
+          <mxGeometry x="3110" y="2190" width="780" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-115" value="esTuDenominacion()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1" source="WcNJV-GFzRyfONkTKfkJ-101">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="3490" y="2270" as="sourcePoint" />
+            <mxPoint x="3685" y="2271" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-118" value="getValor()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="3470" y="2290" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="3490" y="2320" />
+            </Array>
+            <mxPoint x="3465" y="2319.9999999999995" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-119" value="esTuSerieTemporal()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="3040" y="2490" as="sourcePoint" />
+            <mxPoint x="3910.33" y="2490" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-120" value="getDatosEstación()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1" target="WcNJV-GFzRyfONkTKfkJ-104">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="3920" y="2520" as="sourcePoint" />
+            <mxPoint x="3990" y="2520" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-122" value="getCodigoEstacion()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="4160" y="2530" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="4190" y="2560" />
+            </Array>
+            <mxPoint x="4165" y="2560.0000000000005" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-125" value="getNombre()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="4160" y="2570" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="4190" y="2600" />
+            </Array>
+            <mxPoint x="4165" y="2600.0000000000005" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-128" value="Mientras&lt;div&gt;haya&lt;/div&gt;&lt;div&gt;Muestras&lt;/div&gt;&lt;div&gt;Sismicas&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="2930" y="2170" width="70" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-129" value="Mientras&lt;div&gt;haya&lt;/div&gt;&lt;div&gt;Detalles&lt;/div&gt;&lt;div&gt;Muestra&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="3110" y="2220" width="70" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-132" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="7baba1c4bc27f4b0-3" target="WcNJV-GFzRyfONkTKfkJ-105">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="560" y="2760" as="sourcePoint" />
+            <mxPoint x="640" y="2760" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="720" y="2730" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-133" value="habilitarOpcionVisualizar&lt;div&gt;MapaEventos&lt;/div&gt;&lt;div&gt;YEstaciones&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Involucradas()&lt;/span&gt;&lt;/div&gt;" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="539.5000000000005" y="2760" as="sourcePoint" />
+            <mxPoint x="353.8333333333335" y="2760" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-134" value="tomarNoVisualizacion()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="149.70000000000005" y="2800" as="sourcePoint" />
+            <mxPoint x="354.5" y="2800" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-135" value="tomarNoVisualizacion()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="360" y="2830" as="sourcePoint" />
+            <mxPoint x="540" y="2830" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WcNJV-GFzRyfONkTKfkJ-138" value="tomarRechazoModificacion()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="360" y="2930" as="sourcePoint" />
+            <mxPoint x="540" y="2930" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
