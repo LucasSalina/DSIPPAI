@@ -1,18 +1,21 @@
 package com.example.demo;
 
+import java.util.ArrayList;
+
 public class EventoSismico {
-    int fechaHoraFin;
-    int fechaHoraOcurrencia;
-    int latitudEpicentro;
-    int latitudHipocentro;
-    int longitudEpicentro;
-    int longitudHipocentro;
-    int valorMagnitud;
+    private int fechaHoraFin;
+    private int fechaHoraOcurrencia;
+    private int latitudEpicentro;
+    private int latitudHipocentro;
+    private int longitudEpicentro;
+    private int longitudHipocentro;
+    private int valorMagnitud;
     private ClasificacionSismo clasificacionSismo;
     private MagnitudRitcher magnitudRitcher;
     private OrigenDeGeneracion origenDeGeneracion;
     private AlcanceSismo alcanceSismo;
-    private Estado estado;
+    private Estado estadoActual;
+    private ArrayList<CambioEstado> cambioEstado;
     
     public EventoSismico(Estado estado, ClasificacionSismo clasificacionSismo, MagnitudRitcher magnitudRitcher, OrigenDeGeneracion origenDeGeneracion, AlcanceSismo alcanceSismo, int fechaHoraFin, int fechaHoraOcurrencia, int latitudEpicentro, int latitudHipocentro, int longitudEpicentro, int longitudHipocentro, int valorMagnitud) {
         this.fechaHoraFin = fechaHoraFin;
@@ -26,7 +29,8 @@ public class EventoSismico {
         this.magnitudRitcher = magnitudRitcher;
         this.origenDeGeneracion = origenDeGeneracion;
         this.alcanceSismo = alcanceSismo;
-        this.estado = estado;
+        this.estadoActual = estado;
+        this.cambioEstado = new ArrayList<>();
     }
     
     public AlcanceSismo getAlcanceSismo() {
@@ -46,7 +50,7 @@ public class EventoSismico {
     }
 
     public Estado getEstado() {
-        return estado;
+        return estadoActual;
     }
 
     public int getFechaHoraFin() {
@@ -75,5 +79,16 @@ public class EventoSismico {
 
     public int getValorMagnitud() {
         return valorMagnitud;
+    }
+
+    public EventoSismico esAutoDetectadoOPendienteRevision() {
+
+        for (CambioEstado c : cambioEstado) {
+            if (c.sosAutoDetectado() || c.sosPendienteRevision()) {
+                return this;
+            }
+        }
+
+        return this;
     }
 }

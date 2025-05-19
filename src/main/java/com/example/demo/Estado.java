@@ -26,4 +26,25 @@ public class Estado {
     this.ambito = ambito;
     return ambito;
   }
+
+  public boolean esAmbitoEventoSismico() {
+    if (this.ambito.equals("EventoSismico")) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean sosPendienteRevision() {
+    if (this.nombreEstado.equals("PendienteRevision")) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean sosAutoDetectado() {
+    if (this.nombreEstado.equals("AutoDetectado")) {
+      return true;
+    }
+    return false;
+  }
 }
