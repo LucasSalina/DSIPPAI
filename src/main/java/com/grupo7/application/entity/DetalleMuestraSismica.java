@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.grupo7.application.entity;
 
 public class DetalleMuestraSismica {
     int valor;

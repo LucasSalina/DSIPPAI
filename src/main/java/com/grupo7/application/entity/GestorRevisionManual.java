@@ -1,15 +1,16 @@
-package com.example.demo;
+package com.grupo7.application.entity;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class GestorRevisionManual {
 
     private ArrayList<EventoSismico> eventoSismico;
-    private ArrayList<Estado> estadosSistema;
+    // private ArrayList<Estado> estadosSistema;
 
     public GestorRevisionManual(EventoSismico eventoSismico, Estado estadosSistema) {
         this.eventoSismico = new ArrayList<>();
-        this.estadosSistema = new ArrayList<>();
+        // this.estadosSistema = new ArrayList<>();
     }
 
     public void registrarRevisionManual() {
