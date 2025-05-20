@@ -3,7 +3,7 @@ package com.grupo7.application.factory;
 public class PantallaRegistrarRevision {
     
     public void habilitarVentana() {
-
+        // habilita frontend, de alguna forma
     }
 
     public void mostrarEventosSismicosYSolicitarSeleccion() {

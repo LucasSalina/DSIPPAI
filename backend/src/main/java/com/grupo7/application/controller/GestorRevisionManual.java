@@ -2,6 +2,7 @@ package com.grupo7.application.controller;
 
 // Dependencies
 
+import com.grupo7.application.dto.DatosPrincipalesDTO;
 import com.grupo7.application.entity.EventoSismico;
 import com.grupo7.application.entity.Estado;
 
@@ -12,6 +13,9 @@ public class GestorRevisionManual {
 
     private ArrayList<EventoSismico> eventoSismico;
     // private ArrayList<Estado> estadosSistema;
+    private ArrayList<DatosPrincipalesDTO> datosPrincipales;
+    private Estado punteroAutodetectado;
+    private Estado punteroPendienteRevision;
 
     public GestorRevisionManual(EventoSismico eventoSismico, Estado estadosSistema) {
         this.eventoSismico = new ArrayList<>();
@@ -22,18 +26,18 @@ public class GestorRevisionManual {
 
     }
 
-    public ArrayList<EventoSismico> buscarEventosSismicosNoRevisados() {
-        ArrayList<EventoSismico> eventosNoRevisados = new ArrayList<>();
+    public void buscarEventosSismicosNoRevisados() {
+        this.buscarEstadoNoRevisadosOAutodetectado();
+
         for (EventoSismico eve : eventoSismico) {
             if (eve.esAutoDetectadoOPendienteRevision()) {
-                eventosNoRevisados.add(eve);
+                this.datosPrincipales.add(eve.obtenerDatosPrincipales());
             }
         }
-        return eventosNoRevisados;
     }
 
     public void ordenarPorFechaHoraOcurrencia() {
-
+        
     }
 
     public void bloquearEventoSismicoSeleccionado() {
@@ -63,7 +67,15 @@ public class GestorRevisionManual {
     // Métodos faltantes agregados:
 
     public void buscarEstadoNoRevisadosOAutodetectado() {
-        // TODO: implementar
+        for (Estado estado : Estado.getTodos()) {
+            if (estado.esAmbitoEventoSismico() & estado.sosAutoDetectado()) {
+                this.punteroAutodetectado = estado;
+            }
+            if (estado.esAmbitoEventoSismico() & estado.sosPendienteRevision()) {
+                this.punteroPendienteRevision = estado;
+            }
+        }
+
     }
 
     public void tomarSeleccionEventoSismico() {

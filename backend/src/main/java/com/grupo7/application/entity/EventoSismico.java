@@ -1,11 +1,13 @@
 package com.grupo7.application.entity;
 
+import com.grupo7.application.dto.DatosPrincipalesDTO;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import com.grupo7.application.entity.ClasificacionSismo;
 
 public class EventoSismico {
-    private int fechaHoraFin;
-    private int fechaHoraOcurrencia;
+    private LocalDateTime fechaHoraFin;
+    private LocalDateTime fechaHoraOcurrencia;
     private int latitudEpicentro;
     private int latitudHipocentro;
     private int longitudEpicentro;
@@ -18,7 +20,10 @@ public class EventoSismico {
     private Estado estadoActual;
     private ArrayList<CambioEstado> cambioEstado;
     
-    public EventoSismico(Estado estado, ClasificacionSismo clasificacionSismo, MagnitudRitcher magnitudRitcher, OrigenDeGeneracion origenDeGeneracion, AlcanceSismo alcanceSismo, int fechaHoraFin, int fechaHoraOcurrencia, int latitudEpicentro, int latitudHipocentro, int longitudEpicentro, int longitudHipocentro, int valorMagnitud) {
+    public EventoSismico(Estado estado, ClasificacionSismo clasificacionSismo, MagnitudRitcher magnitudRitcher,
+                         OrigenDeGeneracion origenDeGeneracion, AlcanceSismo alcanceSismo, LocalDateTime fechaHoraFin,
+                         LocalDateTime fechaHoraOcurrencia, int latitudEpicentro, int latitudHipocentro,
+                         int longitudEpicentro, int longitudHipocentro, int valorMagnitud) {
         this.fechaHoraFin = fechaHoraFin;
         this.fechaHoraOcurrencia = fechaHoraOcurrencia;
         this.latitudEpicentro = latitudEpicentro;
@@ -54,11 +59,11 @@ public class EventoSismico {
         return estadoActual;
     }
 
-    public int getFechaHoraFin() {
+    public LocalDateTime getFechaHoraFin() {
         return fechaHoraFin;
     }
     
-    public int getFechaHoraOcurrencia() {
+    public LocalDateTime getFechaHoraOcurrencia() {
         return fechaHoraOcurrencia;
     }
 
@@ -91,5 +96,15 @@ public class EventoSismico {
         }
 
         return true;
+    }
+
+    public DatosPrincipalesDTO obtenerDatosPrincipales() {
+        return new DatosPrincipalesDTO(
+                fechaHoraOcurrencia,
+                latitudEpicentro,
+                longitudEpicentro,
+                latitudHipocentro,
+                longitudHipocentro
+        );
     }
 }
