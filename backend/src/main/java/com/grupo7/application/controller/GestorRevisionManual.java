@@ -8,6 +8,7 @@ import com.grupo7.application.entity.Estado;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class GestorRevisionManual {
 
@@ -16,6 +17,10 @@ public class GestorRevisionManual {
     private ArrayList<DatosPrincipalesDTO> datosPrincipales;
     private Estado punteroAutodetectado;
     private Estado punteroPendienteRevision;
+    private Estado punteroBloqueadoEnRevision;
+    private LocalTime fechaHoraActual;
+
+    private EventoSismico eventoSismicoSeleccionado;
 
     public GestorRevisionManual(EventoSismico eventoSismico, Estado estadosSistema) {
         this.eventoSismico = new ArrayList<>();
@@ -37,10 +42,18 @@ public class GestorRevisionManual {
     }
 
     public void ordenarPorFechaHoraOcurrencia() {
-        
+        datosPrincipales.sort(Comparator.comparing(DatosPrincipalesDTO::getFechaHora));
     }
 
     public void bloquearEventoSismicoSeleccionado() {
+        fechaHoraActual = getFechaHoraActual();
+        for (Estado estado : Estado.getTodos()) {
+            if (estado.sosBloqueadoEnRevision()) {
+                punteroBloqueadoEnRevision = estado;
+//              podria hacer eventoSeleccionado.bloquear(estado) y me ahorro un atributo
+            }
+        }
+        eventoSismicoSeleccionado.bloquearPorRevision(punteroBloqueadoEnRevision);
 
     }
 

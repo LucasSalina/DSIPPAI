@@ -46,6 +46,10 @@ public class Estado {
         return this.nombreEstado.equals("AutoDetectado");
     }
 
+    public boolean sosBloqueadoEnRevision() {
+        return this.nombreEstado.equals("BloqueadoEnRevision");
+    }
+
     @Override
     public String toString() {
         return ambito + "::" + nombreEstado;
@@ -63,4 +67,5 @@ public class Estado {
     public int hashCode() {
         return Objects.hash(ambito, nombreEstado);
     }
+
 }
