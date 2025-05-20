@@ -1,54 +1,72 @@
 package com.grupo7.application.controller;
 
 // Dependencies
-import com.grupo7.application.entity.EventoSismico;
 
+import com.grupo7.application.entity.EventoSismico;
 import com.grupo7.application.entity.Estado;
 
-import java.sql.Date;
+import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class GestorRevisionManual {
-    private Date fechaHoraOcurrenciaEventoSismico;
-    private String latitudEpicentroEventoSismico;
-    private String longitudEpicentroEventoSismico;
-    private String longitudHipocentroEventoSismico;
-    private String seleccionEventoSismico;
-    public boolean opVisualizacion;
-    public boolean opRechazoModificacion;
+
+    private ArrayList<EventoSismico> eventoSismico;
+    // private ArrayList<Estado> estadosSistema;
+
+    public GestorRevisionManual(EventoSismico eventoSismico, Estado estadosSistema) {
+        this.eventoSismico = new ArrayList<>();
+        // this.estadosSistema = new ArrayList<>();
+    }
 
     public void registrarRevisionManual() {
-        // TODO: implementar
+
     }
 
-    public void buscarEventosSismicosNoRevisados() {
-        // TODO: implementar
+    public ArrayList<EventoSismico> buscarEventosSismicosNoRevisados() {
+        ArrayList<EventoSismico> eventosNoRevisados = new ArrayList<>();
+        for (EventoSismico eve : eventoSismico) {
+            if (eve.esAutoDetectadoOPendienteRevision() == true) {
+                eventosNoRevisados.add(eve);
+            }
+        }
+        return eventosNoRevisados;
     }
+
+    public void ordenarPorFechaHoraOcurrencia() {
+
+    }
+
+    public void bloquearEventoSismicoSeleccionado() {
+
+    }
+
+    public LocalTime getFechaHoraActual() {
+        return LocalTime.now();
+    }
+
+    public void buscarDatosRegistrados() {
+
+    }
+
+    public void ordenarPorEstacionSismologica() {
+
+    }
+
+    public void validarDatosSismicos() {
+
+    }
+
+    public void actualizarEventoSismicoARechazado() {
+
+    }
+
+    // Métodos faltantes agregados:
 
     public void buscarEstadoNoRevisadosOAutodetectado() {
         // TODO: implementar
     }
 
-    public void ordenarPorFechaHoraOcurrencia() {
-        // TODO: implementar
-    }
-
     public void tomarSeleccionEventoSismico() {
-        // TODO: implementar
-    }
-
-    public void bloquearEventoSismicoSeleccionado() {
-        // TODO: implementar
-    }
-
-    public void getFechaHoraActual() {
-        // TODO: implementar
-    }
-
-    public void buscarDatosRegistrados() {
-        // TODO: implementar
-    }
-
-    public void ordenarPorEstacionSismologica() {
         // TODO: implementar
     }
 
@@ -59,14 +77,4 @@ public class GestorRevisionManual {
     public void tomarRechazoModificacion() {
         // TODO: implementar
     }
-
-    public void validarDatosSismicos() {
-        // TODO: implementar
-    }
-
-    public void actualizarEventoSisimicoARechazado() {
-        // TODO: implementar
-    }
-
-
 }

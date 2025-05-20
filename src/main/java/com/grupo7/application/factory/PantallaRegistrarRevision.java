@@ -1,4 +1,4 @@
-package com.grupo7.application.entity;
+package com.grupo7.application.factory;
 
 public class PantallaRegistrarRevision {
     
