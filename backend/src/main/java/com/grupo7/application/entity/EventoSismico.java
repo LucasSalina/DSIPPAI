@@ -1,6 +1,7 @@
 package com.grupo7.application.entity;
 
 import java.util.ArrayList;
+import com.grupo7.application.entity.ClasificacionSismo;
 
 public class EventoSismico {
     private int fechaHoraFin;

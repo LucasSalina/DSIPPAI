@@ -25,7 +25,7 @@ public class GestorRevisionManual {
     public ArrayList<EventoSismico> buscarEventosSismicosNoRevisados() {
         ArrayList<EventoSismico> eventosNoRevisados = new ArrayList<>();
         for (EventoSismico eve : eventoSismico) {
-            if (eve.esAutoDetectadoOPendienteRevision() == true) {
+            if (eve.esAutoDetectadoOPendienteRevision()) {
                 eventosNoRevisados.add(eve);
             }
         }

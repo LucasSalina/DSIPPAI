@@ -30,12 +30,7 @@ public class CambioEstado {
     }
 
     public boolean esEstadoActual() {
-        if (this.fechaHoraFin == null) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return this.fechaHoraFin == null;
     }
     
     public boolean sosAutoDetectado() {
