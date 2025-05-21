@@ -1,0 +1,98 @@
+// Tablas maestras
+Table ALCANCE_SISMO {
+  id_alcance         int       [pk, increment]
+  descripcion        varchar
+  nombre             varchar
+}
+
+Table CLASIFICACION_SISMO {
+  id_clasificacion      int       [pk, increment]
+  km_profundidad_desde  decimal
+  km_profundidad_hasta  decimal
+  nombre                varchar
+}
+
+Table ORIGEN_DE_GENERACION {
+  id_origen          int       [pk, increment]
+  descripcion        varchar
+  nombre             varchar
+}
+
+Table ESTADO {
+  id_estado          int       [pk, increment]
+  ambito             varchar
+  nombre_estado      varchar
+}
+
+Table TIPO_DE_DATO {
+  id_tipo               int       [pk, increment]
+  denominacion          varchar
+  nombre_unidad_medida  varchar
+  valor_umbral          decimal
+}
+
+Table ESTACION_SISMOLOGICA {
+  codigo_estacion       varchar   [pk]
+  documento_cert_adq    varchar
+  fecha_solicitud_cert  date
+  latitud               decimal
+  longitud              decimal
+  nombre                varchar
+  nro_cert_adquisicion  varchar
+}
+
+// Tablas transaccionales
+Table EVENTO_SISMICO {
+  id_evento_sismico               int       [pk, increment]
+  fecha_hora_fin          datetime
+  fecha_hora_ocurrencia   datetime
+  latitud_epicentro       decimal
+  longitud_epicentro      decimal
+  latitud_hipocentro      decimal
+  longitud_hipocentro     decimal
+  valor_magnitud          decimal
+  id_alcance              int       [ref: > ALCANCE_SISMO.id_alcance]
+  id_clasificacion        int       [ref: > CLASIFICACION_SISMO.id_clasificacion]
+  id_estado_actual        int       [ref: > ESTADO.id_estado]
+  id_serie                int       [ref: > SERIE_TEMPORAL.id_serie]
+}
+
+Table CAMBIO_ESTADO {
+  id_cambio               int       [pk, increment]
+  id_evento               int       [ref: > EVENTO_SISMICO.id_evento_sismico]
+  id_estado               int       [ref: > ESTADO.id_estado]
+  fecha_hora_inicio       datetime
+  fecha_hora_fin          datetime
+  es_estado_actual        boolean
+  sos_autodetectado       boolean
+  sos_pendiente_revision  boolean
+}
+
+Table SISMOGRAFO {
+  identificador        varchar   [pk, unique]
+  id_adquisicion       int       
+  nro_serie            varchar
+  codigo_estacion      varchar   [ref: > ESTACION_SISMOLOGICA.codigo_estacion]
+}
+
+Table SERIE_TEMPORAL {
+  id_serie                       int       [pk, increment]
+  condicion_alarma               varchar
+  fecha_hora_inicio_reg_muestreo datetime
+  fecha_hora_registros           datetime
+  frecuencia_muestreo            decimal
+  id_muestra_sismica             int       [ref: > MUESTRA_SISMICA.id_muestra] 
+  id_sismografo                  int       [ref: > SISMOGRAFO.identificador] 
+}
+
+Table MUESTRA_SISMICA {
+  id_muestra          int       [pk, increment]
+  fecha_hora_muestra  datetime
+  id_detalle_muestra           int       [ref: > DETALLE_MUESTRA_SISMICA.id_detalle_muestra_sismica]
+}
+
+Table DETALLE_MUESTRA_SISMICA {
+  id_detalle_muestra_sismica          int       [pk, increment]
+  id_tipo                             int       [ref: > TIPO_DE_DATO.id_tipo]
+  valor                               decimal
+}

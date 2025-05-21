@@ -1,4 +1,4 @@
-package dsi.ppai.ppai;
+package com.grupo7.application;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
