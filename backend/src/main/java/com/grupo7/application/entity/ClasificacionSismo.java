@@ -1,5 +1,6 @@
 package com.grupo7.application.entity;
 
+// Representa la clasificación de un sismo según la profundidad y un nombre descriptivo.
 public class ClasificacionSismo {
     int kmProfundidadDesde;
     int kmProfundidadHasta;
@@ -11,6 +12,7 @@ public class ClasificacionSismo {
         this.Nombre = Nombre;
     }
     
+    // Constructor y getters simples.
     public int getKmProfundidadDesde() {
         return kmProfundidadDesde;
     }

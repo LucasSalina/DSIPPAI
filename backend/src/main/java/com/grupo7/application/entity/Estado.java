@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
+// Representa un estado posible de un evento o entidad, con ámbito y nombre.
 public class Estado {
     private static final Map<String, Estado> estados = new LinkedHashMap<>();
 
@@ -17,11 +18,13 @@ public class Estado {
         this.nombreEstado = nombreEstado;
     }
 
+    // El método obtener implementa un patrón singleton por clave compuesta (ambito+nombreEstado).
     public static Estado obtener(String ambito, String nombreEstado) {
         String clave = ambito + "::" + nombreEstado;
         return estados.computeIfAbsent(clave, k -> new Estado(ambito, nombreEstado));
     }
 
+     // getTodos retorna todos los estados creados hasta el momento.
      public static Collection<Estado> getTodos() {
         return estados.values();
      }
@@ -34,6 +37,7 @@ public class Estado {
         return nombreEstado;
     }
 
+    // Métodos sos* permiten verificar el tipo de estado de forma semántica.
     public boolean esAmbitoEventoSismico() {
        return this.ambito.equals("EventoSismico");
     }

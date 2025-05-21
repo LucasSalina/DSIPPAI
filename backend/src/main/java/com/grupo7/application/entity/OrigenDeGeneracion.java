@@ -9,5 +9,7 @@ public class OrigenDeGeneracion {
         this.nombre = nombre;
     }
 
-
+    public String getNombre() {
+        return nombre;
+    }
 }

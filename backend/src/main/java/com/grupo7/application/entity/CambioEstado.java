@@ -2,6 +2,7 @@ package com.grupo7.application.entity;
 
 import java.time.LocalTime;
 
+// Representa un cambio de estado en un evento sísmico, con fechas de inicio y fin, y el estado asociado.
 public class CambioEstado {
     LocalTime fechaHoraInicio;
     LocalTime fechaHoraFin;
@@ -29,10 +30,12 @@ public class CambioEstado {
         this.fechaHoraFin = fechaHoraFin;
     }
 
+    // esEstadoActual: determina si este cambio de estado es el actual (fecha de fin nula)
     public boolean esEstadoActual() {
         return this.fechaHoraFin == null;
     }
     
+    // sosAutoDetectado y sosPendienteRevision: delegan la verificación al estado asociado
     public boolean sosAutoDetectado() {
             return estado.sosAutoDetectado();
         }

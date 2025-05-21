@@ -1,11 +1,13 @@
 package com.grupo7.application.entity;
 
 import com.grupo7.application.dto.DatosPrincipalesDTO;
+import com.grupo7.application.dto.DatosRegistradosDTO;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+// Entidad principal que representa un evento sísmico, con atributos de localización, magnitud, estado y series temporales.
 public class EventoSismico {
     private LocalDateTime fechaHoraFin;
     private LocalDateTime fechaHoraOcurrencia;
@@ -20,6 +22,7 @@ public class EventoSismico {
     private AlcanceSismo alcanceSismo;
     private Estado estadoActual;
     private ArrayList<CambioEstado> cambioEstado;
+    private ArrayList<SerieTemporal> seriesTemporales;
     
     public EventoSismico(Estado estado, ClasificacionSismo clasificacionSismo, MagnitudRitcher magnitudRitcher,
                          OrigenDeGeneracion origenDeGeneracion, AlcanceSismo alcanceSismo, LocalDateTime fechaHoraFin,
@@ -88,6 +91,11 @@ public class EventoSismico {
         return valorMagnitud;
     }
 
+    public ArrayList<SerieTemporal> getSeriesTemporales() {
+        return seriesTemporales;
+    }
+
+    // esAutoDetectadoOPendienteRevision: determina si el evento está en un estado relevante para revisión.
     public boolean esAutoDetectadoOPendienteRevision() {
 
         for (CambioEstado c : cambioEstado) {
@@ -101,8 +109,10 @@ public class EventoSismico {
         return true;
     }
 
+    // obtenerDatosPrincipales: construye un DTO con los datos clave del evento.
     public DatosPrincipalesDTO obtenerDatosPrincipales() {
         return new DatosPrincipalesDTO(
+
                 fechaHoraOcurrencia,
                 latitudEpicentro,
                 longitudEpicentro,
@@ -111,6 +121,7 @@ public class EventoSismico {
         );
     }
 
+    // bloquearPorRevision: cambia el estado del evento a bloqueado para revisión, registrando la hora.
     public void bloquearPorRevision(Estado bloqueadoEnRevision, LocalTime fechaHoraActual) {
         for (CambioEstado cambioEstado : cambioEstado) {
             if (cambioEstado.esEstadoActual()) {
@@ -120,7 +131,14 @@ public class EventoSismico {
         this.cambioEstado.add(new CambioEstado(fechaHoraActual, bloqueadoEnRevision));
     }
 
+    // buscarDatosRegistrados: método para obtener los datos completos del evento.
     public void buscarDatosRegistrados() {
-        this.alcanceSismo.getNombre();
+        String nombreAlcance = alcanceSismo.getNombre();
+        String nombreClasificacion = clasificacionSismo.getNombre();
+        String nombreOrigen = origenDeGeneracion.getNombre();
+        ArrayList<Object> datosSeriesTemporales = new ArrayList<>();
+        for (SerieTemporal serieTemporal : seriesTemporales) {
+            datosSeriesTemporales.add(serieTemporal.getDatos());
+        }
     }
 }
