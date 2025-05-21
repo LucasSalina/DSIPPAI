@@ -54,6 +54,10 @@ public class Estado {
         return this.nombreEstado.equals("BloqueadoEnRevision");
     }
 
+    public boolean esRechazado() {
+        return this.nombreEstado.equals("Rechazado");
+    }
+
     @Override
     public String toString() {
         return ambito + "::" + nombreEstado;

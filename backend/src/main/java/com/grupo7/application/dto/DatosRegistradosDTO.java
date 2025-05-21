@@ -12,11 +12,11 @@ public class DatosRegistradosDTO {
     private String alcanceSismo;
     private String clasificacionSismo;
     private String origenDeGeneracion;
-    private ArrayList<SerieTemporal> seriesTemporales;
+    private ArrayList<Object> seriesTemporales;
 
     // Constructor simple, sin lógica adicional.
     public DatosRegistradosDTO(String alcanceSismo, String clasificacionSismo,
-                               String origenDeGeneracion, ArrayList<SerieTemporal> seriesTemporales) {
+                               String origenDeGeneracion, ArrayList<Object> seriesTemporales) {
         this.alcanceSismo = alcanceSismo;
         this.clasificacionSismo = clasificacionSismo;
         this.origenDeGeneracion = origenDeGeneracion;

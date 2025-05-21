@@ -3,6 +3,8 @@ package com.grupo7.application.controller;
 // Dependencies
 
 import com.grupo7.application.dto.DatosPrincipalesDTO;
+import com.grupo7.application.dto.DatosRegistradosDTO;
+import com.grupo7.application.entity.Empleado;
 import com.grupo7.application.entity.EventoSismico;
 import com.grupo7.application.entity.Estado;
 
@@ -21,10 +23,12 @@ public class GestorRevisionManual {
     private Estado punteroAutodetectado;
     private Estado punteroPendienteRevision;
     private Estado punteroBloqueadoEnRevision;
+    private Estado punteroRechazado;
     // Fecha y hora actual utilizada en los procesos
     private LocalTime fechaHoraActual;
     // Evento sísmico seleccionado para revisión
     private EventoSismico eventoSismicoSeleccionado;
+    private Empleado empleadoActual;
 
     // Constructor: inicializa la lista de eventos sísmicos
     public GestorRevisionManual(EventoSismico eventoSismico, Estado estadosSistema) {
@@ -71,13 +75,14 @@ public class GestorRevisionManual {
     }
 
     // Busca los datos registrados del evento sísmico seleccionado
-    public void buscarDatosRegistrados() {
-        this.eventoSismicoSeleccionado.buscarDatosRegistrados();
+    public DatosRegistradosDTO buscarDatosRegistrados() {
+        if (eventoSismicoSeleccionado == null) return null;
+        return eventoSismicoSeleccionado.buscarDatosRegistrados();
     }
 
     // Ordena los eventos sísmicos por estación sismológica (a implementar)
     public void ordenarPorEstacionSismologica() {
-        // Implementar lógica de ordenamiento por estación sismológica
+         // Implementar lógica de ordenamiento por estación sismológica
     }
 
     // Valida los datos sísmicos (a implementar)
@@ -87,7 +92,12 @@ public class GestorRevisionManual {
 
     // Actualiza el evento sísmico a estado rechazado (a implementar)
     public void actualizarEventoSismicoARechazado() {
-        // Implementar lógica de actualización a rechazado
+        obtenerPunteroRechazado();
+        obtenerEmpleadoActual();
+        eventoSismicoSeleccionado.rechazarEventoSismico(getFechaHoraActual(), punteroRechazado, empleadoActual);
+    }
+
+    private void obtenerEmpleadoActual() {
     }
 
     // Busca los estados que no han sido revisados o que están autodetectados
@@ -100,7 +110,14 @@ public class GestorRevisionManual {
                 this.punteroPendienteRevision = estado;
             }
         }
+    }
 
+    public void obtenerPunteroRechazado() {
+        for (Estado estado : Estado.getTodos()) {
+            if (estado.esAmbitoEventoSismico() & estado.esRechazado()) {
+                punteroRechazado = estado;
+            }
+        }
     }
 
     // Toma la selección de un evento sísmico (a implementar)
@@ -116,5 +133,24 @@ public class GestorRevisionManual {
     // Toma el rechazo de la modificación (a implementar)
     public void tomarRechazoModificacion() {
         // TODO: implementar
+    }
+
+    // Valida que el evento seleccionado tenga magnitud, alcance y origen de generación, y que se haya seleccionado una acción válida.
+    // La acción debe ser una de: "confirmar evento", "rechazar evento" o "solicitar evaluacion de experto".
+    public boolean validarDatosSismicos(String accion) {
+        if (eventoSismicoSeleccionado == null) return false;
+        // Validar magnitud
+        if (eventoSismicoSeleccionado.getMagnitudRitcher() == null) return false;
+        // Validar alcance
+        if (eventoSismicoSeleccionado.getAlcanceSismo() == null) return false;
+        // Validar origen de generación
+        if (eventoSismicoSeleccionado.getOrigenDeGeneracion() == null) return false;
+        // Validar acción
+        if (accion == null) return false;
+        accion = accion.trim().toLowerCase();
+        if (!(accion.equals("rechazar evento"))) {
+            return false;
+        }
+        return true;
     }
 }

@@ -6,6 +6,7 @@ import com.grupo7.application.dto.DatosRegistradosDTO;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Optional;
 
 // Entidad principal que representa un evento sísmico, con atributos de localización, magnitud, estado y series temporales.
 public class EventoSismico {
@@ -132,13 +133,27 @@ public class EventoSismico {
     }
 
     // buscarDatosRegistrados: método para obtener los datos completos del evento.
-    public void buscarDatosRegistrados() {
-        String nombreAlcance = alcanceSismo.getNombre();
-        String nombreClasificacion = clasificacionSismo.getNombre();
-        String nombreOrigen = origenDeGeneracion.getNombre();
-        ArrayList<Object> datosSeriesTemporales = new ArrayList<>();
+    public DatosRegistradosDTO buscarDatosRegistrados() {
+        String nombreAlcance = alcanceSismo != null ? alcanceSismo.getNombre() : null;
+        String nombreClasificacion = clasificacionSismo != null ? clasificacionSismo.getNombre() : null;
+        String nombreOrigen = origenDeGeneracion != null ? origenDeGeneracion.getNombre() : null;
+        // Se retorna la lista de series temporales asociadas
+
+        // TODO - NO ESTOY SEGURO DE SI ESTO ES CORRECTO, DEVUELVE (DATO DATO DATO ARRAYDEDATOS)
+        ArrayList<Object> datosDeSeries = new ArrayList<>();
         for (SerieTemporal serieTemporal : seriesTemporales) {
-            datosSeriesTemporales.add(serieTemporal.getDatos());
+            datosDeSeries.add(serieTemporal.getDatos());
         }
+        return new DatosRegistradosDTO(nombreAlcance, nombreClasificacion, nombreOrigen, datosDeSeries);
+    }
+
+    public void rechazarEventoSismico(LocalTime fechaHoraActual, Estado punteroRechazado, Empleado empleadoActual) {
+        for (CambioEstado cambioEstado : cambioEstado) {
+            if (cambioEstado.esEstadoActual()) {
+                cambioEstado.setFechaHoraFin(fechaHoraActual);
+            }
+        }
+        this.cambioEstado.add(new CambioEstado(fechaHoraActual, punteroRechazado, empleadoActual));
+
     }
 }

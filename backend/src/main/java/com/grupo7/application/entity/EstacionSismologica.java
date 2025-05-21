@@ -1,5 +1,7 @@
 package com.grupo7.application.entity;
 
+import java.util.ArrayList;
+
 /**
  * Representa una estación sismológica, con datos de certificación y ubicación.
  */
