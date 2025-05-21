@@ -9,7 +9,7 @@ function App() {
 
   // Effect to fetch the simple string message
   useEffect(() => {
-    fetch('/api/hello') // This will be proxied to http://localhost:8080/api/hello
+    fetch('/api/EventosSismicosAutoDetectados')
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

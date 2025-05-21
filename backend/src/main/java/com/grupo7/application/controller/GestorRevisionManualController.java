@@ -1,12 +1,13 @@
 package com.grupo7.application.controller;
 
 import org.springframework.web.bind.annotation.*;
+import com.grupo7.application.service.GestorRevisionManual;
 
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/api")
 public class GestorRevisionManualController {
 
-    @GetMapping("/ping")
+    @GetMapping("/EventosSismicosAutoDetectados")
     public String ping() {
         return "✅ Server is running!";
     }

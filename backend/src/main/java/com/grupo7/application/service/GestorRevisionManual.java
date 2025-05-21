@@ -2,6 +2,8 @@ package com.grupo7.application.controller;
 
 // Dependencies
 
+import org.springframework.stereotype.Service;
+
 import com.grupo7.application.dto.DatosPrincipalesDTO;
 import com.grupo7.application.dto.DatosRegistradosDTO;
 import com.grupo7.application.entity.Empleado;
@@ -13,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
+
+@Service
 // Clase GestorRevisionManual: gestiona la revisión manual de eventos sísmicos
 public class GestorRevisionManual {
     // Lista de eventos sísmicos a gestionar
