@@ -1,4 +1,4 @@
-package dsi.ppai.ppai;
+package com.grupo7.application;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
