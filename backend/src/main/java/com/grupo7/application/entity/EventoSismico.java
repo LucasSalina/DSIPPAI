@@ -1,13 +1,17 @@
 package com.grupo7.application.entity;
 
+import org.springframework.stereotype.Component;
+
 import com.grupo7.application.dto.DatosPrincipalesDTO;
 import com.grupo7.application.dto.DatosRegistradosDTO;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
+
+@Component
 // Entidad principal que representa un evento sísmico, con atributos de localización, magnitud, estado y series temporales.
 public class EventoSismico {
     private LocalDateTime fechaHoraFin;
@@ -24,7 +28,7 @@ public class EventoSismico {
     private Estado estadoActual;
     private ArrayList<CambioEstado> cambioEstado;
     private ArrayList<SerieTemporal> seriesTemporales;
-    
+
     public EventoSismico(Estado estado, ClasificacionSismo clasificacionSismo, MagnitudRitcher magnitudRitcher,
                          OrigenDeGeneracion origenDeGeneracion, AlcanceSismo alcanceSismo, LocalDateTime fechaHoraFin,
                          LocalDateTime fechaHoraOcurrencia, int latitudEpicentro, int latitudHipocentro,
@@ -123,7 +127,7 @@ public class EventoSismico {
     }
 
     // bloquearPorRevision: cambia el estado del evento a bloqueado para revisión, registrando la hora.
-    public void bloquearPorRevision(Estado bloqueadoEnRevision, LocalTime fechaHoraActual) {
+    public void bloquearPorRevision(Estado bloqueadoEnRevision, LocalDateTime fechaHoraActual) {
         for (CambioEstado cambioEstado : cambioEstado) {
             if (cambioEstado.esEstadoActual()) {
                 cambioEstado.setFechaHoraFin(fechaHoraActual);
@@ -147,7 +151,7 @@ public class EventoSismico {
         return new DatosRegistradosDTO(nombreAlcance, nombreClasificacion, nombreOrigen, datosDeSeries);
     }
 
-    public void rechazarEventoSismico(LocalTime fechaHoraActual, Estado punteroRechazado, Empleado empleadoActual) {
+    public void rechazarEventoSismico(LocalDateTime fechaHoraActual, Estado punteroRechazado, Empleado empleadoActual) {
         for (CambioEstado cambioEstado : cambioEstado) {
             if (cambioEstado.esEstadoActual()) {
                 cambioEstado.setFechaHoraFin(fechaHoraActual);

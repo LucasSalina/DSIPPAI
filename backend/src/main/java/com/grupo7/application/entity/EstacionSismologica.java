@@ -1,18 +1,29 @@
 package com.grupo7.application.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-/**
- * Representa una estación sismológica, con datos de certificación y ubicación.
- */
+import org.springframework.stereotype.Component;
+
+@Component
 public class EstacionSismologica {
     private int codigoEstacion;
     private String documentoCertificaionAdq;
-    private int fechaSolicitudCertificacion;
+    private LocalDateTime fechaSolicitudCertificacion;
     private int latitud;
     private int longitud;
     private String nombre;
     private int nroCertificacionAdquisicion;
+
+    public EstacionSismologica() {
+        this.codigoEstacion = 0;
+        this.documentoCertificaionAdq = "";
+        this.fechaSolicitudCertificacion = LocalDateTime.now();
+        this.latitud = 0;
+        this.longitud = 0;
+        this.nombre = "";
+        this.nroCertificacionAdquisicion = 0;
+    }
 
     public EstacionSismologica(int codigoEstacion, String documentoCertificaionAdq, int fechaSolicitudCertificacion, int latitud, int longitud, String nombre, int nroCertificacionAdquisicion) {
         this.codigoEstacion = codigoEstacion;

@@ -2,16 +2,29 @@ package com.grupo7.application.entity;
 
 import com.grupo7.application.repository.RepositorioDeSismografos;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-// Representa un sismógrafo, con su información de adquisición, estado y las series temporales que ha registrado.
+import org.springframework.stereotype.Component;
+
+@Component
 public class Sismografo {
-    private int fechaAdquisicion;
+    private LocalDateTime fechaAdquisicion;
     private int identificadorSismografo;
     private int numeroDeSerie;
     private Estado estadoActual;
     private EstacionSismologica estacionSismologica;
     private ArrayList<SerieTemporal> seriesTemporales;
+
+    public Sismografo() {
+        this.fechaAdquisicion = LocalDateTime.now();
+        this.identificadorSismografo = 0;
+        this.numeroDeSerie = 0;
+        this.estadoActual = new Estado();
+        this.estacionSismologica = new EstacionSismologica();
+        this.seriesTemporales = new ArrayList<SerieTemporal>();
+
+    }
 
     public Sismografo(int fechaAdquisicion, int identificadorSismografo, int numeroDeSerie) {
         this.fechaAdquisicion = fechaAdquisicion;

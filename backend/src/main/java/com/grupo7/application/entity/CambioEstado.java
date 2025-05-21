@@ -1,33 +1,44 @@
 package com.grupo7.application.entity;
 
+
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Optional;
 
-// Representa un cambio de estado en un evento sísmico, con fechas de inicio y fin, y el estado asociado.
+@Component
 public class CambioEstado {
-    LocalTime fechaHoraInicio;
-    LocalTime fechaHoraFin;
+    LocalDateTime fechaHoraInicio;
+    LocalDateTime fechaHoraFin;
     Estado estado;
     Empleado responsable;
 
-    public CambioEstado(LocalTime fechaHoraInicio, Estado estado) {
+    public CambioEstado() {
+        this.fechaHoraInicio = LocalDateTime.now();
+        this.fechaHoraFin = null;
+        this.estado = new Estado();
+        this.responsable = new Empleado();
+    }
+
+    public CambioEstado(LocalDateTime fechaHoraInicio, Estado estado) {
         this.fechaHoraInicio = fechaHoraInicio;
         this.fechaHoraFin = null;
         this.estado = estado;
     }
 
-    public CambioEstado(LocalTime fechaHoraInicio, Estado estado, Empleado responsable) {
+    public CambioEstado(LocalDateTime fechaHoraInicio, Estado estado, Empleado responsable) {
         this.fechaHoraInicio = fechaHoraInicio;
         this.fechaHoraFin = null;
         this.estado = estado;
         this.responsable = responsable;
     }
 
-    public LocalTime getFechaHoraInicio() {
+    public LocalDateTime getFechaHoraInicio() {
         return fechaHoraInicio;
     }
 
-    public LocalTime getFechaHoraFin() {
+    public LocalDateTime getFechaHoraFin() {
         return fechaHoraFin;
     }
 
@@ -35,7 +46,7 @@ public class CambioEstado {
         return estado;
     }
 
-    public void setFechaHoraFin(LocalTime fechaHoraFin) {
+    public void setFechaHoraFin(LocalDateTime fechaHoraFin) {
         this.fechaHoraFin = fechaHoraFin;
     }
 

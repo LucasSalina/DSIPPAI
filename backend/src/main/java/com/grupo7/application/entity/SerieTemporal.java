@@ -2,17 +2,28 @@ package com.grupo7.application.entity;
 
 import com.grupo7.application.repository.RepositorioDeSismografos;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-// Una serie temporal representa una secuencia de muestras sísmicas tomadas por un sismógrafo en un periodo.
+import org.springframework.stereotype.Component;
+
+@Component
 public class SerieTemporal {
     private int condicionAlarma;
-    private int fechaHoraInicioRegistroMuestra;
-    private int fechaHoraRegistro;
-    private int frecuenciaMuestreo;
+    private LocalDateTime fechaHoraInicioRegistroMuestra;
+    private LocalDateTime fechaHoraRegistro;
+    private float frecuenciaMuestreo;
     private ArrayList<MuestraSismica> muestrasSismicas;
 
-    public SerieTemporal(int condicionAlarma, int fechaHoraInicioRegistroMuestra, int fechaHoraRegistro,
+    public SerieTemporal() {
+        this.condicionAlarma = 0;
+        this.fechaHoraInicioRegistroMuestra = LocalDateTime.now();
+        this.fechaHoraRegistro = LocalDateTime.now();
+        this.frecuenciaMuestreo = 0.0;
+        this.muestrasSismicas = new ArrayList<MuestraSismica>();
+    }
+
+    public SerieTemporal(int condicionAlarma, LocalDateTime fechaHoraInicioRegistroMuestra, LocalDateTime fechaHoraRegistro,
                          int frecuenciaMuestreo, ArrayList<MuestraSismica> muestrasSismicas) {
         this.condicionAlarma = condicionAlarma;
         this.fechaHoraInicioRegistroMuestra = fechaHoraInicioRegistroMuestra;

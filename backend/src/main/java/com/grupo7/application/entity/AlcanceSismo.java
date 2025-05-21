@@ -1,10 +1,22 @@
 package com.grupo7.application.entity;
 
-// Representa el alcance de un sismo, con nombre y descripción.
+import org.springframework.stereotype.Component;
+
+@Component
 public class AlcanceSismo {
     String descripcion;
     String nombre;
 
+
+    public AlcanceSismo() {
+        this.descripcion = "";
+        this.nombre = "";
+    }
+
+    public AlcanceSismo(String descripcion, String nombre) {
+        this.descripcion = descripcion;
+        this.nombre = nombre;
+    }
     // Métodos simples de acceso y modificación.
 
     public String getDescripcion() {
@@ -20,11 +32,6 @@ public class AlcanceSismo {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public AlcanceSismo(String descripcion, String nombre) {
-        this.descripcion = descripcion;
         this.nombre = nombre;
     }
 }

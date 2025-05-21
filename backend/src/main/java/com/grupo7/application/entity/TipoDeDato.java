@@ -2,11 +2,19 @@ package com.grupo7.application.entity;
 
 import java.util.ArrayList;
 
-// Representa un tipo de dato medido por el sismógrafo, como longitud, velocidad o frecuencia.
+import org.springframework.stereotype.Component;
+
+@Component
 public class TipoDeDato {
     String denominacion;
     String nombreUnidadMedida;
     int valorUmbral;
+
+    public TipoDeDato() {
+        this.denominacion = "";
+        this.nombreUnidadMedida = "";
+        this.valorUmbral = 0;
+    }
 
     public TipoDeDato(String denominacion, String nombreUnidadMedida, int valorUmbral) {
         this.denominacion = denominacion;

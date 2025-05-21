@@ -7,6 +7,11 @@ import com.grupo7.application.service.GestorRevisionManual;
 @RequestMapping("/api")
 public class GestorRevisionManualController {
 
+    private final GestorRevisionManual gestorRevisionManual;
+
+    public GestorRevisionManualController(GestorRevisionManual gestorRevisionManual) {
+        this.gestorRevisionManual = gestorRevisionManual;
+    }
     @GetMapping("/EventosSismicosAutoDetectados")
     public String ping() {
         return "✅ Server is running!";

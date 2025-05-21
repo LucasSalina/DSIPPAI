@@ -2,10 +2,22 @@ package com.grupo7.application.entity;
 
 import java.util.ArrayList;
 
-// Cada detalle representa un valor medido en una muestra sísmica, junto con su tipo de dato.
+import org.springframework.stereotype.Component;
+
+@Component
 public class DetalleMuestraSismica {
     int valor;
     TipoDeDato tipoDeDato;
+
+    public DetalleMuestraSismica() {
+        this.valor = 0;
+        this.tipoDeDato = new TipoDeDato();
+    }
+
+    public DetalleMuestraSismica(TipoDeDato tipoDeDato, int valor) {
+        this.valor = valor;
+        this.tipoDeDato = tipoDeDato;
+    }
 
     public int getValor() {
         return valor;

@@ -1,15 +1,23 @@
 package com.grupo7.application.entity;
 
-// Representa la clasificación de un sismo según la profundidad y un nombre descriptivo.
+import org.springframework.stereotype.Component;
+
+@Component
 public class ClasificacionSismo {
     int kmProfundidadDesde;
     int kmProfundidadHasta;
-    String Nombre;
+    String nombre;
+
+    public ClasificacionSismo() {
+        this.kmProfundidadDesde = 0;
+        this.kmProfundidadHasta = 0;
+        this.nombre = "";
+    }
 
     public ClasificacionSismo(int kmProfundidadDesde, int kmProfundidadHasta, String Nombre) {
         this.kmProfundidadDesde = kmProfundidadDesde;
         this.kmProfundidadHasta = kmProfundidadHasta;
-        this.Nombre = Nombre;
+        this.nombre = Nombre;
     }
     
     // Constructor y getters simples.
@@ -22,6 +30,6 @@ public class ClasificacionSismo {
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 }

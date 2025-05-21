@@ -1,4 +1,4 @@
-package com.grupo7.application.controller;
+package com.grupo7.application.service;
 
 // Dependencies
 
@@ -10,14 +10,12 @@ import com.grupo7.application.entity.Empleado;
 import com.grupo7.application.entity.EventoSismico;
 import com.grupo7.application.entity.Estado;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
-
 @Service
-// Clase GestorRevisionManual: gestiona la revisión manual de eventos sísmicos
 public class GestorRevisionManual {
     // Lista de eventos sísmicos a gestionar
     private ArrayList<EventoSismico> eventoSismico;
@@ -29,7 +27,7 @@ public class GestorRevisionManual {
     private Estado punteroBloqueadoEnRevision;
     private Estado punteroRechazado;
     // Fecha y hora actual utilizada en los procesos
-    private LocalTime fechaHoraActual;
+    private LocalDateTime fechaHoraActual;
     // Evento sísmico seleccionado para revisión
     private EventoSismico eventoSismicoSeleccionado;
     private Empleado empleadoActual;
@@ -74,8 +72,8 @@ public class GestorRevisionManual {
     }
 
     // Obtiene la fecha y hora actual del sistema
-    public LocalTime getFechaHoraActual() {
-        return LocalTime.now();
+    public LocalDateTime getFechaHoraActual() {
+        return LocalDateTime.now();
     }
 
     // Busca los datos registrados del evento sísmico seleccionado

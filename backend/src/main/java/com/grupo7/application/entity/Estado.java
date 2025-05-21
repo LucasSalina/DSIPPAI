@@ -5,15 +5,22 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
-// Representa un estado posible de un evento o entidad, con ámbito y nombre.
+import org.springframework.stereotype.Component;
+
+@Component
 public class Estado {
     private static final Map<String, Estado> estados = new LinkedHashMap<>();
 
     private final String ambito;
     private final String nombreEstado;
 
+    public Estado() {
+        this.ambito = "";
+        this.nombreEstado = "";
+    }
+
     // Constructor privado para forzar uso de obtener(...)
-    private Estado(String ambito, String nombreEstado) {
+    public Estado(String ambito, String nombreEstado) {
         this.ambito = ambito;
         this.nombreEstado = nombreEstado;
     }

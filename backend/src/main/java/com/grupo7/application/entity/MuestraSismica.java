@@ -1,18 +1,26 @@
 package com.grupo7.application.entity;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-// Representa una muestra tomada por un sismógrafo en un instante, compuesta por varios detalles.
+import org.springframework.stereotype.Component;
+
+@Component
 public class MuestraSismica {
-    int fechaHoraMuestra;
+    LocalDateTime fechaHoraMuestra;
     private List<DetalleMuestraSismica> detallesMuestraSismica;
-    
-    public MuestraSismica(int fechaHoraMuestra) {
+
+    public MuestraSismica() {
+        this.fechaHoraMuestra = LocalDateTime.now();;
+        this.detallesMuestraSismica = new ArrayList<>();
+    }
+
+    public MuestraSismica(LocalDateTime fechaHoraMuestra) {
         this.fechaHoraMuestra = fechaHoraMuestra;
     }
 
-    public int getFechaHoraMuestra() {
+    public LocalDateTime getFechaHoraMuestra() {
         return fechaHoraMuestra;
     }
 

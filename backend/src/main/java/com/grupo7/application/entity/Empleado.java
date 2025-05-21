@@ -1,12 +1,22 @@
 package com.grupo7.application.entity;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Empleado {
     private String apellido;
     private String mail;
     private String nombre;
-    private long telefono;
+    private int telefono;
 
-    public Empleado(String apellido, String mail, String nombre, long telefono) {
+    public Empleado() {
+        this.apellido = "";
+        this.mail = "";
+        this.nombre = "";
+        this.telefono = 0;
+    }
+
+    public Empleado(String apellido, String mail, String nombre, int telefono) {
         this.apellido = apellido;
         this.mail = mail;
         this.nombre = nombre;
@@ -37,11 +47,11 @@ public class Empleado {
         this.nombre = nombre;
     }
 
-    public long getTelefono() {
+    public int getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(long telefono) {
+    public void setTelefono(int telefono) {
         this.telefono = telefono;
     }
 }

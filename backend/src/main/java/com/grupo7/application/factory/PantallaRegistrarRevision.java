@@ -1,5 +1,8 @@
 package com.grupo7.application.factory;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class PantallaRegistrarRevision {
     
     public void habilitarVentana() {

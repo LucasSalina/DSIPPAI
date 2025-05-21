@@ -1,12 +1,18 @@
 package com.grupo7.application.entity;
 
-// Representa la magnitud de un sismo según la escala de Richter.
+import org.springframework.stereotype.Component;
+
+@Component
 public class MagnitudRitcher {
     String descripcionMagnitud;
     float numero;
 
-    // Constructor y atributos simples.
-    public MagnitudRitcher(String descripcionMagnitud, int numero) {
+    public MagnitudRitcher() {
+        this.descripcionMagnitud = "";
+        this.numero = 0.0;
+    }
+
+    public MagnitudRitcher(String descripcionMagnitud, float numero) {
         this.descripcionMagnitud = descripcionMagnitud;
         this.numero = numero;
     }
