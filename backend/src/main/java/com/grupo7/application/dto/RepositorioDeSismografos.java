@@ -1,4 +1,4 @@
-package com.grupo7.application.repository;
+package com.grupo7.application.dto;
 
 import com.grupo7.application.entity.Sismografo;
 
