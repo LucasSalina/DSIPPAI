@@ -1,0 +1,18 @@
+package com.grupo7.application.controller;
+
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/test")
+public class GestorRevisionManualController {
+
+    @GetMapping("/ping")
+    public String ping() {
+        return "✅ Server is running!";
+    }
+
+    @GetMapping("/hello")
+    public String sayHello() {
+        return "👋 Hello from Spring Boot!";
+    }
+}
