@@ -1,4 +1,4 @@
-package com.grupo7.application.factory;
+package com.grupo7.application.dto;
 
 import org.springframework.stereotype.Component;
 
