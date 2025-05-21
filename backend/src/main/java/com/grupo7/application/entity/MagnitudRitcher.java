@@ -9,7 +9,7 @@ public class MagnitudRitcher {
 
     public MagnitudRitcher() {
         this.descripcionMagnitud = "";
-        this.numero = 0.0;
+        this.numero = 0;
     }
 
     public MagnitudRitcher(String descripcionMagnitud, float numero) {

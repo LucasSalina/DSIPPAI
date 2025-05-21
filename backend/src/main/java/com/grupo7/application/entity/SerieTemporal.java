@@ -19,12 +19,12 @@ public class SerieTemporal {
         this.condicionAlarma = 0;
         this.fechaHoraInicioRegistroMuestra = LocalDateTime.now();
         this.fechaHoraRegistro = LocalDateTime.now();
-        this.frecuenciaMuestreo = 0.0;
+        this.frecuenciaMuestreo = 0;
         this.muestrasSismicas = new ArrayList<MuestraSismica>();
     }
 
     public SerieTemporal(int condicionAlarma, LocalDateTime fechaHoraInicioRegistroMuestra, LocalDateTime fechaHoraRegistro,
-                         int frecuenciaMuestreo, ArrayList<MuestraSismica> muestrasSismicas) {
+    float frecuenciaMuestreo, ArrayList<MuestraSismica> muestrasSismicas) {
         this.condicionAlarma = condicionAlarma;
         this.fechaHoraInicioRegistroMuestra = fechaHoraInicioRegistroMuestra;
         this.fechaHoraRegistro = fechaHoraRegistro;

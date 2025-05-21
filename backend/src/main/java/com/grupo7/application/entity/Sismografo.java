@@ -26,7 +26,7 @@ public class Sismografo {
 
     }
 
-    public Sismografo(int fechaAdquisicion, int identificadorSismografo, int numeroDeSerie) {
+    public Sismografo(LocalDateTime fechaAdquisicion, int identificadorSismografo, int numeroDeSerie) {
         this.fechaAdquisicion = fechaAdquisicion;
         this.identificadorSismografo = identificadorSismografo;
         this.numeroDeSerie = numeroDeSerie;

@@ -1,6 +1,6 @@
 package com.grupo7.application.entity;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

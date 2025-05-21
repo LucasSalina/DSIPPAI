@@ -7,16 +7,16 @@ public class Empleado {
     private String apellido;
     private String mail;
     private String nombre;
-    private int telefono;
+    private Long telefono;
 
     public Empleado() {
         this.apellido = "";
         this.mail = "";
         this.nombre = "";
-        this.telefono = 0;
+        this.telefono = 0L;
     }
 
-    public Empleado(String apellido, String mail, String nombre, int telefono) {
+    public Empleado(String apellido, String mail, String nombre, Long telefono) {
         this.apellido = apellido;
         this.mail = mail;
         this.nombre = nombre;
@@ -47,11 +47,11 @@ public class Empleado {
         this.nombre = nombre;
     }
 
-    public int getTelefono() {
+    public Long getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
+    public void setTelefono(Long telefono) {
         this.telefono = telefono;
     }
 }

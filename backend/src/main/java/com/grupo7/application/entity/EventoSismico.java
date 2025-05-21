@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import com.grupo7.application.dto.DatosPrincipalesDTO;
 import com.grupo7.application.dto.DatosRegistradosDTO;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -16,11 +17,11 @@ import org.springframework.stereotype.Component;
 public class EventoSismico {
     private LocalDateTime fechaHoraFin;
     private LocalDateTime fechaHoraOcurrencia;
-    private int latitudEpicentro;
-    private int latitudHipocentro;
-    private int longitudEpicentro;
-    private int longitudHipocentro;
-    private int valorMagnitud;
+    private float latitudEpicentro;
+    private float latitudHipocentro;
+    private float longitudEpicentro;
+    private float longitudHipocentro;
+    private float valorMagnitud;
     private ClasificacionSismo clasificacionSismo;
     private MagnitudRitcher magnitudRitcher;
     private OrigenDeGeneracion origenDeGeneracion;
@@ -29,10 +30,26 @@ public class EventoSismico {
     private ArrayList<CambioEstado> cambioEstado;
     private ArrayList<SerieTemporal> seriesTemporales;
 
+    public EventoSismico() {
+        this.fechaHoraFin = LocalDateTime.now();
+        this.fechaHoraOcurrencia = LocalDateTime.now();
+        this.latitudEpicentro = 0;
+        this.longitudEpicentro = 0;
+        this.latitudHipocentro = 0;
+        this.longitudHipocentro = 0;
+        this.clasificacionSismo = new ClasificacionSismo();
+        this.magnitudRitcher = new MagnitudRitcher();
+        this.origenDeGeneracion = new OrigenDeGeneracion();
+        this.alcanceSismo = new AlcanceSismo();
+        this.estadoActual = new Estado();
+        this.cambioEstado = new ArrayList<CambioEstado>();
+        this.seriesTemporales = new ArrayList<SerieTemporal>();
+    }
+
     public EventoSismico(Estado estado, ClasificacionSismo clasificacionSismo, MagnitudRitcher magnitudRitcher,
                          OrigenDeGeneracion origenDeGeneracion, AlcanceSismo alcanceSismo, LocalDateTime fechaHoraFin,
-                         LocalDateTime fechaHoraOcurrencia, int latitudEpicentro, int latitudHipocentro,
-                         int longitudEpicentro, int longitudHipocentro, int valorMagnitud) {
+                         LocalDateTime fechaHoraOcurrencia, float latitudEpicentro, float latitudHipocentro,
+                         float longitudEpicentro, float longitudHipocentro, float valorMagnitud) {
         this.fechaHoraFin = fechaHoraFin;
         this.fechaHoraOcurrencia = fechaHoraOcurrencia;
         this.latitudEpicentro = latitudEpicentro;
@@ -76,23 +93,23 @@ public class EventoSismico {
         return fechaHoraOcurrencia;
     }
 
-    public int getLatitudEpicentro() {
+    public float getLatitudEpicentro() {
         return latitudEpicentro;
     }
 
-    public int getLatitudHipocentro() {
+    public float getLatitudHipocentro() {
         return latitudHipocentro;
     }
 
-    public int getLongitudEpicentro() {
+    public float getLongitudEpicentro() {
         return longitudEpicentro;
     }
 
-    public int getLongitudHipocentro() {
+    public float getLongitudHipocentro() {
         return longitudHipocentro;
     }
 
-    public int getValorMagnitud() {
+    public float getValorMagnitud() {
         return valorMagnitud;
     }
 
