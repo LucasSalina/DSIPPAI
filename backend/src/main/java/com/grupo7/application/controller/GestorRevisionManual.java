@@ -53,7 +53,7 @@ public class GestorRevisionManual {
 //              podria hacer eventoSeleccionado.bloquear(estado) y me ahorro un atributo
             }
         }
-        eventoSismicoSeleccionado.bloquearPorRevision(punteroBloqueadoEnRevision);
+        eventoSismicoSeleccionado.bloquearPorRevision(punteroBloqueadoEnRevision, fechaHoraActual);
 
     }
 
@@ -62,7 +62,7 @@ public class GestorRevisionManual {
     }
 
     public void buscarDatosRegistrados() {
-
+        this.eventoSismicoSeleccionado.buscarDatosRegistrados();
     }
 
     public void ordenarPorEstacionSismologica() {

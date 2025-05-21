@@ -3,6 +3,7 @@ package com.grupo7.application.entity;
 import com.grupo7.application.dto.DatosPrincipalesDTO;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class EventoSismico {
@@ -90,8 +91,10 @@ public class EventoSismico {
     public boolean esAutoDetectadoOPendienteRevision() {
 
         for (CambioEstado c : cambioEstado) {
-            if (c.sosAutoDetectado() || c.sosPendienteRevision()) {
-                return true;
+            if (c.esEstadoActual()) {
+                if (c.sosAutoDetectado() || c.sosPendienteRevision()) {
+                    return true;
+                }
             }
         }
 
@@ -108,6 +111,16 @@ public class EventoSismico {
         );
     }
 
-    public void bloquearPorRevision(Estado bloqueadoEnRevision) {
+    public void bloquearPorRevision(Estado bloqueadoEnRevision, LocalTime fechaHoraActual) {
+        for (CambioEstado cambioEstado : cambioEstado) {
+            if (cambioEstado.esEstadoActual()) {
+                cambioEstado.setFechaHoraFin(fechaHoraActual);
+            }
+        }
+        this.cambioEstado.add(new CambioEstado(fechaHoraActual, bloqueadoEnRevision));
+    }
+
+    public void buscarDatosRegistrados() {
+        this.alcanceSismo.getNombre();
     }
 }
