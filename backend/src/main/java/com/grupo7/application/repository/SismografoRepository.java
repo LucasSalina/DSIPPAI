@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SismografoRepository extends JpaRepository<Sismografo, Long> {
+public interface SismografoRepository extends JpaRepository<Sismografo, String> {
     // Métodos personalizados si los necesitas
 }
