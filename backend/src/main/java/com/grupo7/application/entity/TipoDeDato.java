@@ -1,20 +1,25 @@
 package com.grupo7.application.entity;
 
-import java.util.ArrayList;
+import jakarta.persistence.*;
 
-import org.springframework.stereotype.Component;
-
-@Component
+@Entity
+@Table(name = "tipo_de_dato")
 public class TipoDeDato {
-    String denominacion;
-    String nombreUnidadMedida;
-    int valorUmbral;
 
-    public TipoDeDato() {
-        this.denominacion = "";
-        this.nombreUnidadMedida = "";
-        this.valorUmbral = 0;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String denominacion;
+
+    @Column(name = "unidad_medida", nullable = false)
+    private String nombreUnidadMedida;
+
+    @Column(name = "valor_umbral", nullable = false)
+    private int valorUmbral;
+
+    public TipoDeDato() {}
 
     public TipoDeDato(String denominacion, String nombreUnidadMedida, int valorUmbral) {
         this.denominacion = denominacion;
@@ -22,18 +27,13 @@ public class TipoDeDato {
         this.valorUmbral = valorUmbral;
     }
 
-    // esTuDenominacion: verifica si la denominación corresponde a un tipo relevante para el sistema.
     public boolean esTuDenominacion() {
-        ArrayList<String> array = new ArrayList<>();
-        array.add("Longitud");
-        array.add("Velocidad");
-        array.add("Frecuencia");
-        return array.contains(this.denominacion);
+        return denominacion.equals("Longitud") || denominacion.equals("Velocidad") || denominacion.equals("Frecuencia");
     }
 
-//    public boolean esTuDenominacion(String denominacionALaQueComparar) {
-//        return this.denominacion.equals(denominacionALaQueComparar);
-//    }
+    public Long getId() {
+        return id;
+    }
 
     public String getDenominacion() {
         return denominacion;

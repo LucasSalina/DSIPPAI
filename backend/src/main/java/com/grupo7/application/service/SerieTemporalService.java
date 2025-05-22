@@ -26,11 +26,29 @@ public class SerieTemporalService {
         return serieTemporalRepository.findById(id);
     }
 
-    public SerieTemporal guardar(SerieTemporal serieTemporal) {
+    public SerieTemporal crear(SerieTemporal serieTemporal) {
         return serieTemporalRepository.save(serieTemporal);
+    }
+
+    public SerieTemporal actualizar(Long id, SerieTemporal actualizada) {
+        return serieTemporalRepository.findById(id)
+                .map(serieExistente -> {
+                    // Actualiza los campos relevantes
+                    serieExistente.setCondicionAlarma(actualizada.getCondicionAlarma());
+                    serieExistente.setFechaHoraInicioRegistroMuestra(actualizada.getFechaHoraInicioRegistroMuestra());
+                    serieExistente.setFechaHoraRegistro(actualizada.getFechaHoraRegistro());
+                    serieExistente.setFrecuenciaMuestreo(actualizada.getFrecuenciaMuestreo());
+                    serieExistente.setMuestrasSismicas(actualizada.getMuestrasSismicas());
+                    return serieTemporalRepository.save(serieExistente);
+                })
+                .orElseThrow(() -> new RuntimeException("SerieTemporal no encontrada con ID: " + id));
     }
 
     public void eliminar(Long id) {
         serieTemporalRepository.deleteById(id);
+    }
+
+    public List<Object> obtenerDatosDeSerie(SerieTemporal serieTemporal) {
+        return serieTemporal.getDatos();
     }
 }
