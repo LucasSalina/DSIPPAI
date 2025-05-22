@@ -8,6 +8,7 @@ public class ClasificacionSismo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_CLASIFICACION") // This mapping was correct for the DB column
     private Long id;
 
     @Column(name = "km_profundidad_desde", nullable = false)
@@ -31,8 +32,13 @@ public class ClasificacionSismo {
         this.nombre = nombre;
     }
 
+    // Getters and Setters
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getKmProfundidadDesde() {
@@ -40,7 +46,7 @@ public class ClasificacionSismo {
     }
 
     public void setKmProfundidadDesde(int kmProfundidadDesde) {
-        this.kmProfundidadDesde = kmProfundidadDesde;
+        this.kmProfundidadDesde = kmProfundidadDesde; // <--- FIXED: Removed duplicated 'Prof' here
     }
 
     public int getKmProfundidadHasta() {

@@ -1,27 +1,24 @@
 package com.grupo7.application.dto;
 
-import com.grupo7.application.entity.AlcanceSismo; // You can remove this if only using String names
-import com.grupo7.application.entity.ClasificacionSismo; // You can remove this if only using String names
-import com.grupo7.application.entity.MagnitudRitcher; // Import MagnitudRitcher
-import com.grupo7.application.entity.OrigenDeGeneracion; // You can remove this if only using String names
-import com.grupo7.application.entity.SerieTemporal;
-
-import java.time.LocalDateTime; // Import LocalDateTime
-import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.grupo7.application.dto.SerieTemporalDTO;
+import java.time.LocalDateTime;
+import java.util.List;
 
 // DTO que agrupa los datos registrados de un evento sísmico.
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // Prevents Hibernate proxy issues
 public class DatosRegistradosDTO {
-    private LocalDateTime fechaHoraOcurrencia; // Added for the date/time of occurrence
-    private Double valorMagnitud;             // Changed to Double for magnitude value
-    private String alcanceSismoNombre;        // Renamed to clarify it's the name
-    private String clasificacionSismoNombre;  // Added for classification name
-    private String origenDeGeneracionNombre;  // Renamed to clarify it's the name
-    private ArrayList<Object> seriesTemporales; // Keep as ArrayList<Object> for now
+    private LocalDateTime fechaHoraOcurrencia; 
+    private Double valorMagnitud;             
+    private String alcanceSismoNombre;        
+    private String clasificacionSismoNombre;  
+    private String origenDeGeneracionNombre;  
+    private List<SerieTemporalDTO> seriesTemporales; 
 
-    // Constructor actualizado para reflejar los datos registrados completos
+    // Constructor actualizado
     public DatosRegistradosDTO(LocalDateTime fechaHoraOcurrencia, Double valorMagnitud,
                                String alcanceSismoNombre, String clasificacionSismoNombre,
-                               String origenDeGeneracionNombre, ArrayList<Object> seriesTemporales) {
+                               String origenDeGeneracionNombre, List<SerieTemporalDTO> seriesTemporales) {
         this.fechaHoraOcurrencia = fechaHoraOcurrencia;
         this.valorMagnitud = valorMagnitud;
         this.alcanceSismoNombre = alcanceSismoNombre;
@@ -30,7 +27,7 @@ public class DatosRegistradosDTO {
         this.seriesTemporales = seriesTemporales;
     }
 
-    // --- Getters for the DTO fields (add these if you need to access the data) ---
+    // Getters
     public LocalDateTime getFechaHoraOcurrencia() {
         return fechaHoraOcurrencia;
     }
@@ -51,7 +48,7 @@ public class DatosRegistradosDTO {
         return origenDeGeneracionNombre;
     }
 
-    public ArrayList<Object> getSeriesTemporales() {
+    public List<SerieTemporalDTO> getSeriesTemporales() {
         return seriesTemporales;
     }
 }

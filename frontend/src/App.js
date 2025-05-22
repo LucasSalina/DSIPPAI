@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 function App() {
   // State to manage which "page" is currently active.
-  // 'home' is the initial page.
   const [currentPage, setCurrentPage] = useState("home");
 
   // State to store fetched data (list of seismic events)
@@ -19,6 +18,8 @@ function App() {
   const [confirmError, setConfirmError] = useState(null);
   // State to store success message after confirming selection
   const [confirmSuccess, setConfirmSuccess] = useState(null);
+  // NEW STATE: To store the DatosRegistradosDTO received after selection
+  const [registeredData, setRegisteredData] = useState(null);
 
   // Function to handle the button click and change the page, also fetches data.
   const handleButtonClick = async () => {
@@ -30,56 +31,48 @@ function App() {
     setSelectedEvent(null); // Clear any previous selection
     setConfirmError(null); // Clear any previous confirmation errors
     setConfirmSuccess(null); // Clear any previous confirmation success messages
+    setRegisteredData(null); // NEW: Clear any previous registered data
 
     try {
-      // Make the fetch call to the Spring endpoint with the full URL
       const response = await fetch(
         "http://localhost:8080/api/revision-manual/eventos-no-revisados"
       );
 
-      // Check if the response was successful (status code 200-299)
       if (!response.ok) {
-        // If not successful, throw an error with the status
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // Parse the JSON response
       const data = await response.json();
 
-      // Assuming the API returns an array of objects
       if (Array.isArray(data)) {
-        // --- MODIFICATION HERE: Removed _tempId as 'id' is now provided by backend ---
-        setSeismicEvents(data); // Store the fetched array of events directly
-        // ------------------------------------------------------------------
+        setSeismicEvents(data);
       } else {
-        // If the API returns a single object or unexpected format, handle it
         console.warn("API response is not an array:", data);
-        setSeismicEvents([]); // Ensure it's an empty array if not an array
+        setSeismicEvents([]);
         setFetchError("Formato de datos inesperado del servidor.");
       }
 
-      console.log("Fetched data:", data); // Log the data to the console for debugging
+      console.log("Fetched data:", data);
     } catch (error) {
-      // Catch any errors during the fetch operation
       console.error("Error fetching seismic events:", error);
       setFetchError(
         `Error al cargar eventos sísmicos: ${error.message}. Por favor, intente de nuevo.`
       );
     } finally {
-      setIsLoadingEvents(false); // Set loading state to false, regardless of success or failure
+      setIsLoadingEvents(false);
     }
   };
 
   // Function to handle selecting a seismic event from the list
   const handleSelectEvent = (event) => {
     setSelectedEvent(event);
-    setConfirmError(null); // Clear confirmation error on new selection
-    setConfirmSuccess(null); // Clear confirmation success on new selection
+    setConfirmError(null);
+    setConfirmSuccess(null);
+    setRegisteredData(null); // NEW: Clear registered data on new selection
   };
 
   // Function to send the selected event data to the backend
   const handleConfirmSelection = async () => {
-    // Ensure an event is selected and it has an ID to send to the backend.
     if (
       !selectedEvent ||
       selectedEvent.id === undefined ||
@@ -91,53 +84,56 @@ function App() {
       return;
     }
 
-    setIsConfirming(true); // Set loading state for confirmation
-    setConfirmError(null); // Clear previous confirmation errors
-    setConfirmSuccess(null); // Clear previous success messages
+    setIsConfirming(true);
+    setConfirmError(null);
+    setConfirmSuccess(null);
+    setRegisteredData(null); // NEW: Clear registered data before new confirmation attempt
 
     try {
-      // --- MODIFIED HERE: Use the /seleccionar-evento/{eventId} endpoint ---
       const response = await fetch(
-        `http://localhost:8080/api/revision-manual/seleccionar-evento/${selectedEvent.id}`, // Dynamic URL with eventId
+        `http://localhost:8080/api/revision-manual/seleccionar-evento/${selectedEvent.id}`,
         {
-          method: "POST", // Method is POST as per your backend controller
+          method: "POST",
           headers: {
-            "Content-Type": "application/json", // Still good practice, but no body is sent
+            "Content-Type": "application/json",
           },
-          // No 'body' is sent here, as the ID is in the URL path.
         }
       );
 
       if (!response.ok) {
-        const errorText = await response.text(); // Get error message from backend
+        const errorBody = await response.json(); // Backend now sends JSON error objects
         throw new Error(
-          `HTTP error! status: ${response.status} - ${errorText}`
+          `HTTP error! status: ${response.status} - ${
+            errorBody.error || response.statusText
+          }`
         );
       }
 
-      const result = await response.json(); // Assuming backend returns a success message or updated object
-      console.log("Selection successful:", result);
-      setConfirmSuccess("Evento sísmico seleccionado exitosamente!"); // Updated message
-      // Optionally, you might want to refresh the list or go back to home after success
-      // handleGoBack(); // Uncomment to go back to home after successful selection
+      const data = await response.json(); // This will be your DatosRegistradosDTO
+      console.log("Selection successful, registered data:", data);
+      setConfirmSuccess(
+        "Evento sísmico seleccionado y datos cargados exitosamente!"
+      );
+      setRegisteredData(data); // NEW: Store the received DatosRegistradosDTO
     } catch (error) {
       console.error("Error selecting seismic event:", error);
-      setConfirmError(`Error al seleccionar el evento: ${error.message}.`); // Updated message
+      setConfirmError(`Error al seleccionar el evento: ${error.message}.`);
     } finally {
-      setIsConfirming(false); // Set loading state to false
+      setIsConfirming(false);
     }
   };
 
   // Function to go back to the home page.
   const handleGoBack = () => {
     setCurrentPage("home");
-    setSeismicEvents([]); // Clear events when going back
-    setSelectedEvent(null); // Clear selection when going back
-    setIsLoadingEvents(false); // Reset loading states
+    setSeismicEvents([]);
+    setSelectedEvent(null);
+    setIsLoadingEvents(false);
     setIsConfirming(false);
-    setFetchError(null); // Clear all errors
+    setFetchError(null);
     setConfirmError(null);
-    setConfirmSuccess(null); // Clear success message
+    setConfirmSuccess(null);
+    setRegisteredData(null); // NEW: Clear registered data when going back
   };
 
   // Conditional rendering based on the currentPage state.
@@ -158,7 +154,7 @@ function App() {
 
           {isLoadingEvents && <p>Cargando eventos sísmicos...</p>}
 
-          {fetchError && <p>Error: {fetchError}</p>}
+          {fetchError && <p style={{ color: "red" }}>Error: {fetchError}</p>}
 
           {!isLoadingEvents && !fetchError && seismicEvents.length === 0 && (
             <p>No hay eventos sísmicos no revisados para mostrar.</p>
@@ -168,53 +164,49 @@ function App() {
             <div>
               <h2>Seleccione un evento sísmico:</h2>
               <div>
-                {seismicEvents.map(
-                  (
-                    event // Removed 'index' as key is 'event.id'
-                  ) => (
-                    <div
-                      key={event.id} // <--- MODIFIED: Use event.id directly for key
-                      onClick={() => handleSelectEvent(event)}
-                      style={{
-                        border: "1px solid gray",
-                        padding: "10px",
-                        margin: "5px",
-                        cursor: "pointer",
-                        backgroundColor:
-                          selectedEvent && selectedEvent.id === event.id // <--- MODIFIED: Use event.id for highlighting
-                            ? "lightblue"
-                            : "white",
-                      }}
-                    >
-                      <p>
-                        Fecha y hora ocurrencia:{" "}
-                        {event.fechaHoraOcurrencia // <--- MODIFIED: Use fechaHoraOcurrencia
-                          ? new Date(event.fechaHoraOcurrencia).toLocaleString()
-                          : "N/A"}
-                      </p>
-                      <p>
-                        Epicentro: Lat{" "}
-                        {event.latitudEpicentro !== undefined
-                          ? event.latitudEpicentro.toFixed(4)
-                          : "N/A"}
-                        , Lon{" "}
-                        {event.longitudEpicentro !== undefined
-                          ? event.longitudEpicentro.toFixed(4)
-                          : "N/A"}
-                      </p>
-                      <p>
-                        Hipocentro: Lat{" "}
-                        {event.latitudHipocentro !== undefined
-                          ? event.latitudHipocentro.toFixed(4)
-                          : "N/A"}
-                        , Lon{" "}
-                        {event.longitudHipocentro !== undefined
-                          ? event.longitudHipocentro.toFixed(4)
-                          : "N/A"}
-                      </p>
-                    </div>
-                  )
-                )}
+                {seismicEvents.map((event) => (
+                  <div
+                    key={event.id}
+                    onClick={() => handleSelectEvent(event)}
+                    style={{
+                      border: "1px solid gray",
+                      padding: "10px",
+                      margin: "5px",
+                      cursor: "pointer",
+                      backgroundColor:
+                        selectedEvent && selectedEvent.id === event.id
+                          ? "lightblue"
+                          : "white",
+                    }}
+                  >
+                    <p>
+                      Fecha y hora ocurrencia:{" "}
+                      {event.fechaHoraOcurrencia
+                        ? new Date(event.fechaHoraOcurrencia).toLocaleString()
+                        : "N/A"}
+                    </p>
+                    <p>
+                      Epicentro: Lat{" "}
+                      {event.latitudEpicentro !== undefined
+                        ? event.latitudEpicentro.toFixed(4)
+                        : "N/A"}
+                      , Lon{" "}
+                      {event.longitudEpicentro !== undefined
+                        ? event.longitudEpicentro.toFixed(4)
+                        : "N/A"}
+                    </p>
+                    <p>
+                      Hipocentro: Lat{" "}
+                      {event.latitudHipocentro !== undefined
+                        ? event.latitudHipocentro.toFixed(4)
+                        : "N/A"}
+                      , Lon{" "}
+                      {event.longitudHipocentro !== undefined
+                        ? event.longitudHipocentro.toFixed(4)
+                        : "N/A"}
+                    </p>
+                  </div>
+                ))}
               </div>
 
               {selectedEvent && (
@@ -257,6 +249,29 @@ function App() {
                     <p style={{ color: "red", marginTop: "10px" }}>
                       Error: {confirmError}
                     </p>
+                  )}
+
+                  {/* NEW: Display DatosRegistradosDTO if available */}
+                  {registeredData && (
+                    <div
+                      style={{
+                        marginTop: "20px",
+                        borderTop: "1px solid #ccc",
+                        paddingTop: "15px",
+                      }}
+                    >
+                      <h3>Datos Registrados para Revisión:</h3>
+                      <pre
+                        style={{
+                          border: "1px solid lightblue",
+                          padding: "10px",
+                          backgroundColor: "#e0f7fa",
+                          overflow: "auto",
+                        }}
+                      >
+                        {JSON.stringify(registeredData, null, 2)}
+                      </pre>
+                    </div>
                   )}
                 </div>
               )}

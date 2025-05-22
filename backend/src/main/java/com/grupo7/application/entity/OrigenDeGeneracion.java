@@ -1,4 +1,3 @@
-// Entity
 package com.grupo7.application.entity;
 
 import jakarta.persistence.*;
@@ -9,9 +8,13 @@ public class OrigenDeGeneracion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_ORIGEN") // <-- FIX: Mapped to the actual DB column name
     private Long id;
 
+    @Column(name = "DESCRIPCION") // <-- Added explicit mapping (adjust if your DB column is 'descripcion')
     private String descripcion;
+
+    @Column(name = "NOMBRE") // <-- Added explicit mapping (adjust if your DB column is 'nombre')
     private String nombre;
 
     public OrigenDeGeneracion() {

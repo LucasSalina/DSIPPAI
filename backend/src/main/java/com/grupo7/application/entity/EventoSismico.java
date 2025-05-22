@@ -1,14 +1,22 @@
 package com.grupo7.application.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.grupo7.application.dto.DatosPrincipalesDTO;
 import com.grupo7.application.dto.DatosRegistradosDTO;
+import com.grupo7.application.dto.DetalleMuestraDTO; // Needed if you map from MuestraSismica to DetalleMuestraDTO
+import com.grupo7.application.dto.MuestraSismicaDTO;
+import com.grupo7.application.dto.SerieTemporalDTO;
 import jakarta.persistence.*;
+import org.hibernate.Hibernate;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "evento_sismico")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class EventoSismico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -188,74 +196,65 @@ public class EventoSismico {
         this.seriesTemporales = seriesTemporales;
     }
 
-    // --- METHODS REQUIRED BY GestorRevisionManual ---
-
-    public boolean esAutoDetectadoOPendienteRevision() {
-        return this.estadoActual != null && (this.estadoActual.sosAutoDetectado() || this.estadoActual.sosPendienteRevision());
-    }
-
-    public DatosPrincipalesDTO obtenerDatosPrincipales() {
-        return new DatosPrincipalesDTO(
-            this.id,
-            this.fechaHoraOcurrencia,
-            this.latitudEpicentro,
-            this.longitudEpicentro,
-            this.latitudHipocentro,
-            this.longitudHipocentro
-        );
-    }
-
-    // FIX: Modified this method to correctly record the state change history
-    // It now accepts an Empleado for the CambioEstado creation.
-    public void bloquearPorRevision(Estado nuevoEstado, LocalDateTime fechaHoraBloqueo, Empleado empleado) {
-        // Create the CambioEstado instance
-        CambioEstado cambio = new CambioEstado(fechaHoraBloqueo, nuevoEstado, empleado);
-        cambio.setEventoSismico(this); // Set the inverse relationship
-
-        // Add the new CambioEstado to the list
-        this.cambiosEstado.add(cambio);
-
-        // Update the current state reference
+    public void bloquearPorRevision(Estado nuevoEstado, LocalDateTime fechaHoraBloqueo, Empleado empleadoBloqueo) {
         this.setEstadoActual(nuevoEstado);
+        CambioEstado nuevoCambio = new CambioEstado(fechaHoraBloqueo, nuevoEstado);
+        nuevoCambio.setEventoSismico(this);
+        this.cambiosEstado.add(nuevoCambio);
+    }
+
+    public void rechazarEventoSismico(LocalDateTime fechaHoraRechazo, Estado nuevoEstado, Empleado empleadoRechazo) {
+        this.setEstadoActual(nuevoEstado);
+        CambioEstado nuevoCambio = new CambioEstado(fechaHoraRechazo, nuevoEstado);
+        nuevoCambio.setEventoSismico(this);
+        this.cambiosEstado.add(nuevoCambio);
     }
 
     public DatosRegistradosDTO buscarDatosRegistrados() {
+        Hibernate.initialize(this.seriesTemporales);
+
+        List<SerieTemporalDTO> seriesDTO = this.seriesTemporales.stream()
+            .map(serieTemporal -> {
+                // Get the single MuestraSismica entity from the SerieTemporal
+                MuestraSismica muestraSismicaEntity = serieTemporal.getMuestraSismica(); // Assumes getMuestraSismica() now returns a single MuestraSismica
+
+                MuestraSismicaDTO muestraSismicaDTO = null;
+                if (muestraSismicaEntity != null) {
+                    // Map the details of the single MuestraSismica entity to a list of DetalleMuestraDTOs
+                    List<DetalleMuestraDTO> detallesDTO = muestraSismicaEntity.getDetalles().stream()
+                        .map(detalleEntity -> {
+                            // Assuming DetalleMuestraSismica has methods like getTipoDeDato() and getValor()
+                            return new DetalleMuestraDTO(detalleEntity.getTipoDeDato(), detalleEntity.getValor());
+                        })
+                        .collect(Collectors.toList());
+                    // Create the MuestraSismicaDTO with its details and value
+                    muestraSismicaDTO = new MuestraSismicaDTO(detallesDTO, muestraSismicaEntity.getValor());
+                }
+
+                // Create the SerieTemporalDTO with the single MuestraSismicaDTO and the SerieTemporal's value
+                // Assumes SerieTemporalDTO constructor takes a single MuestraSismicaDTO and an int value
+                return new SerieTemporalDTO(muestraSismicaDTO, serieTemporal.getValor()); // Assumes getValor() exists in SerieTemporal
+            })
+            .collect(Collectors.toList());
+
         return new DatosRegistradosDTO(
             this.fechaHoraOcurrencia,
             this.valorMagnitud,
             this.alcanceSismo != null ? this.alcanceSismo.getNombre() : null,
             this.clasificacionSismo != null ? this.clasificacionSismo.getNombre() : null,
             this.origenDeGeneracion != null ? this.origenDeGeneracion.getNombre() : null,
-            new ArrayList<>(this.seriesTemporales)
+            seriesDTO
         );
-    }
-
-    // FIX: Modified this method to correctly record the state change history
-    // It now accepts an Empleado for the CambioEstado creation.
-    public void rechazarEventoSismico(LocalDateTime fechaHoraRechazo, Estado nuevoEstado, Empleado empleado) {
-        // Create the CambioEstado instance
-        CambioEstado cambio = new CambioEstado(fechaHoraRechazo, nuevoEstado, empleado);
-        cambio.setEventoSismico(this); // Set the inverse relationship
-
-        // Add the new CambioEstado to the list
-        this.cambiosEstado.add(cambio);
-
-        // Update the current state reference
-        this.setEstadoActual(nuevoEstado);
-    }
-
-    public void setFechaHora(LocalDateTime fechaHora) {
-        this.setFechaHoraOcurrencia(fechaHora);
     }
 
     @Override
     public String toString() {
         return "EventoSismico{" +
-               "id=" + id +
-               ", fechaHoraOcurrencia=" + fechaHoraOcurrencia +
-               ", estadoActual=" + (estadoActual != null ? estadoActual.getNombreEstado() : "null") +
-               ", latitudEpicentro=" + latitudEpicentro +
-               ", longitudEpicentro=" + longitudEpicentro +
-               '}';
+                "id=" + id +
+                ", fechaHoraOcurrencia=" + fechaHoraOcurrencia +
+                ", estadoActual=" + (estadoActual != null ? estadoActual.getNombreEstado() : "null") +
+                ", latitudEpicentro=" + latitudEpicentro +
+                ", longitudEpicentro=" + longitudEpicentro +
+                '}';
     }
 }

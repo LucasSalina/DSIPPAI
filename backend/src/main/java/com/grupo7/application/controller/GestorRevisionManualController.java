@@ -40,24 +40,44 @@ public class GestorRevisionManualController {
     }
 
     @PostMapping("/seleccionar-evento/{eventId}")
-    public ResponseEntity<String> seleccionarEventoSismico(@PathVariable Long eventId) {
+    public ResponseEntity<?> seleccionarEventoSismico(@PathVariable Long eventId) { // Changed return type to ResponseEntity<?> for flexibility
         try {
+            // 1. Select the event (this will set the internal selected event)
             gestorRevisionManual.tomarSeleccionEventoSismico(eventId);
 
+            // 2. Block the selected event for revision (this saves the state change)
             gestorRevisionManual.bloquearEventoSismicoSeleccionado();
-            
-            return ResponseEntity.ok("{\"message\": \"Evento Sismico con ID " + eventId + " seleccionado y bloqueado para revisión.\"}");
+
+            // 3. Get the data you want to send back
+            // Assuming buscarDatosRegistrados() retrieves data for the *currently selected* event
+            DatosRegistradosDTO datosRegistrados = gestorRevisionManual.buscarDatosRegistrados();
+
+            if (datosRegistrados == null) {
+                // If no registered data is found for the selected event, you might want to return 404 or a specific message
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                     .body("{\"error\": \"Evento sísmico seleccionado, pero no se encontraron datos registrados asociados.\"}");
+            }
+
+            // 4. Return a 200 OK status with the retrieved DTO in the response body
+            // Spring will automatically convert the DTO to JSON
+            return ResponseEntity.ok(datosRegistrados); // Now returning the DTO directly
 
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                                  .body("{\"error\": \"" + e.getMessage() + "\"}");
         } catch (IllegalStateException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            // Catches issues like states not found, or employee not initialized, etc.
+            return ResponseEntity.status(HttpStatus.CONFLICT) // 409 Conflict is often appropriate for state issues
                                  .body("{\"error\": \"" + e.getMessage() + "\"}");
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            // This specifically catches database constraint violations, like primary key conflicts.
+            // This is the error we were tackling related to CambioEstado.
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                 .body("{\"error\": \"Error de datos: Ya existe un registro similar o el ID está duplicado. Detalles: " + e.getMostSpecificCause().getMessage() + "\"}");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body("{\"error\": \"Error al seleccionar y bloquear el evento sísmico: " + e.getMessage() + "\"}");
+                                 .body("{\"error\": \"Error inesperado al seleccionar y bloquear el evento sísmico: " + e.getMessage() + "\"}");
         }
     }
 
