@@ -23,32 +23,40 @@ public class EventoSismico {
     private float longitudHipocentro;
     private float valorMagnitud;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    // Removed CascadeType.ALL. These are typically lookup/reference entities.
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clasificacion_sismo_id")
     private ClasificacionSismo clasificacionSismo;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    // Removed CascadeType.ALL.
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "magnitud_ritcher_id")
     private MagnitudRitcher magnitudRitcher;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    // Removed CascadeType.ALL.
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "origen_generacion_id")
     private OrigenDeGeneracion origenDeGeneracion;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    // Removed CascadeType.ALL.
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "alcance_sismo_id")
     private AlcanceSismo alcanceSismo;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "estado_actual_id")
+    // Removed CascadeType.ALL. Estado should be managed separately.
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "estado_actual_id", nullable = false) // Assuming an EventoSismico always has an Estado
     private Estado estadoActual;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "evento_sismico_id")
+    // CascadeType.ALL is often appropriate for OneToMany if you want
+    // to persist/delete children when the parent is persisted/deleted.
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) // Added orphanRemoval for completeness if desired
+    @JoinColumn(name = "evento_sismico_id") // This creates a unidirectional relationship
     private List<CambioEstado> cambioEstado = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "evento_sismico_id")
+    // CascadeType.ALL is often appropriate for OneToMany.
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) // Added orphanRemoval
+    @JoinColumn(name = "evento_sismico_id") // This creates a unidirectional relationship
     private List<SerieTemporal> seriesTemporales = new ArrayList<>();
 
     public EventoSismico() {
@@ -184,8 +192,7 @@ public class EventoSismico {
     }
 
     public DatosPrincipalesDTO obtenerDatosPrincipales() {
-        // *** ADJUSTED BASED ON ERROR MESSAGE: required: LocalDateTime, double, double, double, double ***
-        // This assumes your DatosPrincipalesDTO constructor takes:
+        // Assuming DatosPrincipalesDTO constructor takes:
         // (LocalDateTime fechaHora, double latEpicentro, double lonEpicentro, double latHipocentro, double lonHipocentro)
         return new DatosPrincipalesDTO(
             this.fechaHoraOcurrencia,
@@ -201,15 +208,16 @@ public class EventoSismico {
     }
 
     public DatosRegistradosDTO buscarDatosRegistrados() {
-        // This is being modified to EXACTLY match the DTO constructor required:
-        // (LocalDateTime, Double, String, String, String, ArrayList<Object>)
+        // Assuming DatosRegistradosDTO constructor takes:
+        // (LocalDateTime fechaHoraOcurrencia, Double valorMagnitud, String alcanceSismoNombre,
+        //  String clasificacionSismoNombre, String origenDeGeneracionNombre, ArrayList<Object> seriesTemporales)
         return new DatosRegistradosDTO(
-            this.fechaHoraOcurrencia, // 1st argument: LocalDateTime
-            (double) this.valorMagnitud, // 2nd argument: Double (from your EventoSismico's float valorMagnitud)
-            this.alcanceSismo != null ? this.alcanceSismo.getNombre() : null, // 3rd argument: String (assuming AlcanceSismo has getNombre())
-            this.clasificacionSismo != null ? this.clasificacionSismo.getNombre() : null, // 4th argument: String (assuming ClasificacionSismo has getNombre())
-            this.origenDeGeneracion != null ? this.origenDeGeneracion.getNombre() : null, // 5th argument: String (assuming OrigenDeGeneracion has getNombre())
-            new ArrayList<>(this.seriesTemporales) // 6th argument: ArrayList<Object> (copy of your seriesTemporales)
+            this.fechaHoraOcurrencia,
+            (double) this.valorMagnitud,
+            this.alcanceSismo != null ? this.alcanceSismo.getNombre() : null, // Assuming AlcanceSismo has getNombre()
+            this.clasificacionSismo != null ? this.clasificacionSismo.getNombre() : null, // Assuming ClasificacionSismo has getNombre()
+            this.origenDeGeneracion != null ? this.origenDeGeneracion.getNombre() : null, // Assuming OrigenDeGeneracion has getNombre()
+            new ArrayList<>(this.seriesTemporales) // Pass a new ArrayList based on your existing one
         );
     }
 

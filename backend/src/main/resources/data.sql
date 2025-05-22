@@ -15,10 +15,11 @@ INSERT INTO origen_de_generacion (descripcion,nombre) VALUES
   ('Artificial','Artificial');
 
 INSERT INTO estado (ambito,nombre_estado) VALUES
-  ('Sistema','Autodetectado'),
-  ('Revisión','Pendiente'),
-  ('Revisión','Rechazado'),
-  ('Revisión','Aprobado');
+  ('EventoSismico','AutoDetectado'),        -- Changed 'Sistema' to 'EventoSismico'
+  ('EventoSismico','PendienteRevision'),    -- Added/Changed to match expected states
+  ('EventoSismico','BloqueadoEnRevision'),  -- Added to match expected states
+  ('EventoSismico','Rechazado'),            -- Added/Changed to match expected states
+  ('EventoSismico','Aprobado');             -- If Aprobado is also under EventoSismico ambito
 
 INSERT INTO tipo_de_dato (denominacion,nombre_unidad_medida,valor_umbral) VALUES
   ('Aceleración','g',0.01),
@@ -29,6 +30,12 @@ INSERT INTO estacion_sismologica (codigo_estacion,documento_cert_adq,fecha_solic
   ('EST-001','DOC-1001','2023-01-15',40.41,-3.70,'Madrid Centro','CERT-2001'),
   ('EST-002','DOC-1002','2023-02-20',41.38,2.17,'Barcelona','CERT-2002'),
   ('EST-003','DOC-1003','2023-03-05',37.98,-1.13,'Alicante','CERT-2003');
+
+-- NEW: Magnitud Ritcher data - must exist before EventoSismico can reference it
+INSERT INTO magnitud_ritcher (valor, descripcion) VALUES
+  (4.5, 'Ritcher 4.5'),
+  (5.0, 'Ritcher 5.0'),
+  (3.8, 'Ritcher 3.8');
 
 -- Sismógrafos
 INSERT INTO sismografo (identificador,id_adquisicion,nro_serie,codigo_estacion) VALUES
@@ -48,20 +55,34 @@ INSERT INTO muestra_sismica (fecha_hora_muestra,id_detalle_muestra) VALUES
   ('2025-05-01 08:00:03',4),
   ('2025-05-01 08:00:04',5);
 
--- Series temporales
-INSERT INTO serie_temporal (condicion_alarma,fecha_hora_inicio_reg_muestreo,fecha_hora_registros,frecuencia_muestreo,id_muestra_sismica,id_sismografo) VALUES
-  ('OK','2025-05-01 08:00:00','2025-05-01 08:00:10',100.0,1,'SISMO-A'),
-  ('ALARMA','2025-05-01 09:00:00','2025-05-01 09:00:10',50.0,2,'SISMO-B'),
-  ('OK','2025-05-01 10:00:00','2025-05-01 10:00:10',200.0,3,'SISMO-C');
+-- Eventos sísmicos (must be before serie_temporal and cambio_estado if they reference it)
+INSERT INTO evento_sismico (
+    fecha_hora_fin,
+    fecha_hora_ocurrencia,
+    latitud_epicentro,
+    longitud_epicentro,
+    latitud_hipocentro,
+    longitud_hipocentro,
+    valor_magnitud,
+    -- CORRECTED COLUMN NAMES based on schema and entity
+    alcance_sismo_id,
+    clasificacion_sismo_id,
+    estado_actual_id,
+    magnitud_ritcher_id, -- New column to match entity
+    origen_generacion_id  -- New column to match entity
+) VALUES
+  ('2025-05-01 08:01:00','2025-05-01 08:00:00',40.42,-3.69,39.90,-3.50,4.5,1,1,1,1,1), -- Example values for new FKs
+  ('2025-05-01 09:01:00','2025-05-01 09:00:00',41.39,2.16,40.00,1.50,5.0,2,2,2,2,2),
+  ('2025-05-01 10:01:00','2025-05-01 10:00:00',37.99,-1.12,36.50,-1.00,3.8,3,3,1,3,3);
 
--- Eventos sísmicos
-INSERT INTO evento_sismico (fecha_hora_fin,fecha_hora_ocurrencia,latitud_epicentro,longitud_epicentro,latitud_hipocentro,longitud_hipocentro,valor_magnitud,id_alcance,id_clasificacion,id_estado_actual,id_serie) VALUES
-  ('2025-05-01 08:01:00','2025-05-01 08:00:00',40.42,-3.69,39.90,-3.50,4.5,1,1,1,1),
-  ('2025-05-01 09:01:00','2025-05-01 09:00:00',41.39,2.16,40.00,1.50,5.0,2,2,2,2),
-  ('2025-05-01 10:01:00','2025-05-01 10:00:00',37.99,-1.12,36.50,-1.00,3.8,3,3,1,3);
+-- Series temporales (now includes evento_sismico_id to link back to evento_sismico)
+INSERT INTO serie_temporal (condicion_alarma,fecha_hora_inicio_reg_muestreo,fecha_hora_registros,frecuencia_muestreo,id_muestra_sismica,id_sismografo, evento_sismico_id) VALUES
+  ('OK','2025-05-01 08:00:00','2025-05-01 08:00:10',100.0,1,'SISMO-A',1), -- Link to evento_sismico ID 1
+  ('ALARMA','2025-05-01 09:00:00','2025-05-01 09:00:10',50.0,2,'SISMO-B',2), -- Link to evento_sismico ID 2
+  ('OK','2025-05-01 10:00:00','2025-05-01 10:00:10',200.0,3,'SISMO-C',3); -- Link to evento_sismico ID 3
 
--- Cambios de estado
-INSERT INTO cambio_estado (id_evento,id_estado,fecha_hora_inicio,fecha_hora_fin,es_estado_actual,sos_autodetectado,sos_pendiente_revision) VALUES
+-- Cambios de estado (now includes evento_sismico_id to link back to evento_sismico)
+INSERT INTO cambio_estado (evento_sismico_id,id_estado,fecha_hora_inicio,fecha_hora_fin,es_estado_actual,sos_autodetectado,sos_pendiente_revision) VALUES
   (1,1,'2025-05-01 08:00:00','2025-05-01 08:00:30',0,1,0),
   (1,2,'2025-05-01 08:00:30','2025-05-01 08:01:00',1,0,1),
   (2,2,'2025-05-01 09:00:00','2025-05-01 09:00:30',0,1,0),
