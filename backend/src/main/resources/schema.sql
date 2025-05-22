@@ -1,14 +1,14 @@
 -- Tablas maestras
 CREATE TABLE IF NOT EXISTS ALCANCE_SISMO (
-  id_alcance         INTEGER AUTO_INCREMENT PRIMARY KEY,
+  id_alcance         INTEGER PRIMARY KEY AUTOINCREMENT ,
   descripcion        VARCHAR(255),
   nombre             VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS CLASIFICACION_SISMO (
-  id_clasificacion      INTEGER AUTO_INCREMENT PRIMARY KEY,
-  km_profundidad_desde  DOUBLE,
-  km_profundidad_hasta  DOUBLE,
+  id_clasificacion      INTEGER PRIMARY KEY AUTOINCREMEnt ,
+  km_profundidad_desde  REAL,
+  km_profundidad_hasta  REAL,
   nombre                VARCHAR(255)
 );
 
@@ -28,15 +28,15 @@ CREATE TABLE IF NOT EXISTS TIPO_DE_DATO (
   id_tipo               INTEGER AUTO_INCREMENT PRIMARY KEY,
   denominacion          VARCHAR(255),
   nombre_unidad_medida  VARCHAR(255),
-  valor_umbral          DOUBLE
+  valor_umbral          REAL
 );
 
 CREATE TABLE IF NOT EXISTS ESTACION_SISMOLOGICA (
   codigo_estacion       VARCHAR(255) PRIMARY KEY,
   documento_cert_adq    VARCHAR(255),
   fecha_solicitud_cert  VARCHAR(255),
-  latitud               DOUBLE,
-  longitud              DOUBLE,
+  latitud               REAL,
+  longitud              REAL,
   nombre                VARCHAR(255),
   nro_cert_adquisicion  VARCHAR(255)
 );

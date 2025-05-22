@@ -99,7 +99,8 @@ public class GestorRevisionManual {
         eventoSismicoSeleccionado.rechazarEventoSismico(getFechaHoraActual(), punteroRechazado, empleadoActual);
     }
 
-    private void obtenerEmpleadoActual() {
+    private Empleado obtenerEmpleadoActual() {
+        return new Empleado("ape", "resp@gmail.com", "nom", new Long(123456789));
     }
 
     // Busca los estados que no han sido revisados o que están autodetectados
