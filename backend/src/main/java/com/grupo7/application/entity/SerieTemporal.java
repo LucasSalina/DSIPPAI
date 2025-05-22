@@ -1,6 +1,6 @@
 package com.grupo7.application.entity;
 
-import com.grupo7.application.repository.RepositorioDeSismografos;
+import com.grupo7.application.repository.SismografoRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -42,13 +42,13 @@ public class SerieTemporal {
             datos.add(muestraSismica.getDatos());
         }
         // Buscar la estación sismológica asociada a esta serie temporal
-        for (Sismografo sismografo : RepositorioDeSismografos.obtenerTodos()) {
-            ArrayList<String> datosEstacion = sismografo.esTuSerieTemporal(this);
-            if (datosEstacion != null) {
-                datos.add(datosEstacion); // Se agrega la info de la estación
-                break; // Solo una estación por serie temporal
-            }
-        }
+        //for (Sismografo sismografo : SismografoRepository.obtenerTodos()) {
+        //    ArrayList<String> datosEstacion = sismografo.esTuSerieTemporal(this);
+        //    if (datosEstacion != null) {
+        //        datos.add(datosEstacion); // Se agrega la info de la estación
+        //        break; // Solo una estación por serie temporal
+        //    }
+        //}
         return datos;
     }
 }

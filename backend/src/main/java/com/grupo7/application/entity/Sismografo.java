@@ -1,49 +1,57 @@
 package com.grupo7.application.entity;
 
-import com.grupo7.application.repository.RepositorioDeSismografos;
+import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-
-import org.springframework.stereotype.Component;
-
-@Component
+@Entity
+@Table(name = "sismografo")
 public class Sismografo {
-    private LocalDateTime fechaAdquisicion;
-    private int identificadorSismografo;
-    private int numeroDeSerie;
-    private Estado estadoActual;
-    private EstacionSismologica estacionSismologica;
-    private ArrayList<SerieTemporal> seriesTemporales;
 
-    public Sismografo() {
-        this.fechaAdquisicion = LocalDateTime.now();
-        this.identificadorSismografo = 0;
-        this.numeroDeSerie = 0;
-        this.estadoActual = new Estado();
-        this.estacionSismologica = new EstacionSismologica();
-        this.seriesTemporales = new ArrayList<SerieTemporal>();
+    @Id
+    @Column(name = "identificador")
+    private String identificador;
 
+    @Column(name = "id_adquisicion")
+    private Integer idAdquisicion;
+
+    @Column(name = "nro_serie")
+    private String nroSerie;
+
+    @Column(name = "codigo_estacion")
+    private String codigoEstacion;
+
+    public Sismografo() {}
+
+    // Getters y setters
+
+    public String getIdentificador() {
+        return identificador;
     }
 
-    public Sismografo(LocalDateTime fechaAdquisicion, int identificadorSismografo, int numeroDeSerie) {
-        this.fechaAdquisicion = fechaAdquisicion;
-        this.identificadorSismografo = identificadorSismografo;
-        this.numeroDeSerie = numeroDeSerie;
-//        Agrega al atributo de clase de ReposotorioDeSismografos el sismografo recien creado
-        RepositorioDeSismografos.agregar(this);
+    public void setIdentificador(String identificador) {
+        this.identificador = identificador;
     }
 
-    // esTuSerieTemporal: verifica si la serie temporal pertenece a este sismógrafo y retorna los datos de la estación asociada.
-    public ArrayList<String> esTuSerieTemporal(SerieTemporal serie) {
-        if (seriesTemporales.contains(serie)) {
-            return estacionSismologica.getDatosEstacion();
-        }
-//        SI ALGO SE ROMPE ES POR ESTO
-        return null;
+    public Integer getIdAdquisicion() {
+        return idAdquisicion;
     }
 
-    public void setEstadoActual(Estado estadoNuevo) {
-        this.estadoActual = estadoNuevo;
+    public void setIdAdquisicion(Integer idAdquisicion) {
+        this.idAdquisicion = idAdquisicion;
+    }
+
+    public String getNroSerie() {
+        return nroSerie;
+    }
+
+    public void setNroSerie(String nroSerie) {
+        this.nroSerie = nroSerie;
+    }
+
+    public String getCodigoEstacion() {
+        return codigoEstacion;
+    }
+
+    public void setCodigoEstacion(String codigoEstacion) {
+        this.codigoEstacion = codigoEstacion;
     }
 }

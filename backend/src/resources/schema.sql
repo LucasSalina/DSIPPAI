@@ -1,39 +1,39 @@
 PRAGMA foreign_keys = ON;
 
 -- Tablas maestras
-CREATE TABLE IF NOT EXISTS ALCANCE_SISMO (
+CREATE TABLE IF NOT EXISTS alcance_sismo (
   id_alcance         INTEGER PRIMARY KEY AUTOINCREMENT,
   descripcion        TEXT,
   nombre             TEXT
 );
 
-CREATE TABLE IF NOT EXISTS CLASIFICACION_SISMO (
+CREATE TABLE IF NOT EXISTS clasificacion_sismo (
   id_clasificacion      INTEGER PRIMARY KEY AUTOINCREMENT,
   km_profundidad_desde  REAL,
   km_profundidad_hasta  REAL,
   nombre                TEXT
 );
 
-CREATE TABLE IF NOT EXISTS ORIGEN_DE_GENERACION (
+CREATE TABLE IF NOT EXISTS origen_de_generacion (
   id_origen          INTEGER PRIMARY KEY AUTOINCREMENT,
   descripcion        TEXT,
   nombre             TEXT
 );
 
-CREATE TABLE IF NOT EXISTS ESTADO (
+CREATE TABLE IF NOT EXISTS estado (
   id_estado          INTEGER PRIMARY KEY AUTOINCREMENT,
   ambito             TEXT,
   nombre_estado      TEXT
 );
 
-CREATE TABLE IF NOT EXISTS TIPO_DE_DATO (
+CREATE TABLE IF NOT EXISTS tipo_de_dato (
   id_tipo               INTEGER PRIMARY KEY AUTOINCREMENT,
   denominacion          TEXT,
   nombre_unidad_medida  TEXT,
   valor_umbral          REAL
 );
 
-CREATE TABLE IF NOT EXISTS ESTACION_SISMOLOGICA (
+CREATE TABLE IF NOT EXISTS estacion_sismologica (
   codigo_estacion       TEXT PRIMARY KEY,
   documento_cert_adq    TEXT,
   fecha_solicitud_cert  DATE,
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS ESTACION_SISMOLOGICA (
 );
 
 -- Tablas transaccionales
-CREATE TABLE IF NOT EXISTS EVENTO_SISMICO (
+CREATE TABLE IF NOT EXISTS evento_sismico (
   id_evento_sismico       INTEGER PRIMARY KEY AUTOINCREMENT,
   fecha_hora_fin          DATETIME,
   fecha_hora_ocurrencia   DATETIME,
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS EVENTO_SISMICO (
   id_serie                INTEGER REFERENCES SERIE_TEMPORAL(id_serie)
 );
 
-CREATE TABLE IF NOT EXISTS CAMBIO_ESTADO (
+CREATE TABLE IF NOT EXISTS cambio_estado (
   id_cambio               INTEGER PRIMARY KEY AUTOINCREMENT,
   id_evento               INTEGER REFERENCES EVENTO_SISMICO(id_evento_sismico),
   id_estado               INTEGER REFERENCES ESTADO(id_estado),
@@ -70,20 +70,20 @@ CREATE TABLE IF NOT EXISTS CAMBIO_ESTADO (
   sos_pendiente_revision  INTEGER
 );
 
-CREATE TABLE IF NOT EXISTS SISMOGRAFO (
+CREATE TABLE IF NOT EXISTS sismografo (
   identificador        TEXT PRIMARY KEY,
   id_adquisicion       INTEGER,
   nro_serie            TEXT,
   codigo_estacion      TEXT REFERENCES ESTACION_SISMOLOGICA(codigo_estacion)
 );
 
-CREATE TABLE IF NOT EXISTS MUESTRA_SISMICA (
+CREATE TABLE IF NOT EXISTS muestra_sismica (
   id_muestra                INTEGER PRIMARY KEY AUTOINCREMENT,
   fecha_hora_muestra        DATETIME,
   id_detalle_muestra        INTEGER REFERENCES DETALLE_MUESTRA_SISMICA(id_detalle_muestra_sismica)
 );
 
-CREATE TABLE IF NOT EXISTS SERIE_TEMPORAL (
+CREATE TABLE IF NOT EXISTS serie_temporal (
   id_serie                       INTEGER PRIMARY KEY AUTOINCREMENT,
   condicion_alarma               TEXT,
   fecha_hora_inicio_reg_muestreo DATETIME,
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS SERIE_TEMPORAL (
   id_sismografo                  TEXT    REFERENCES SISMOGRAFO(identificador)
 );
 
-CREATE TABLE IF NOT EXISTS DETALLE_MUESTRA_SISMICA (
+CREATE TABLE IF NOT EXISTS detalle_muestra_sismica (
   id_detalle_muestra_sismica     INTEGER PRIMARY KEY AUTOINCREMENT,
   id_tipo                        INTEGER REFERENCES TIPO_DE_DATO(id_tipo),
   valor                          REAL
