@@ -34,7 +34,7 @@ function App() {
     try {
       // Make the fetch call to the Spring endpoint with the full URL
       const response = await fetch(
-        "http://localhost:8080/api/buscarEventosSismicosNoRevisados"
+        "http://localhost:8080/api/revision-manual/eventos-no-revisados"
       );
 
       // Check if the response was successful (status code 200-299)
@@ -48,7 +48,9 @@ function App() {
 
       // Assuming the API returns an array of objects
       if (Array.isArray(data)) {
-        setSeismicEvents(data); // Store the fetched array of events
+        // --- MODIFICATION HERE: Removed _tempId as 'id' is now provided by backend ---
+        setSeismicEvents(data); // Store the fetched array of events directly
+        // ------------------------------------------------------------------
       } else {
         // If the API returns a single object or unexpected format, handle it
         console.warn("API response is not an array:", data);
@@ -77,9 +79,14 @@ function App() {
 
   // Function to send the selected event data to the backend
   const handleConfirmSelection = async () => {
-    if (!selectedEvent) {
+    // Ensure an event is selected and it has an ID to send to the backend.
+    if (
+      !selectedEvent ||
+      selectedEvent.id === undefined ||
+      selectedEvent.id === null
+    ) {
       setConfirmError(
-        "Por favor, seleccione un evento sísmico para confirmar."
+        "Por favor, seleccione un evento sísmico válido (ID no disponible para selección)."
       );
       return;
     }
@@ -89,14 +96,15 @@ function App() {
     setConfirmSuccess(null); // Clear previous success messages
 
     try {
+      // --- MODIFIED HERE: Use the /seleccionar-evento/{eventId} endpoint ---
       const response = await fetch(
-        "http://localhost:8080/api/confirmarEventoSismico",
+        `http://localhost:8080/api/revision-manual/seleccionar-evento/${selectedEvent.id}`, // Dynamic URL with eventId
         {
-          method: "POST",
+          method: "POST", // Method is POST as per your backend controller
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json", // Still good practice, but no body is sent
           },
-          body: JSON.stringify(selectedEvent), // Send the selected event object as JSON
+          // No 'body' is sent here, as the ID is in the URL path.
         }
       );
 
@@ -108,13 +116,13 @@ function App() {
       }
 
       const result = await response.json(); // Assuming backend returns a success message or updated object
-      console.log("Confirmation successful:", result);
-      setConfirmSuccess("Evento sísmico confirmado exitosamente!");
+      console.log("Selection successful:", result);
+      setConfirmSuccess("Evento sísmico seleccionado exitosamente!"); // Updated message
       // Optionally, you might want to refresh the list or go back to home after success
-      // handleGoBack(); // Uncomment to go back to home after successful confirmation
+      // handleGoBack(); // Uncomment to go back to home after successful selection
     } catch (error) {
-      console.error("Error confirming seismic event:", error);
-      setConfirmError(`Error al confirmar el evento: ${error.message}.`);
+      console.error("Error selecting seismic event:", error);
+      setConfirmError(`Error al seleccionar el evento: ${error.message}.`); // Updated message
     } finally {
       setIsConfirming(false); // Set loading state to false
     }
@@ -134,106 +142,119 @@ function App() {
 
   // Conditional rendering based on the currentPage state.
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4 font-sans">
+    <div>
       {currentPage === "home" && (
-        <div className="flex flex-col items-center justify-center p-8 bg-white rounded-xl shadow-lg">
-          <h1 className="text-3xl font-bold text-gray-800 mb-6">
-            Herramienta análisis de sismos
-          </h1>
-          <button
-            onClick={handleButtonClick}
-            className="px-8 py-4 bg-blue-600 text-white font-semibold rounded-xl shadow-md hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-75 transition duration-300 ease-in-out transform hover:scale-105 active:scale-95"
-          >
+        <div>
+          <h1>Herramienta análisis de sismos</h1>
+          <button onClick={handleButtonClick}>
             Opción registrar revisión manual
           </button>
         </div>
       )}
 
       {currentPage === "manualRevision" && (
-        <div className="flex flex-col items-center p-8 bg-white rounded-xl shadow-lg w-full max-w-2xl mx-auto">
-          <h1 className="text-3xl font-bold text-gray-800 mb-6">
-            Registrar revisión manual
-          </h1>
+        <div>
+          <h1>Registrar revisión manual</h1>
 
-          {isLoadingEvents && (
-            <p className="text-lg text-blue-600 mb-4">
-              Cargando eventos sísmicos...
-            </p>
-          )}
+          {isLoadingEvents && <p>Cargando eventos sísmicos...</p>}
 
-          {fetchError && (
-            <p className="text-lg text-red-600 mb-4">Error: {fetchError}</p>
-          )}
+          {fetchError && <p>Error: {fetchError}</p>}
 
           {!isLoadingEvents && !fetchError && seismicEvents.length === 0 && (
-            <p className="text-lg text-gray-600 mb-8 text-center max-w-md">
-              No hay eventos sísmicos no revisados para mostrar.
-            </p>
+            <p>No hay eventos sísmicos no revisados para mostrar.</p>
           )}
 
           {!isLoadingEvents && !fetchError && seismicEvents.length > 0 && (
-            <div className="w-full mb-8">
-              <h2 className="text-2xl font-semibold text-gray-700 mb-4 text-center">
-                Seleccione un evento sísmico:
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-80 overflow-y-auto p-2 border border-gray-200 rounded-lg">
-                {seismicEvents.map((event, index) => (
-                  <div
-                    key={event.id || index} // Use event.id if available, otherwise index
-                    className={`p-4 border rounded-lg cursor-pointer transition-all duration-200
-                                ${
-                                  selectedEvent && selectedEvent.id === event.id
-                                    ? "bg-blue-100 border-blue-500 shadow-md"
-                                    : "bg-gray-50 border-gray-200 hover:bg-gray-100"
-                                }`}
-                    onClick={() => handleSelectEvent(event)}
-                  >
-                    <p className="font-semibold text-gray-800">
-                      Ubicación: {event.ubicacion || "N/A"}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      Fecha/Hora:{" "}
-                      {event.fechaHoraOcurrencia
-                        ? new Date(event.fechaHoraOcurrencia).toLocaleString()
-                        : "N/A"}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      Magnitud: {event.magnitudRitcher || "N/A"}
-                    </p>
-                  </div>
-                ))}
+            <div>
+              <h2>Seleccione un evento sísmico:</h2>
+              <div>
+                {seismicEvents.map(
+                  (
+                    event // Removed 'index' as key is 'event.id'
+                  ) => (
+                    <div
+                      key={event.id} // <--- MODIFIED: Use event.id directly for key
+                      onClick={() => handleSelectEvent(event)}
+                      style={{
+                        border: "1px solid gray",
+                        padding: "10px",
+                        margin: "5px",
+                        cursor: "pointer",
+                        backgroundColor:
+                          selectedEvent && selectedEvent.id === event.id // <--- MODIFIED: Use event.id for highlighting
+                            ? "lightblue"
+                            : "white",
+                      }}
+                    >
+                      <p>
+                        Fecha y hora ocurrencia:{" "}
+                        {event.fechaHoraOcurrencia // <--- MODIFIED: Use fechaHoraOcurrencia
+                          ? new Date(event.fechaHoraOcurrencia).toLocaleString()
+                          : "N/A"}
+                      </p>
+                      <p>
+                        Epicentro: Lat{" "}
+                        {event.latitudEpicentro !== undefined
+                          ? event.latitudEpicentro.toFixed(4)
+                          : "N/A"}
+                        , Lon{" "}
+                        {event.longitudEpicentro !== undefined
+                          ? event.longitudEpicentro.toFixed(4)
+                          : "N/A"}
+                      </p>
+                      <p>
+                        Hipocentro: Lat{" "}
+                        {event.latitudHipocentro !== undefined
+                          ? event.latitudHipocentro.toFixed(4)
+                          : "N/A"}
+                        , Lon{" "}
+                        {event.longitudHipocentro !== undefined
+                          ? event.longitudHipocentro.toFixed(4)
+                          : "N/A"}
+                      </p>
+                    </div>
+                  )
+                )}
               </div>
 
               {selectedEvent && (
-                <div className="mt-8 p-6 bg-blue-50 rounded-xl border border-blue-200 shadow-inner">
-                  <h2 className="text-2xl font-semibold text-blue-800 mb-4 text-center">
-                    Detalles del Evento Seleccionado
-                  </h2>
-                  <pre className="bg-blue-100 p-4 rounded-md text-sm text-left overflow-auto text-blue-900">
+                <div>
+                  <h2>Detalles del Evento Seleccionado</h2>
+                  <pre
+                    style={{
+                      border: "1px solid lightgray",
+                      padding: "10px",
+                      backgroundColor: "#f0f0f0",
+                      overflow: "auto",
+                    }}
+                  >
                     {JSON.stringify(selectedEvent, null, 2)}
                   </pre>
 
                   {/* Confirmation button */}
                   <button
                     onClick={handleConfirmSelection}
-                    disabled={isConfirming} // Disable button while confirming
-                    className={`mt-4 px-8 py-4 w-full text-white font-semibold rounded-xl shadow-md
-                               ${
-                                 isConfirming
-                                   ? "bg-gray-400 cursor-not-allowed"
-                                   : "bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-75 transition duration-300 ease-in-out transform hover:scale-105 active:scale-95"
-                               }`}
+                    disabled={isConfirming}
+                    style={{
+                      padding: "10px 20px",
+                      fontSize: "16px",
+                      backgroundColor: isConfirming ? "gray" : "green",
+                      color: "white",
+                      border: "none",
+                      cursor: isConfirming ? "not-allowed" : "pointer",
+                      marginTop: "10px",
+                    }}
                   >
                     {isConfirming ? "Confirmando..." : "Confirmar Selección"}
                   </button>
 
                   {confirmSuccess && (
-                    <p className="text-lg text-green-600 mt-4 text-center">
+                    <p style={{ color: "green", marginTop: "10px" }}>
                       {confirmSuccess}
                     </p>
                   )}
                   {confirmError && (
-                    <p className="text-lg text-red-600 mt-4 text-center">
+                    <p style={{ color: "red", marginTop: "10px" }}>
                       Error: {confirmError}
                     </p>
                   )}
@@ -244,7 +265,15 @@ function App() {
 
           <button
             onClick={handleGoBack}
-            className="mt-8 px-8 py-4 bg-purple-600 text-white font-semibold rounded-xl shadow-md hover:bg-purple-700 focus:outline-none focus:ring-4 focus:ring-purple-500 focus:ring-opacity-75 transition duration-300 ease-in-out transform hover:scale-105 active:scale-95"
+            style={{
+              padding: "10px 20px",
+              fontSize: "16px",
+              backgroundColor: "purple",
+              color: "white",
+              border: "none",
+              cursor: "pointer",
+              marginTop: "20px",
+            }}
           >
             Volver atrás
           </button>

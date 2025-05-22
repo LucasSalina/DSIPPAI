@@ -70,19 +70,27 @@ public class GestorRevisionManual {
     public void registrarRevisionManual() {
         buscarEventosSismicosNoRevisados();
     }
-
     public String buscarEventosSismicosNoRevisados() {
-        // The pointers are now initialized in the constructor, so we don't need the check here,
-        // but if you want to keep it as a fallback/redundancy, you can.
-        // It's better to rely on proper initialization and fail fast.
         List<EventoSismico> eventosFiltrados = eventoSismicoRepository.findByEstadoActualIn(
             Arrays.asList(punteroAutodetectado, punteroPendienteRevision)
         );
 
-        this.datosPrincipales.clear();
+        this.datosPrincipales.clear(); // Clear previous data before populating
         for (EventoSismico eve : eventosFiltrados) {
-            this.datosPrincipales.add(eve.obtenerDatosPrincipales());
+            // Ensure EventoSismico has getId() and getFechaHoraOcurrencia()
+            // and that DatosPrincipalesDTO constructor accepts these, as previously discussed.
+            this.datosPrincipales.add(new DatosPrincipalesDTO(
+                eve.getId(),
+                eve.getFechaHoraOcurrencia(),
+                eve.getLatitudEpicentro(),
+                eve.getLongitudEpicentro(),
+                eve.getLatitudHipocentro(),
+                eve.getLongitudHipocentro()
+            ));
         }
+
+        // --- CALL THE SORTING METHOD HERE ---
+        ordenarPorFechaHoraOcurrencia(); // Call the separate sorting method
 
         try {
             return objectMapper.writeValueAsString(this.datosPrincipales);
@@ -94,7 +102,8 @@ public class GestorRevisionManual {
     }
 
     public void ordenarPorFechaHoraOcurrencia() {
-        datosPrincipales.sort(Comparator.comparing(DatosPrincipalesDTO::getFechaHora));
+        // This method sorts the 'datosPrincipales' list which is a class member.
+        datosPrincipales.sort(Comparator.comparing(DatosPrincipalesDTO::getFechaHoraOcurrencia));
     }
 
     public void bloquearEventoSismicoSeleccionado() {
@@ -142,11 +151,6 @@ public class GestorRevisionManual {
             return empleadoRepository.save(defaultEmployee);
         }
     }
-
-    // OLD METHODS ARE REMOVED/REFACTORED because states are now fetched from DB
-    // public void buscarEstadoNoRevisadosOAutodetectado() { ... }
-    // public void obtenerPunteroRechazado() { ... }
-
     public void tomarSeleccionEventoSismico(Long eventId) {
         this.eventoSismicoSeleccionado = eventoSismicoRepository.findById(eventId)
                                             .orElse(null);

@@ -195,6 +195,7 @@ public class EventoSismico {
         // Assuming DatosPrincipalesDTO constructor takes:
         // (LocalDateTime fechaHora, double latEpicentro, double lonEpicentro, double latHipocentro, double lonHipocentro)
         return new DatosPrincipalesDTO(
+            this.id,
             this.fechaHoraOcurrencia,
             (double) this.latitudEpicentro,
             (double) this.longitudEpicentro,

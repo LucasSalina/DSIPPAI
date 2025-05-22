@@ -10,6 +10,5 @@ import java.util.List;
 
 @Repository
 public interface EventoSismicoRepository extends JpaRepository<EventoSismico, Long> {
-    // CHANGE THIS LINE: 'Estado' to 'EstadoActual'
     List<EventoSismico> findByEstadoActualIn(List<Estado> estados);
 }
