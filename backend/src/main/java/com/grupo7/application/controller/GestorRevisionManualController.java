@@ -42,10 +42,8 @@ public class GestorRevisionManualController {
     @PostMapping("/seleccionar-evento/{eventId}")
     public ResponseEntity<String> seleccionarEventoSismico(@PathVariable Long eventId) {
         try {
-            // First, select the event in the service
             gestorRevisionManual.tomarSeleccionEventoSismico(eventId);
 
-            // Then, block the selected event for revision
             gestorRevisionManual.bloquearEventoSismicoSeleccionado();
             
             return ResponseEntity.ok("{\"message\": \"Evento Sismico con ID " + eventId + " seleccionado y bloqueado para revisión.\"}");

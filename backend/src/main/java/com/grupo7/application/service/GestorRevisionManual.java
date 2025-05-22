@@ -118,7 +118,7 @@ public class GestorRevisionManual {
                 errorMessage += "No hay un empleado actual definido. ";
             }
             System.err.println(errorMessage + "Check initialization."); // Still good to log server-side
-            throw new IllegalStateException(errorMessage.trim()); // Throw the exception
+            throw new IllegalStateException(errorMessage.trim());
         }
     }
 
