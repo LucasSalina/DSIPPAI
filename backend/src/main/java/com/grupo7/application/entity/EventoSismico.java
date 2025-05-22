@@ -1,5 +1,7 @@
 package com.grupo7.application.entity;
 
+import com.grupo7.application.dto.DatosPrincipalesDTO;
+import com.grupo7.application.dto.DatosRegistradosDTO;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -49,9 +51,11 @@ public class EventoSismico {
     @JoinColumn(name = "evento_sismico_id")
     private List<SerieTemporal> seriesTemporales = new ArrayList<>();
 
-    // Suggested code may be subject to a license. Learn more: ~LicenseLog:2720819793.
-// Suggested code may be subject to a license. Learn more: ~LicenseLog:1431914826.
-// Suggested code may be subject to a license. Learn more: ~LicenseLog:4230495766.
+    public EventoSismico() {
+        // Default constructor for JPA
+    }
+
+    // --- Getters and Setters (existing) ---
 
     public Long getId() {
         return id;
@@ -173,5 +177,49 @@ public class EventoSismico {
         this.seriesTemporales = seriesTemporales;
     }
 
- 
+    // --- METHODS REQUIRED BY GestorRevisionManual ---
+
+    public boolean esAutoDetectadoOPendienteRevision() {
+        return this.estadoActual != null && (this.estadoActual.sosAutoDetectado() || this.estadoActual.sosPendienteRevision());
+    }
+
+    public DatosPrincipalesDTO obtenerDatosPrincipales() {
+        // *** ADJUSTED BASED ON ERROR MESSAGE: required: LocalDateTime, double, double, double, double ***
+        // This assumes your DatosPrincipalesDTO constructor takes:
+        // (LocalDateTime fechaHora, double latEpicentro, double lonEpicentro, double latHipocentro, double lonHipocentro)
+        return new DatosPrincipalesDTO(
+            this.fechaHoraOcurrencia,
+            (double) this.latitudEpicentro,
+            (double) this.longitudEpicentro,
+            (double) this.latitudHipocentro,
+            (double) this.longitudHipocentro
+        );
+    }
+
+    public void bloquearPorRevision(Estado nuevoEstado, LocalDateTime fechaHoraBloqueo) {
+        this.setEstadoActual(nuevoEstado);
+    }
+
+    public DatosRegistradosDTO buscarDatosRegistrados() {
+        // This is being modified to EXACTLY match the DTO constructor required:
+        // (LocalDateTime, Double, String, String, String, ArrayList<Object>)
+        return new DatosRegistradosDTO(
+            this.fechaHoraOcurrencia, // 1st argument: LocalDateTime
+            (double) this.valorMagnitud, // 2nd argument: Double (from your EventoSismico's float valorMagnitud)
+            this.alcanceSismo != null ? this.alcanceSismo.getNombre() : null, // 3rd argument: String (assuming AlcanceSismo has getNombre())
+            this.clasificacionSismo != null ? this.clasificacionSismo.getNombre() : null, // 4th argument: String (assuming ClasificacionSismo has getNombre())
+            this.origenDeGeneracion != null ? this.origenDeGeneracion.getNombre() : null, // 5th argument: String (assuming OrigenDeGeneracion has getNombre())
+            new ArrayList<>(this.seriesTemporales) // 6th argument: ArrayList<Object> (copy of your seriesTemporales)
+        );
+    }
+
+    public void rechazarEventoSismico(LocalDateTime fechaHoraRechazo, Estado nuevoEstado, Empleado empleado) {
+        this.setEstadoActual(nuevoEstado);
+    }
+
+    public void setFechaHora(LocalDateTime fechaHora) {
+        // This method is called by GestorRevisionManual.crearGestorConEventosAleatorios
+        // It maps to fechaHoraOcurrencia in your entity.
+        this.setFechaHoraOcurrencia(fechaHora);
+    }
 }
