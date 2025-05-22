@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/eventos")
+@RequestMapping("/api/eventos")
 public class EventoSismicoController {
 
     @Autowired

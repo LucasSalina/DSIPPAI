@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/sismografos")
+@RequestMapping("/api/sismografos")
 public class SismografoController {
 
     private final SismografoService servicio;

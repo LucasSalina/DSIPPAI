@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/alcancesismo")
+@RequestMapping("/api/alcancesismo")
 public class AlcanceSismoController {
 
     private final AlcanceSismoService service;

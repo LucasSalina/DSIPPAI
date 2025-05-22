@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/muestras")
+@RequestMapping("/api/muestras")
 public class MuestraSismicaController {
 
     private final MuestraSismicaService service;
