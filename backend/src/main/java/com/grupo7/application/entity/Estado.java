@@ -1,40 +1,36 @@
 package com.grupo7.application.entity;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
-import org.springframework.stereotype.Component;
-
-@Component
+@Entity
+@Table(name = "estado")
 public class Estado {
-    private static final Map<String, Estado> estados = new LinkedHashMap<>();
 
-    private final String ambito;
-    private final String nombreEstado;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String ambito;
+
+    @Column(name = "nombre_estado", nullable = false)
+    private String nombreEstado;
 
     public Estado() {
         this.ambito = "";
         this.nombreEstado = "";
     }
 
-    // Constructor privado para forzar uso de obtener(...)
     public Estado(String ambito, String nombreEstado) {
         this.ambito = ambito;
         this.nombreEstado = nombreEstado;
     }
 
-    // El método obtener implementa un patrón singleton por clave compuesta (ambito+nombreEstado).
-    public static Estado obtener(String ambito, String nombreEstado) {
-        String clave = ambito + "::" + nombreEstado;
-        return estados.computeIfAbsent(clave, k -> new Estado(ambito, nombreEstado));
+    public Long getId() {
+        return id;
     }
-
-     // getTodos retorna todos los estados creados hasta el momento.
-     public static Collection<Estado> getTodos() {
-        return estados.values();
-     }
 
     public String getAmbito() {
         return ambito;
@@ -44,25 +40,37 @@ public class Estado {
         return nombreEstado;
     }
 
-    // Métodos sos* permiten verificar el tipo de estado de forma semántica.
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setAmbito(String ambito) {
+        this.ambito = ambito;
+    }
+
+    public void setNombreEstado(String nombreEstado) {
+        this.nombreEstado = nombreEstado;
+    }
+
+    // Métodos semánticos
     public boolean esAmbitoEventoSismico() {
-       return this.ambito.equals("EventoSismico");
+        return "EventoSismico".equals(this.ambito);
     }
 
     public boolean sosPendienteRevision() {
-        return this.nombreEstado.equals("PendienteRevision");
+        return "PendienteRevision".equals(this.nombreEstado);
     }
 
     public boolean sosAutoDetectado() {
-        return this.nombreEstado.equals("AutoDetectado");
+        return "AutoDetectado".equals(this.nombreEstado);
     }
 
     public boolean sosBloqueadoEnRevision() {
-        return this.nombreEstado.equals("BloqueadoEnRevision");
+        return "BloqueadoEnRevision".equals(this.nombreEstado);
     }
 
     public boolean esRechazado() {
-        return this.nombreEstado.equals("Rechazado");
+        return "Rechazado".equals(this.nombreEstado);
     }
 
     @Override
@@ -75,12 +83,12 @@ public class Estado {
         if (this == o) return true;
         if (!(o instanceof Estado)) return false;
         Estado estado = (Estado) o;
-        return ambito.equals(estado.ambito) && nombreEstado.equals(estado.nombreEstado);
+        return Objects.equals(ambito, estado.ambito) &&
+               Objects.equals(nombreEstado, estado.nombreEstado);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(ambito, nombreEstado);
     }
-
 }

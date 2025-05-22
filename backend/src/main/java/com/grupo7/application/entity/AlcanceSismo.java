@@ -1,23 +1,30 @@
 package com.grupo7.application.entity;
 
-import org.springframework.stereotype.Component;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 
-@Component
+@Entity
+@Table(name = "alcance_sismo")
 public class AlcanceSismo {
-    String descripcion;
-    String nombre;
 
+    @Id
+    @Column(name = "nombre")  // Usamos nombre como PK (asumo que es único)
+    private String nombre;
+
+    @Column(name = "descripcion")
+    private String descripcion;
 
     public AlcanceSismo() {
         this.descripcion = "";
         this.nombre = "";
     }
 
-    public AlcanceSismo(String descripcion, String nombre) {
-        this.descripcion = descripcion;
+    public AlcanceSismo(String nombre, String descripcion) {
         this.nombre = nombre;
+        this.descripcion = descripcion;
     }
-    // Métodos simples de acceso y modificación.
 
     public String getDescripcion() {
         return descripcion;
