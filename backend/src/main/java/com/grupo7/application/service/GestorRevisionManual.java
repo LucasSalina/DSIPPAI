@@ -32,6 +32,9 @@ public class GestorRevisionManual {
     private EventoSismico eventoSismicoSeleccionado;
     private Empleado empleadoActual;
 
+    public GestorRevisionManual() {
+    }
+
     // Constructor: inicializa la lista de eventos sísmicos
     public GestorRevisionManual(EventoSismico eventoSismico, Estado estadosSistema) {
         this.eventoSismico = new ArrayList<>();
