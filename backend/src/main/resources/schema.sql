@@ -1,46 +1,44 @@
-PRAGMA foreign_keys = ON;
-
 -- Tablas maestras
 CREATE TABLE IF NOT EXISTS ALCANCE_SISMO (
-  id_alcance         INTEGER PRIMARY KEY AUTOINCREMENT,
-  descripcion        TEXT,
-  nombre             TEXT
+  id_alcance         INTEGER AUTO_INCREMENT PRIMARY KEY,
+  descripcion        VARCHAR(255),
+  nombre             VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS CLASIFICACION_SISMO (
-  id_clasificacion      INTEGER PRIMARY KEY AUTOINCREMENT,
-  km_profundidad_desde  REAL,
-  km_profundidad_hasta  REAL,
-  nombre                TEXT
+  id_clasificacion      INTEGER AUTO_INCREMENT PRIMARY KEY,
+  km_profundidad_desde  DOUBLE,
+  km_profundidad_hasta  DOUBLE,
+  nombre                VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS ORIGEN_DE_GENERACION (
-  id_origen          INTEGER PRIMARY KEY AUTOINCREMENT,
-  descripcion        TEXT,
-  nombre             TEXT
+  id_origen          INTEGER AUTO_INCREMENT PRIMARY KEY,
+  descripcion        VARCHAR(255),
+  nombre             VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS ESTADO (
-  id_estado          INTEGER PRIMARY KEY AUTOINCREMENT,
-  ambito             TEXT,
-  nombre_estado      TEXT
+  id_estado          INTEGER AUTO_INCREMENT PRIMARY KEY,
+  ambito             VARCHAR(255),
+  nombre_estado      VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS TIPO_DE_DATO (
-  id_tipo               INTEGER PRIMARY KEY AUTOINCREMENT,
-  denominacion          TEXT,
-  nombre_unidad_medida  TEXT,
-  valor_umbral          REAL
+  id_tipo               INTEGER AUTO_INCREMENT PRIMARY KEY,
+  denominacion          VARCHAR(255),
+  nombre_unidad_medida  VARCHAR(255),
+  valor_umbral          DOUBLE
 );
 
 CREATE TABLE IF NOT EXISTS ESTACION_SISMOLOGICA (
-  codigo_estacion       TEXT PRIMARY KEY,
-  documento_cert_adq    TEXT,
-  fecha_solicitud_cert  TEXT,
-  latitud               REAL,
-  longitud              REAL,
-  nombre                TEXT,
-  nro_cert_adquisicion  TEXT
+  codigo_estacion       VARCHAR(255) PRIMARY KEY,
+  documento_cert_adq    VARCHAR(255),
+  fecha_solicitud_cert  VARCHAR(255),
+  latitud               DOUBLE,
+  longitud              DOUBLE,
+  nombre                VARCHAR(255),
+  nro_cert_adquisicion  VARCHAR(255)
 );
 
 -- Tablas transaccionales
