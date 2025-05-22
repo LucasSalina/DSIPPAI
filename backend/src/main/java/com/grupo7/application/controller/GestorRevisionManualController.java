@@ -84,7 +84,6 @@ public class GestorRevisionManualController {
         }
 
         try {
-            // Call the service method without arguments, as it now operates on internal state
             gestorRevisionManual.actualizarEventoSismicoARechazado();
             return ResponseEntity.ok("{\"message\": \"Evento sísmico rechazado exitosamente.\"}");
         } catch (Exception e) {

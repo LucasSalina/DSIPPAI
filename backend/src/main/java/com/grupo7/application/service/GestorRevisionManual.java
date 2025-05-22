@@ -99,15 +99,26 @@ public class GestorRevisionManual {
     public void ordenarPorFechaHoraOcurrencia() {
         datosPrincipales.sort(Comparator.comparing(DatosPrincipalesDTO::getFechaHoraOcurrencia));
     }
-
-    // Modified to operate on the internally selected event
+// Modified to operate on the internally selected event
     public void bloquearEventoSismicoSeleccionado() {
         fechaHoraActual = getFechaHoraActual();
         if (eventoSismicoSeleccionado != null && punteroBloqueadoEnRevision != null && empleadoActual != null) {
             eventoSismicoSeleccionado.bloquearPorRevision(punteroBloqueadoEnRevision, fechaHoraActual, empleadoActual);
             eventoSismicoRepository.save(eventoSismicoSeleccionado);
         } else {
-            System.err.println("Error: Evento Sismico Seleccionado, BloqueadoEnRevision state, or Empleado Actual is null. Check initialization.");
+            // Instead of just printing, throw an exception to signal the error
+            String errorMessage = "Error: ";
+            if (eventoSismicoSeleccionado == null) {
+                errorMessage += "No hay evento sísmico seleccionado. ";
+            }
+            if (punteroBloqueadoEnRevision == null) {
+                errorMessage += "El estado 'BloqueadoEnRevision' no está inicializado. ";
+            }
+            if (empleadoActual == null) {
+                errorMessage += "No hay un empleado actual definido. ";
+            }
+            System.err.println(errorMessage + "Check initialization."); // Still good to log server-side
+            throw new IllegalStateException(errorMessage.trim()); // Throw the exception
         }
     }
 

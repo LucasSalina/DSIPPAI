@@ -7,14 +7,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity // This annotation implies a primary key is needed.
+@Entity
 @Table(name = "evento_sismico")
 public class EventoSismico {
-    // Removed @Id, @GeneratedValue, and the 'id' field as requested.
-    // WARNING: Removing the @Id from a JPA @Entity makes it an invalid entity
-    // for persistence. JPA requires a primary key. This class will no longer
-    // be managed by an EntityManager and will cause runtime errors if used
-    // with Spring Data JPA repositories (e.g., EventoSismicoRepository).
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "fecha_hora_fin")
     private LocalDateTime fechaHoraFin;
@@ -57,19 +55,10 @@ public class EventoSismico {
     @JoinColumn(name = "estado_actual_id", nullable = false)
     private Estado estadoActual;
 
-    // The @JoinColumn here refers to 'evento_sismico_id' in the child table.
-    // If EventoSismico no longer has an 'id' field, this mapping is problematic
-    // for JPA to manage the relationship automatically.
-    // JPA typically uses the primary key of the owning entity for the foreign key.
-    // Without an @Id on EventoSismico, JPA will not be able to correctly manage
-    // these relationships. You would need to manage the foreign keys manually
-    // or rethink the entity design.
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "evento_sismico_id")
+    @OneToMany(mappedBy = "eventoSismico", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<CambioEstado> cambiosEstado = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "evento_sismico_id")
+    @OneToMany(mappedBy = "eventoSismico", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<SerieTemporal> seriesTemporales = new ArrayList<>();
 
     public EventoSismico() {
@@ -77,7 +66,15 @@ public class EventoSismico {
         this.seriesTemporales = new ArrayList<>();
     }
 
-    // Removed getId() and setId() methods.
+    // --- Getters and Setters ---
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public LocalDateTime getFechaHoraFin() {
         return fechaHoraFin;
@@ -191,21 +188,6 @@ public class EventoSismico {
         this.seriesTemporales = seriesTemporales;
     }
 
-    /**
-     * Helper method to add a CambioEstado entry.
-     * This method now correctly uses one of the existing CambioEstado constructors:
-     * CambioEstado(LocalDateTime fechaHoraInicio, Estado estado, Empleado responsable)
-     *
-     * @param nuevoEstado The new Estado object for this change.
-     * @param fechaHoraCambio The LocalDateTime when the state change occurred.
-     * @param responsable The Empleado responsible for this state change (can be null).
-     */
-    public void addCambioEstado(Estado nuevoEstado, LocalDateTime fechaHoraCambio, Empleado responsable) {
-        CambioEstado nuevoCambio = new CambioEstado(fechaHoraCambio, nuevoEstado, responsable);
-        this.cambiosEstado.add(nuevoCambio);
-    }
-
-
     // --- METHODS REQUIRED BY GestorRevisionManual ---
 
     public boolean esAutoDetectadoOPendienteRevision() {
@@ -213,18 +195,67 @@ public class EventoSismico {
     }
 
     public DatosPrincipalesDTO obtenerDatosPrincipales() {
-        // WARNING: DatosPrincipalesDTO constructor expects an 'id'.
-        // Without an 'id' field in EventoSismico, this will cause a compilation error
-        // or a runtime error if DatosPrincipalesDTO is not updated.
-        // You will need to either:
-        // 1. Modify DatosPrincipalesDTO to not require an ID.
-        // 2. Provide an alternative unique identifier from EventoSismico.
-        // For now, returning null or a placeholder for the ID.
-        // This will likely cause a compilation error if DatosPrincipalesDTO constructor is strict.
         return new DatosPrincipalesDTO(
-                null, // ID is no longer available
-                this.fechaHoraOcurrencia,
-                this.latitudEpicentro,
-                this.longitudEpicentro,
-                this.latitudHipocentro,
-                this.longi
+            this.id,
+            this.fechaHoraOcurrencia,
+            this.latitudEpicentro,
+            this.longitudEpicentro,
+            this.latitudHipocentro,
+            this.longitudHipocentro
+        );
+    }
+
+    // FIX: Modified this method to correctly record the state change history
+    // It now accepts an Empleado for the CambioEstado creation.
+    public void bloquearPorRevision(Estado nuevoEstado, LocalDateTime fechaHoraBloqueo, Empleado empleado) {
+        // Create the CambioEstado instance
+        CambioEstado cambio = new CambioEstado(fechaHoraBloqueo, nuevoEstado, empleado);
+        cambio.setEventoSismico(this); // Set the inverse relationship
+
+        // Add the new CambioEstado to the list
+        this.cambiosEstado.add(cambio);
+
+        // Update the current state reference
+        this.setEstadoActual(nuevoEstado);
+    }
+
+    public DatosRegistradosDTO buscarDatosRegistrados() {
+        return new DatosRegistradosDTO(
+            this.fechaHoraOcurrencia,
+            this.valorMagnitud,
+            this.alcanceSismo != null ? this.alcanceSismo.getNombre() : null,
+            this.clasificacionSismo != null ? this.clasificacionSismo.getNombre() : null,
+            this.origenDeGeneracion != null ? this.origenDeGeneracion.getNombre() : null,
+            new ArrayList<>(this.seriesTemporales)
+        );
+    }
+
+    // FIX: Modified this method to correctly record the state change history
+    // It now accepts an Empleado for the CambioEstado creation.
+    public void rechazarEventoSismico(LocalDateTime fechaHoraRechazo, Estado nuevoEstado, Empleado empleado) {
+        // Create the CambioEstado instance
+        CambioEstado cambio = new CambioEstado(fechaHoraRechazo, nuevoEstado, empleado);
+        cambio.setEventoSismico(this); // Set the inverse relationship
+
+        // Add the new CambioEstado to the list
+        this.cambiosEstado.add(cambio);
+
+        // Update the current state reference
+        this.setEstadoActual(nuevoEstado);
+    }
+
+    public void setFechaHora(LocalDateTime fechaHora) {
+        this.setFechaHoraOcurrencia(fechaHora);
+    }
+
+    @Override
+    public String toString() {
+        return "EventoSismico{" +
+               "id=" + id +
+               ", fechaHoraOcurrencia=" + fechaHoraOcurrencia +
+               ", estadoActual=" + (estadoActual != null ? estadoActual.getNombreEstado() : "null") +
+               ", latitudEpicentro=" + latitudEpicentro +
+               ", longitudEpicentro=" + longitudEpicentro +
+               '}';
+    }
+}

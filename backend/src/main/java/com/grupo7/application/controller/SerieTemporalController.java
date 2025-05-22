@@ -3,13 +3,15 @@ package com.grupo7.application.controller;
 import com.grupo7.application.entity.SerieTemporal;
 import com.grupo7.application.service.SerieTemporalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/serie-temporal")
+@RequestMapping("/api/series-temporales")
 public class SerieTemporalController {
 
     private final SerieTemporalService serieTemporalService;
@@ -20,40 +22,54 @@ public class SerieTemporalController {
     }
 
     @GetMapping
-    public List<SerieTemporal> obtenerTodas() {
-        return serieTemporalService.obtenerTodas();
+    public ResponseEntity<List<SerieTemporal>> obtenerTodasSeriesTemporales() {
+        List<SerieTemporal> series = serieTemporalService.obtenerTodas();
+        return new ResponseEntity<>(series, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SerieTemporal> obtenerPorId(@PathVariable Long id) {
-        return serieTemporalService.obtenerPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<SerieTemporal> obtenerSerieTemporalPorId(@PathVariable("id") Integer id) { // FIX: Changed Long to Integer
+        Optional<SerieTemporal> serieTemporal = serieTemporalService.obtenerPorId(id);
+        return serieTemporal.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
-    public ResponseEntity<SerieTemporal> crear(@RequestBody SerieTemporal nuevaSerie) {
-        return ResponseEntity.ok(serieTemporalService.crear(nuevaSerie));
+    public ResponseEntity<SerieTemporal> crearSerieTemporal(@RequestBody SerieTemporal serieTemporal) {
+        SerieTemporal nuevaSerieTemporal = serieTemporalService.crear(serieTemporal);
+        return new ResponseEntity<>(nuevaSerieTemporal, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SerieTemporal> actualizar(@PathVariable Long id, @RequestBody SerieTemporal actualizada) {
+    public ResponseEntity<SerieTemporal> actualizarSerieTemporal(@PathVariable("id") Integer id, // FIX: Changed Long to Integer
+                                                                 @RequestBody SerieTemporal serieTemporal) {
         try {
-            return ResponseEntity.ok(serieTemporalService.actualizar(id, actualizada));
+            SerieTemporal actualizada = serieTemporalService.actualizar(id, serieTemporal);
+            return new ResponseEntity<>(actualizada, HttpStatus.OK);
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Or an appropriate error status
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        serieTemporalService.eliminar(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> eliminarSerieTemporal(@PathVariable("id") Integer id) { // FIX: Changed Long to Integer
+        try {
+            serieTemporalService.eliminar(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Or internal server error
+        }
     }
 
-    @PostMapping("/datos")
-    public ResponseEntity<List<Object>> obtenerDatos(@RequestBody SerieTemporal serieTemporal) {
-        List<Object> datos = serieTemporalService.obtenerDatosDeSerie(serieTemporal);
-        return ResponseEntity.ok(datos);
+    // This endpoint is for getting data related to a specific SerieTemporal by its ID
+    @GetMapping("/{id}/datos")
+    public ResponseEntity<Object> obtenerDatosDeSerie(@PathVariable("id") Integer id) { // FIX: Changed Long to Integer, and expects ID
+        // The service method expects an Integer ID
+        Object datos = serieTemporalService.obtenerDatosDeSerie(id); // FIX: Passing the ID, not the object
+        if (datos != null) {
+            return new ResponseEntity<>(datos, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // No data found for this ID
+        }
     }
 }
