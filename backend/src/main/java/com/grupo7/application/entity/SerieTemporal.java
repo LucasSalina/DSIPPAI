@@ -3,10 +3,6 @@ package com.grupo7.application.entity;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import com.grupo7.application.service.SismografoService;
-import org.springframework.stereotype.Component;
-
-@Component
 public class SerieTemporal {
     private int condicionAlarma;
     private LocalDateTime fechaHoraInicioRegistroMuestra;
@@ -41,7 +37,7 @@ public class SerieTemporal {
             datos.add(muestraSismica.getDatos());
         }
         // Buscar la estación sismológica asociada a esta serie temporal
-        for (Sismografo sismografo : SismografoService.findAll()) {
+        for (Sismografo sismografo : Sismografo.getSismografoRepository()) {
             ArrayList<String> datosEstacion = sismografo.esTuSerieTemporal(this);
             if (datosEstacion != null) {
                 datos.add(datosEstacion); // Se agrega la info de la estación

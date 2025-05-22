@@ -1,12 +1,7 @@
 package com.grupo7.application.entity;
 
-import com.grupo7.application.repository.RepositorioDeSismografos;
-import com.grupo7.application.service.SismografoService;
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 
-@Component
 public class Sismografo {
     private int fechaAdquisicion;
     private int identificadorSismografo;
@@ -14,14 +9,17 @@ public class Sismografo {
     private Estado estadoActual;
     private EstacionSismologica estacionSismologica;
     private ArrayList<SerieTemporal> seriesTemporales;
-    private static SismografoService sismografoService;
+    private static ArrayList<Sismografo> sismografoRepository = new ArrayList<>();
 
     public Sismografo(int fechaAdquisicion, int identificadorSismografo, int numeroDeSerie) {
         this.fechaAdquisicion = fechaAdquisicion;
         this.identificadorSismografo = identificadorSismografo;
         this.numeroDeSerie = numeroDeSerie;
-//        Agrega al atributo de clase de ReposotorioDeSismografos el sismografo recien creado
-        RepositorioDeSismografos.agregar(this);
+        sismografoRepository.add(this);
+    }
+
+    public static ArrayList<Sismografo> getSismografoRepository() {
+        return sismografoRepository;
     }
 
     public ArrayList<String> esTuSerieTemporal(SerieTemporal serie) {

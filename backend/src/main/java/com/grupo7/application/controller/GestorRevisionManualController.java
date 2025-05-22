@@ -3,6 +3,7 @@ package com.grupo7.application.controller;
 import org.springframework.web.bind.annotation.*;
 import com.grupo7.application.service.GestorRevisionManual;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/api")
@@ -45,5 +46,11 @@ public class GestorRevisionManualController {
     public String registrarRevisionManual() {
         gestorRevisionManual.registrarRevisionManual();
         return "Revisión manual registrada";
+    }
+
+    @PostMapping("/tomar-no-visualizacion")
+    public ResponseEntity<String> tomarNoVisualizacion() {
+        gestorRevisionManual.tomarNoVisualizacion();
+        return ResponseEntity.ok("No visualización registrada");
     }
 }
