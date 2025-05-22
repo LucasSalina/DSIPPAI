@@ -10,5 +10,11 @@ import org.springframework.context.annotation.ComponentScan;
 public class PpaiApplication {
     public static void main(String[] args) {
         SpringApplication.run(PpaiApplication.class, args);
+        GestorRevisionManual gestorRevisionManual = GestorRevisionManual.crearGestorConEventosAleatorios();
+        gestorRevisionManual.registrarRevisionManual();
+    }
+    @Bean
+    public GestorRevisionManual gestorRevisionManual() {
+        return new GestorRevisionManual();
     }
 }

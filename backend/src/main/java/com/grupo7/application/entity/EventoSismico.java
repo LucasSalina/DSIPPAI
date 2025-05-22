@@ -29,6 +29,7 @@ public class EventoSismico {
     private Estado estadoActual;
     private ArrayList<CambioEstado> cambioEstado;
     private ArrayList<SerieTemporal> seriesTemporales;
+    private String analistaSuperior;
 
     public EventoSismico() {
         this.fechaHoraFin = LocalDateTime.now();
@@ -115,6 +116,14 @@ public class EventoSismico {
 
     public ArrayList<SerieTemporal> getSeriesTemporales() {
         return seriesTemporales;
+    }
+
+    public ArrayList<SerieTemporal> getSeriesTemporales() {
+        return seriesTemporales;
+    }
+
+    public setAnalistaSuperior(String analistaSuperior) {
+        this.analistaSuperior = analistaSuperior;
     }
 
     // esAutoDetectadoOPendienteRevision: determina si el evento está en un estado relevante para revisión.
