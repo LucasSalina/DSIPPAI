@@ -1,9 +1,9 @@
 package com.grupo7.application.controller;
 
-import com.grupo7.application.service.GestorRevisionManual;      // REQUIRED IMPORT
-import com.grupo7.application.entity.EventoSismico;            // REQUIRED IMPORT
-import com.grupo7.application.dto.DatosPrincipalesDTO;         // Potentially needed if you expose DTOs
-import com.grupo7.application.dto.DatosRegistradosDTO;         // Potentially needed if you expose DTOs
+import com.grupo7.application.service.GestorRevisionManual;
+import com.grupo7.application.entity.EventoSismico;
+import com.grupo7.application.dto.DatosPrincipalesDTO;
+import com.grupo7.application.dto.DatosRegistradosDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,50 +11,58 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional; // REQUIRED IMPORT
+import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/api/revision-manual") // This is a common practice to prefix API endpoints
+@RequestMapping("/api/revision-manual")
 public class GestorRevisionManualController {
 
     private final GestorRevisionManual gestorRevisionManual;
 
-    // Spring recommends constructor injection for dependencies
     @Autowired
     public GestorRevisionManualController(GestorRevisionManual gestorRevisionManual) {
         this.gestorRevisionManual = gestorRevisionManual;
     }
 
-    // Example endpoint to trigger the search for non-reviewed seismic events
-    // This method now returns the JSON string from the service
     @GetMapping("/eventos-no-revisados")
     public ResponseEntity<String> getEventosSismicosNoRevisados() {
         try {
             String jsonResponse = gestorRevisionManual.buscarEventosSismicosNoRevisados();
             return ResponseEntity.ok()
-                                 .header("Content-Type", "application/json") // Ensure content type is JSON
+                                 .header("Content-Type", "application/json")
                                  .body(jsonResponse);
         } catch (Exception e) {
-            // Log the error for debugging
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                  .body("{\"error\": \"Error al buscar eventos sísmicos no revisados: " + e.getMessage() + "\"}");
         }
     }
 
-    // Example endpoint to select an event
     @PostMapping("/seleccionar-evento/{eventId}")
     public ResponseEntity<String> seleccionarEventoSismico(@PathVariable Long eventId) {
-        gestorRevisionManual.tomarSeleccionEventoSismico(eventId);
-        // Using the public getter now: getEventoSismicoSeleccionado()
-        if (gestorRevisionManual.getEventoSismicoSeleccionado() == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"message\": \"Evento Sismico con ID " + eventId + " no encontrado.\"}");
+        try {
+            // First, select the event in the service
+            gestorRevisionManual.tomarSeleccionEventoSismico(eventId);
+
+            // Then, block the selected event for revision
+            gestorRevisionManual.bloquearEventoSismicoSeleccionado();
+            
+            return ResponseEntity.ok("{\"message\": \"Evento Sismico con ID " + eventId + " seleccionado y bloqueado para revisión.\"}");
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                 .body("{\"error\": \"" + e.getMessage() + "\"}");
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("{\"error\": \"" + e.getMessage() + "\"}");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("{\"error\": \"Error al seleccionar y bloquear el evento sísmico: " + e.getMessage() + "\"}");
         }
-        return ResponseEntity.ok("{\"message\": \"Evento Sismico con ID " + eventId + " seleccionado.\"}");
     }
 
-    // Example endpoint to get registered data for a selected event
     @GetMapping("/datos-registrados")
     public ResponseEntity<DatosRegistradosDTO> getDatosRegistrados() {
         DatosRegistradosDTO datos = gestorRevisionManual.buscarDatosRegistrados();
@@ -64,22 +72,19 @@ public class GestorRevisionManualController {
         return ResponseEntity.ok(datos);
     }
 
-    // Example endpoint to reject an event
     @PostMapping("/rechazar-evento")
     public ResponseEntity<String> rechazarEventoSismico() {
-        // For simplicity, this assumes an event has already been selected by a previous call.
-        // Using the public getter now: getEventoSismicoSeleccionado()
         if (gestorRevisionManual.getEventoSismicoSeleccionado() == null) {
             return ResponseEntity.badRequest().body("{\"message\": \"No hay evento sísmico seleccionado para rechazar.\"}");
         }
 
-        // Validate if the action is valid, assuming "rechazar evento" is an action string
         boolean isValid = gestorRevisionManual.validarDatosSismicos("rechazar evento");
         if (!isValid) {
             return ResponseEntity.badRequest().body("{\"message\": \"Validación de datos sísmicos fallida para rechazo.\"}");
         }
 
         try {
+            // Call the service method without arguments, as it now operates on internal state
             gestorRevisionManual.actualizarEventoSismicoARechazado();
             return ResponseEntity.ok("{\"message\": \"Evento sísmico rechazado exitosamente.\"}");
         } catch (Exception e) {
@@ -89,19 +94,15 @@ public class GestorRevisionManualController {
         }
     }
 
-    // Example endpoint to get events in revision
     @GetMapping("/eventos-en-revision")
     public ResponseEntity<List<EventoSismico>> getEventosEnRevision() {
         List<EventoSismico> eventos = gestorRevisionManual.obtenerEventosEnRevision();
         return ResponseEntity.ok(eventos);
     }
 
-    // Example endpoint to get rejected events
     @GetMapping("/eventos-rechazados")
     public ResponseEntity<List<EventoSismico>> getEventosRechazados() {
         List<EventoSismico> eventos = gestorRevisionManual.obtenerEventosRechazados();
         return ResponseEntity.ok(eventos);
     }
-
-    // You would add more endpoints as needed for your application's flow
 }

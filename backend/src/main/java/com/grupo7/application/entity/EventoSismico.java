@@ -7,71 +7,77 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Entity // This annotation implies a primary key is needed.
 @Table(name = "evento_sismico")
 public class EventoSismico {
+    // Removed @Id, @GeneratedValue, and the 'id' field as requested.
+    // WARNING: Removing the @Id from a JPA @Entity makes it an invalid entity
+    // for persistence. JPA requires a primary key. This class will no longer
+    // be managed by an EntityManager and will cause runtime errors if used
+    // with Spring Data JPA repositories (e.g., EventoSismicoRepository).
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    @Column(name = "fecha_hora_fin")
     private LocalDateTime fechaHoraFin;
-    private LocalDateTime fechaHoraOcurrencia;
-    private float latitudEpicentro;
-    private float latitudHipocentro;
-    private float longitudEpicentro;
-    private float longitudHipocentro;
-    private float valorMagnitud;
 
-    // Removed CascadeType.ALL. These are typically lookup/reference entities.
+    @Column(name = "fecha_hora_ocurrencia")
+    private LocalDateTime fechaHoraOcurrencia;
+
+    @Column(name = "latitud_epicentro")
+    private Double latitudEpicentro;
+
+    @Column(name = "latitud_hipocentro")
+    private Double latitudHipocentro;
+
+    @Column(name = "longitud_epicentro")
+    private Double longitudEpicentro;
+
+    @Column(name = "longitud_hipocentro")
+    private Double longitudHipocentro;
+
+    @Column(name = "valor_magnitud")
+    private Double valorMagnitud;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clasificacion_sismo_id")
     private ClasificacionSismo clasificacionSismo;
 
-    // Removed CascadeType.ALL.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "magnitud_ritcher_id")
     private MagnitudRitcher magnitudRitcher;
 
-    // Removed CascadeType.ALL.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "origen_generacion_id")
     private OrigenDeGeneracion origenDeGeneracion;
 
-    // Removed CascadeType.ALL.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "alcance_sismo_id")
     private AlcanceSismo alcanceSismo;
 
-    // Removed CascadeType.ALL. Estado should be managed separately.
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "estado_actual_id", nullable = false) // Assuming an EventoSismico always has an Estado
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "estado_actual_id", nullable = false)
     private Estado estadoActual;
 
-    // CascadeType.ALL is often appropriate for OneToMany if you want
-    // to persist/delete children when the parent is persisted/deleted.
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) // Added orphanRemoval for completeness if desired
-    @JoinColumn(name = "evento_sismico_id") // This creates a unidirectional relationship
-    private List<CambioEstado> cambioEstado = new ArrayList<>();
+    // The @JoinColumn here refers to 'evento_sismico_id' in the child table.
+    // If EventoSismico no longer has an 'id' field, this mapping is problematic
+    // for JPA to manage the relationship automatically.
+    // JPA typically uses the primary key of the owning entity for the foreign key.
+    // Without an @Id on EventoSismico, JPA will not be able to correctly manage
+    // these relationships. You would need to manage the foreign keys manually
+    // or rethink the entity design.
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "evento_sismico_id")
+    private List<CambioEstado> cambiosEstado = new ArrayList<>();
 
-    // CascadeType.ALL is often appropriate for OneToMany.
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) // Added orphanRemoval
-    @JoinColumn(name = "evento_sismico_id") // This creates a unidirectional relationship
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "evento_sismico_id")
     private List<SerieTemporal> seriesTemporales = new ArrayList<>();
 
     public EventoSismico() {
-        // Default constructor for JPA
+        this.cambiosEstado = new ArrayList<>();
+        this.seriesTemporales = new ArrayList<>();
     }
 
-    // --- Getters and Setters (existing) ---
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // Removed getId() and setId() methods.
 
     public LocalDateTime getFechaHoraFin() {
         return fechaHoraFin;
@@ -89,43 +95,43 @@ public class EventoSismico {
         this.fechaHoraOcurrencia = fechaHoraOcurrencia;
     }
 
-    public float getLatitudEpicentro() {
+    public Double getLatitudEpicentro() {
         return latitudEpicentro;
     }
 
-    public void setLatitudEpicentro(float latitudEpicentro) {
+    public void setLatitudEpicentro(Double latitudEpicentro) {
         this.latitudEpicentro = latitudEpicentro;
     }
 
-    public float getLatitudHipocentro() {
+    public Double getLatitudHipocentro() {
         return latitudHipocentro;
     }
 
-    public void setLatitudHipocentro(float latitudHipocentro) {
+    public void setLatitudHipocentro(Double latitudHipocentro) {
         this.latitudHipocentro = latitudHipocentro;
     }
 
-    public float getLongitudEpicentro() {
+    public Double getLongitudEpicentro() {
         return longitudEpicentro;
     }
 
-    public void setLongitudEpicentro(float longitudEpicentro) {
+    public void setLongitudEpicentro(Double longitudEpicentro) {
         this.longitudEpicentro = longitudEpicentro;
     }
 
-    public float getLongitudHipocentro() {
+    public Double getLongitudHipocentro() {
         return longitudHipocentro;
     }
 
-    public void setLongitudHipocentro(float longitudHipocentro) {
+    public void setLongitudHipocentro(Double longitudHipocentro) {
         this.longitudHipocentro = longitudHipocentro;
     }
 
-    public float getValorMagnitud() {
+    public Double getValorMagnitud() {
         return valorMagnitud;
     }
 
-    public void setValorMagnitud(float valorMagnitud) {
+    public void setValorMagnitud(Double valorMagnitud) {
         this.valorMagnitud = valorMagnitud;
     }
 
@@ -169,12 +175,12 @@ public class EventoSismico {
         this.estadoActual = estadoActual;
     }
 
-    public List<CambioEstado> getCambioEstado() {
-        return cambioEstado;
+    public List<CambioEstado> getCambiosEstado() {
+        return cambiosEstado;
     }
 
-    public void setCambioEstado(List<CambioEstado> cambioEstado) {
-        this.cambioEstado = cambioEstado;
+    public void setCambiosEstado(List<CambioEstado> cambiosEstado) {
+        this.cambiosEstado = cambiosEstado;
     }
 
     public List<SerieTemporal> getSeriesTemporales() {
@@ -185,6 +191,21 @@ public class EventoSismico {
         this.seriesTemporales = seriesTemporales;
     }
 
+    /**
+     * Helper method to add a CambioEstado entry.
+     * This method now correctly uses one of the existing CambioEstado constructors:
+     * CambioEstado(LocalDateTime fechaHoraInicio, Estado estado, Empleado responsable)
+     *
+     * @param nuevoEstado The new Estado object for this change.
+     * @param fechaHoraCambio The LocalDateTime when the state change occurred.
+     * @param responsable The Empleado responsible for this state change (can be null).
+     */
+    public void addCambioEstado(Estado nuevoEstado, LocalDateTime fechaHoraCambio, Empleado responsable) {
+        CambioEstado nuevoCambio = new CambioEstado(fechaHoraCambio, nuevoEstado, responsable);
+        this.cambiosEstado.add(nuevoCambio);
+    }
+
+
     // --- METHODS REQUIRED BY GestorRevisionManual ---
 
     public boolean esAutoDetectadoOPendienteRevision() {
@@ -192,43 +213,18 @@ public class EventoSismico {
     }
 
     public DatosPrincipalesDTO obtenerDatosPrincipales() {
-        // Assuming DatosPrincipalesDTO constructor takes:
-        // (LocalDateTime fechaHora, double latEpicentro, double lonEpicentro, double latHipocentro, double lonHipocentro)
+        // WARNING: DatosPrincipalesDTO constructor expects an 'id'.
+        // Without an 'id' field in EventoSismico, this will cause a compilation error
+        // or a runtime error if DatosPrincipalesDTO is not updated.
+        // You will need to either:
+        // 1. Modify DatosPrincipalesDTO to not require an ID.
+        // 2. Provide an alternative unique identifier from EventoSismico.
+        // For now, returning null or a placeholder for the ID.
+        // This will likely cause a compilation error if DatosPrincipalesDTO constructor is strict.
         return new DatosPrincipalesDTO(
-            this.id,
-            this.fechaHoraOcurrencia,
-            (double) this.latitudEpicentro,
-            (double) this.longitudEpicentro,
-            (double) this.latitudHipocentro,
-            (double) this.longitudHipocentro
-        );
-    }
-
-    public void bloquearPorRevision(Estado nuevoEstado, LocalDateTime fechaHoraBloqueo) {
-        this.setEstadoActual(nuevoEstado);
-    }
-
-    public DatosRegistradosDTO buscarDatosRegistrados() {
-        // Assuming DatosRegistradosDTO constructor takes:
-        // (LocalDateTime fechaHoraOcurrencia, Double valorMagnitud, String alcanceSismoNombre,
-        //  String clasificacionSismoNombre, String origenDeGeneracionNombre, ArrayList<Object> seriesTemporales)
-        return new DatosRegistradosDTO(
-            this.fechaHoraOcurrencia,
-            (double) this.valorMagnitud,
-            this.alcanceSismo != null ? this.alcanceSismo.getNombre() : null, // Assuming AlcanceSismo has getNombre()
-            this.clasificacionSismo != null ? this.clasificacionSismo.getNombre() : null, // Assuming ClasificacionSismo has getNombre()
-            this.origenDeGeneracion != null ? this.origenDeGeneracion.getNombre() : null, // Assuming OrigenDeGeneracion has getNombre()
-            new ArrayList<>(this.seriesTemporales) // Pass a new ArrayList based on your existing one
-        );
-    }
-
-    public void rechazarEventoSismico(LocalDateTime fechaHoraRechazo, Estado nuevoEstado, Empleado empleado) {
-        this.setEstadoActual(nuevoEstado);
-    }
-
-    public void setFechaHora(LocalDateTime fechaHora) {
-        // This method is called by GestorRevisionManual.crearGestorConEventosAleatorios
-        // It maps to fechaHoraOcurrencia in your entity.
-        this.setFechaHoraOcurrencia(fechaHora);
-    }
-}
+                null, // ID is no longer available
+                this.fechaHoraOcurrencia,
+                this.latitudEpicentro,
+                this.longitudEpicentro,
+                this.latitudHipocentro,
+                this.longi

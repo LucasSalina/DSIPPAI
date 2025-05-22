@@ -5,10 +5,10 @@ import com.grupo7.application.dto.DatosPrincipalesDTO;
 import com.grupo7.application.dto.DatosRegistradosDTO;
 import com.grupo7.application.entity.Empleado;
 import com.grupo7.application.entity.EventoSismico;
-import com.grupo7.application.entity.Estado; // Ensure this import is correct
+import com.grupo7.application.entity.Estado;
 import com.grupo7.application.repository.EmpleadoRepository;
 import com.grupo7.application.repository.EventoSismicoRepository;
-import com.grupo7.application.repository.EstadoRepository; // NEW: Import EstadoRepository
+import com.grupo7.application.repository.EstadoRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class GestorRevisionManual {
     private final EventoSismicoRepository eventoSismicoRepository;
     private final EmpleadoRepository empleadoRepository;
     private final ObjectMapper objectMapper;
-    private final EstadoRepository estadoRepository; // NEW: Inject EstadoRepository
+    private final EstadoRepository estadoRepository;
 
     private List<DatosPrincipalesDTO> datosPrincipales;
     private Estado punteroAutodetectado;
@@ -37,48 +37,44 @@ public class GestorRevisionManual {
     private Estado punteroRechazado;
     private LocalDateTime fechaHoraActual;
     private EventoSismico eventoSismicoSeleccionado;
-    private Empleado empleadoActual;
+    private Empleado empleadoActual; // This will hold the current employee for actions
 
-    // Modified constructor: Now takes EstadoRepository
     public GestorRevisionManual(EventoSismicoRepository eventoSismicoRepository, EmpleadoRepository empleadoRepository, ObjectMapper objectMapper, EstadoRepository estadoRepository) {
         this.eventoSismicoRepository = eventoSismicoRepository;
         this.empleadoRepository = empleadoRepository;
         this.objectMapper = objectMapper;
-        this.estadoRepository = estadoRepository; // Initialize it
+        this.estadoRepository = estadoRepository;
 
         this.objectMapper.registerModule(new JavaTimeModule());
         this.objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
         this.datosPrincipales = new ArrayList<>();
-        this.initializeStatePointers(); // Call a new method to initialize pointers from DB
+        this.initializeStatePointers();
+        this.empleadoActual = obtenerEmpleadoActual(); // Initialize empleadoActual here or when needed
     }
 
-    // NEW METHOD: Initialize state pointers by fetching from the database
     private void initializeStatePointers() {
-        // Fetch states by their 'ambito' and 'nombreEstado' from the database
-        // Use .orElseThrow() to ensure the application fails fast if critical states are missing
         this.punteroAutodetectado = estadoRepository.findByAmbitoAndNombreEstado("EventoSismico", "AutoDetectado")
-                                        .orElseThrow(() -> new IllegalStateException("Estado 'Autodetectado' (EventoSismico) no encontrado en la base de datos."));
+                                            .orElseThrow(() -> new IllegalStateException("Estado 'Autodetectado' (EventoSismico) no encontrado en la base de datos."));
         this.punteroPendienteRevision = estadoRepository.findByAmbitoAndNombreEstado("EventoSismico", "PendienteRevision")
-                                            .orElseThrow(() -> new IllegalStateException("Estado 'PendienteRevision' (EventoSismico) no encontrado en la base de datos."));
+                                                .orElseThrow(() -> new IllegalStateException("Estado 'PendienteRevision' (EventoSismico) no encontrado en la base de datos."));
         this.punteroBloqueadoEnRevision = estadoRepository.findByAmbitoAndNombreEstado("EventoSismico", "BloqueadoEnRevision")
-                                                .orElseThrow(() -> new IllegalStateException("Estado 'BloqueadoEnRevision' (EventoSismico) no encontrado en la base de datos."));
+                                                    .orElseThrow(() -> new IllegalStateException("Estado 'BloqueadoEnRevision' (EventoSismico) no encontrado en la base de datos."));
         this.punteroRechazado = estadoRepository.findByAmbitoAndNombreEstado("EventoSismico", "Rechazado")
-                                    .orElseThrow(() -> new IllegalStateException("Estado 'Rechazado' (EventoSismico) no encontrado en la base de datos."));
+                                        .orElseThrow(() -> new IllegalStateException("Estado 'Rechazado' (EventoSismico) no encontrado en la base de datos."));
     }
 
     public void registrarRevisionManual() {
         buscarEventosSismicosNoRevisados();
     }
+
     public String buscarEventosSismicosNoRevisados() {
         List<EventoSismico> eventosFiltrados = eventoSismicoRepository.findByEstadoActualIn(
             Arrays.asList(punteroAutodetectado, punteroPendienteRevision)
         );
 
-        this.datosPrincipales.clear(); // Clear previous data before populating
+        this.datosPrincipales.clear();
         for (EventoSismico eve : eventosFiltrados) {
-            // Ensure EventoSismico has getId() and getFechaHoraOcurrencia()
-            // and that DatosPrincipalesDTO constructor accepts these, as previously discussed.
             this.datosPrincipales.add(new DatosPrincipalesDTO(
                 eve.getId(),
                 eve.getFechaHoraOcurrencia(),
@@ -89,8 +85,7 @@ public class GestorRevisionManual {
             ));
         }
 
-        // --- CALL THE SORTING METHOD HERE ---
-        ordenarPorFechaHoraOcurrencia(); // Call the separate sorting method
+        ordenarPorFechaHoraOcurrencia();
 
         try {
             return objectMapper.writeValueAsString(this.datosPrincipales);
@@ -102,18 +97,17 @@ public class GestorRevisionManual {
     }
 
     public void ordenarPorFechaHoraOcurrencia() {
-        // This method sorts the 'datosPrincipales' list which is a class member.
         datosPrincipales.sort(Comparator.comparing(DatosPrincipalesDTO::getFechaHoraOcurrencia));
     }
 
+    // Modified to operate on the internally selected event
     public void bloquearEventoSismicoSeleccionado() {
         fechaHoraActual = getFechaHoraActual();
-        // The punteroBloqueadoEnRevision is now initialized in the constructor.
-        if (eventoSismicoSeleccionado != null && punteroBloqueadoEnRevision != null) {
-            eventoSismicoSeleccionado.bloquearPorRevision(punteroBloqueadoEnRevision, fechaHoraActual);
+        if (eventoSismicoSeleccionado != null && punteroBloqueadoEnRevision != null && empleadoActual != null) {
+            eventoSismicoSeleccionado.bloquearPorRevision(punteroBloqueadoEnRevision, fechaHoraActual, empleadoActual);
             eventoSismicoRepository.save(eventoSismicoSeleccionado);
         } else {
-            System.err.println("Error: Evento Sismico Seleccionado or BloqueadoEnRevision state is null. Check initialization.");
+            System.err.println("Error: Evento Sismico Seleccionado, BloqueadoEnRevision state, or Empleado Actual is null. Check initialization.");
         }
     }
 
@@ -130,8 +124,8 @@ public class GestorRevisionManual {
         // Implementar lógica de ordenamiento por estación sismológica
     }
 
+    // Modified to operate on the internally selected event
     public void actualizarEventoSismicoARechazado() {
-        // The punteroRechazado is now initialized in the constructor.
         empleadoActual = obtenerEmpleadoActual();
 
         if (eventoSismicoSeleccionado != null && punteroRechazado != null && empleadoActual != null) {
@@ -151,6 +145,7 @@ public class GestorRevisionManual {
             return empleadoRepository.save(defaultEmployee);
         }
     }
+
     public void tomarSeleccionEventoSismico(Long eventId) {
         this.eventoSismicoSeleccionado = eventoSismicoRepository.findById(eventId)
                                             .orElse(null);
@@ -178,36 +173,33 @@ public class GestorRevisionManual {
         return accion.equals("rechazar evento") || (accion.equals("aceptar evento"));
     }
 
-    // Modified static method to take EstadoRepository as well
     public static GestorRevisionManual crearGestorConEventosAleatorios(EventoSismicoRepository eventoSismicoRepository, EmpleadoRepository empleadoRepository, ObjectMapper objectMapper, EstadoRepository estadoRepository) {
         GestorRevisionManual gestor = new GestorRevisionManual(eventoSismicoRepository, empleadoRepository, objectMapper, estadoRepository);
 
-        // Fetch the 'AutoDetectado' state from the repository
         Estado autoDetectadoState = estadoRepository.findByAmbitoAndNombreEstado("EventoSismico", "AutoDetectado")
-                                        .orElseThrow(() -> new IllegalStateException("Estado 'AutoDetectado' no encontrado en la base de datos para la generación de eventos aleatorios."));
+                                            .orElseThrow(() -> new IllegalStateException("Estado 'AutoDetectado' no encontrado en la base de datos para la generación de eventos aleatorios."));
 
+        Empleado defaultEmployeeForRandomEvents = gestor.obtenerEmpleadoActual();
 
         for (int i = 0; i < 10; i++) {
             EventoSismico newEvent = new EventoSismico();
             newEvent.setFechaHoraOcurrencia(LocalDateTime.now().minusHours(i));
-            newEvent.setEstadoActual(autoDetectadoState); // Assign the managed Estado object
+            newEvent.setEstadoActual(autoDetectadoState);
             eventoSismicoRepository.save(newEvent);
         }
         return gestor;
     }
 
     public List<EventoSismico> obtenerEventosEnRevision() {
-        // Fetch states from the repository, not from a static list
         Estado pendienteRevision = estadoRepository.findByAmbitoAndNombreEstado("EventoSismico", "PendienteRevision")
-                                        .orElseThrow(() -> new IllegalStateException("Estado 'PendienteRevision' no encontrado."));
+                                            .orElseThrow(() -> new IllegalStateException("Estado 'PendienteRevision' no encontrado."));
         Estado bloqueadoEnRevision = estadoRepository.findByAmbitoAndNombreEstado("EventoSismico", "BloqueadoEnRevision")
-                                            .orElseThrow(() -> new IllegalStateException("Estado 'BloqueadoEnRevision' no encontrado."));
+                                                .orElseThrow(() -> new IllegalStateException("Estado 'BloqueadoEnRevision' no encontrado."));
 
         return eventoSismicoRepository.findByEstadoActualIn(Arrays.asList(pendienteRevision, bloqueadoEnRevision));
     }
 
     public List<EventoSismico> obtenerEventosRechazados() {
-        // Fetch state from the repository
         Estado rechazado = estadoRepository.findByAmbitoAndNombreEstado("EventoSismico", "Rechazado")
                                 .orElseThrow(() -> new IllegalStateException("Estado 'Rechazado' no encontrado."));
 
