@@ -18,7 +18,7 @@ import java.util.Comparator;
 @Service
 public class GestorRevisionManual {
     // Lista de eventos sísmicos a gestionar
-    private ArrayList<EventoSismico> eventoSismico;
+    private ArrayList<EventoSismico> eventoSismico = new ArrayList<>();
     // Lista de datos principales de los eventos sísmicos
     private ArrayList<DatosPrincipalesDTO> datosPrincipales;
     // Punteros a los diferentes estados posibles de un evento sísmico
@@ -32,7 +32,10 @@ public class GestorRevisionManual {
     private EventoSismico eventoSismicoSeleccionado;
     private Empleado empleadoActual;
 
-    // Constructor: inicializa la lista de eventos sísmicos
+    public GestorRevisionManual() {
+    }
+
+
     public GestorRevisionManual(EventoSismico eventoSismico, Estado estadosSistema) {
         this.eventoSismico = new ArrayList<>();
         // this.estadosSistema = new ArrayList<>();
@@ -40,7 +43,7 @@ public class GestorRevisionManual {
 
     // Método para registrar la revisión manual de un evento sísmico
     public void registrarRevisionManual() {
-        // Implementar lógica de registro de revisión manual
+        buscarEventosSismicosNoRevisados();
     }
 
     // Busca eventos sísmicos que no han sido revisados
@@ -65,7 +68,6 @@ public class GestorRevisionManual {
         for (Estado estado : Estado.getTodos()) {
             if (estado.sosBloqueadoEnRevision()) {
                 punteroBloqueadoEnRevision = estado;
-//              podria hacer eventoSeleccionado.bloquear(estado) y me ahorro un atributo
             }
         }
         eventoSismicoSeleccionado.bloquearPorRevision(punteroBloqueadoEnRevision, fechaHoraActual);
@@ -87,11 +89,6 @@ public class GestorRevisionManual {
          // Implementar lógica de ordenamiento por estación sismológica
     }
 
-    // Valida los datos sísmicos (a implementar)
-    public void validarDatosSismicos() {
-        // Implementar lógica de validación de datos sísmicos
-    }
-
     // Actualiza el evento sísmico a estado rechazado (a implementar)
     public void actualizarEventoSismicoARechazado() {
         obtenerPunteroRechazado();
@@ -99,7 +96,8 @@ public class GestorRevisionManual {
         eventoSismicoSeleccionado.rechazarEventoSismico(getFechaHoraActual(), punteroRechazado, empleadoActual);
     }
 
-    private void obtenerEmpleadoActual() {
+    private Empleado obtenerEmpleadoActual() {
+        return new Empleado("ape", "resp@gmail.com", "nom", new Long(123456789));
     }
 
     // Busca los estados que no han sido revisados o que están autodetectados
@@ -150,9 +148,14 @@ public class GestorRevisionManual {
         // Validar acción
         if (accion == null) return false;
         accion = accion.trim().toLowerCase();
-        if (!(accion.equals("rechazar evento"))) {
-            return false;
+        return accion.equals("rechazar evento") || (accion.equals("aceptar evento"));
+    }
+
+    public static GestorRevisionManual crearGestorConEventosAleatorios() {
+        GestorRevisionManual gestor = new GestorRevisionManual();
+        for (int i = 0; i < 10; i++) {
+            gestor.eventoSismico.add(new EventoSismico());
         }
-        return true;
+        return gestor;
     }
 }
