@@ -23,17 +23,7 @@ public class GestorRevisionManualController {
 
     @GetMapping("/hello")
     public String sayHello() {
-        // Simple DB access: count rows in ESTADO table
-        try (java.sql.Connection conn = java.sql.DriverManager.getConnection(
-                "jdbc:h2:file:./backend/data/redSismica;DB_CLOSE_DELAY=-1", "sa", "");
-             java.sql.Statement stmt = conn.createStatement();
-             java.sql.ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM ESTADO")) {
-            rs.next();
-            int count = rs.getInt(1);
-            return "👋 Hello from Spring Boot! Hay " + count + " estados en la base de datos.";
-        } catch (Exception e) {
-            return "Error accediendo a la base de datos: " + e.getMessage();
-        }
+        return "Hello World!";
     }
 
     @PostMapping("/iniciar-programa")

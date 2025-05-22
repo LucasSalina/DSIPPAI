@@ -1,5 +1,27 @@
+/* Modern, clean styles for the app */
+:root {
+  --primary: #1976d2;
+  --primary-dark: #115293;
+  --background: #f5f7fa;
+  --surface: #fff;
+  --border: #e0e0e0;
+  --text: #222;
+  --accent: #e3f2fd;
+}
+
+body, html, #root, .App {
+  min-height: 100vh;
+  background: var(--background);
+  margin: 0;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  color: var(--text);
+}
+
 .App {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 8px;
 }
 
 .App-logo {
@@ -14,18 +36,139 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background: var(--surface);
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  padding: 32px 24px;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+h1 {
+  margin-bottom: 12px;
+  font-size: 2.2rem;
+  color: var(--primary);
+}
+
+h2 {
+  margin-top: 0;
+  color: var(--primary-dark);
 }
 
 .App-link {
   color: #61dafb;
+}
+
+button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 28px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin: 18px 0 0 0;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 4px rgba(25, 118, 210, 0.08);
+}
+button:disabled {
+  background: #b0bec5;
+  cursor: not-allowed;
+}
+button:hover:not(:disabled), button:focus:not(:disabled) {
+  background: var(--primary-dark);
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 24px;
+  background: var(--surface);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+}
+th, td {
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--border);
+}
+th {
+  background: var(--accent);
+  color: var(--primary-dark);
+  font-weight: 600;
+  text-align: center;
+}
+td {
+  text-align: center;
+}
+tr:last-child td {
+  border-bottom: none;
+}
+tr:nth-child(even) td {
+  background: #f8fafc;
+}
+
+.modal-mapa {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal-mapa-content {
+  background: var(--surface);
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+  padding: 32px 28px 24px 28px;
+  min-width: 320px;
+  text-align: center;
+}
+.btn-cancelar {
+  background: #e53935;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 28px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-cancelar:hover, .btn-cancelar:focus {
+  background: #b71c1c;
+}
+.btn-aceptar {
+  background: #43a047;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 28px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-aceptar:hover, .btn-aceptar:focus {
+  background: #1b5e20;
+}
+.btn-experto {
+  background: #fbc02d;
+  color: #222;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 28px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-experto:hover, .btn-experto:focus {
+  background: #f9a825;
 }
 
 @keyframes App-logo-spin {
@@ -34,5 +177,14 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 700px) {
+  .App-header {
+    padding: 16px 2px;
+  }
+  table, th, td {
+    font-size: 0.98rem;
   }
 }
