@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Bean;
 
 import jakarta.annotation.PostConstruct;
 
@@ -39,5 +40,10 @@ public class PpaiApplication {
         } catch (Exception e) {
             System.out.println("[DEBUG] No se pudo obtener la versión de H2: " + e.getMessage());
         }
+    }
+
+    @Bean
+    public GestorRevisionManual gestorRevisionManual() {
+        return new GestorRevisionManual();
     }
 }

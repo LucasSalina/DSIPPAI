@@ -31,4 +31,10 @@ public class GestorRevisionManualController {
             return "Error accediendo a la base de datos: " + e.getMessage();
         }
     }
+
+    @PostMapping("/iniciar-programa")
+    public String iniciarPrograma() {
+        gestorRevisionManual.buscarEventosSismicosNoRevisados();
+        return "Programa iniciado: búsqueda de eventos sísmicos no revisados ejecutada.";
+    }
 }
