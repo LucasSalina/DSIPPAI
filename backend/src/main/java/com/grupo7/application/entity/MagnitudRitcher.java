@@ -1,11 +1,17 @@
 package com.grupo7.application.entity;
 
-import org.springframework.stereotype.Component;
+import jakarta.persistence.*;
 
-@Component
+@Entity
+@Table(name = "magnitud_ritcher")
 public class MagnitudRitcher {
-    String descripcionMagnitud;
-    float numero;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String descripcionMagnitud;
+    private float numero;
 
     public MagnitudRitcher() {
         this.descripcionMagnitud = "";
@@ -17,4 +23,23 @@ public class MagnitudRitcher {
         this.numero = numero;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getDescripcionMagnitud() {
+        return descripcionMagnitud;
+    }
+
+    public void setDescripcionMagnitud(String descripcionMagnitud) {
+        this.descripcionMagnitud = descripcionMagnitud;
+    }
+
+    public float getNumero() {
+        return numero;
+    }
+
+    public void setNumero(float numero) {
+        this.numero = numero;
+    }
 }

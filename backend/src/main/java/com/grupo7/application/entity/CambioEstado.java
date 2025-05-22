@@ -1,71 +1,90 @@
 package com.grupo7.application.entity;
 
-
-import org.springframework.stereotype.Component;
-
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Optional;
 
-@Component
+@Entity
+@Table(name = "cambio_estado")
 public class CambioEstado {
-    LocalDateTime fechaHoraInicio;
-    LocalDateTime fechaHoraFin;
-    Estado estado;
-    Empleado responsable;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "fecha_hora_inicio", nullable = false)
+    private LocalDateTime fechaHoraInicio;
+
+    @Column(name = "fecha_hora_fin")
+    private LocalDateTime fechaHoraFin;
+
+    @ManyToOne
+    @JoinColumn(name = "estado_id", nullable = false)
+    private Estado estado;
+
+    @ManyToOne
+    @JoinColumn(name = "responsable_id")
+    private Empleado responsable;
 
     public CambioEstado() {
         this.fechaHoraInicio = LocalDateTime.now();
-        this.fechaHoraFin = null;
-        this.estado = new Estado();
-        this.responsable = new Empleado();
     }
 
     public CambioEstado(LocalDateTime fechaHoraInicio, Estado estado) {
         this.fechaHoraInicio = fechaHoraInicio;
-        this.fechaHoraFin = null;
         this.estado = estado;
     }
 
     public CambioEstado(LocalDateTime fechaHoraInicio, Estado estado, Empleado responsable) {
         this.fechaHoraInicio = fechaHoraInicio;
-        this.fechaHoraFin = null;
         this.estado = estado;
         this.responsable = responsable;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public LocalDateTime getFechaHoraInicio() {
         return fechaHoraInicio;
     }
 
-    public LocalDateTime getFechaHoraFin() {
-        return fechaHoraFin;
+    public void setFechaHoraInicio(LocalDateTime fechaHoraInicio) {
+        this.fechaHoraInicio = fechaHoraInicio;
     }
 
-    public Estado getEstado() {
-        return estado;
+    public LocalDateTime getFechaHoraFin() {
+        return fechaHoraFin;
     }
 
     public void setFechaHoraFin(LocalDateTime fechaHoraFin) {
         this.fechaHoraFin = fechaHoraFin;
     }
 
-    // esEstadoActual: determina si este cambio de estado es el actual (fecha de fin nula)
-    public boolean esEstadoActual() {
-        return this.fechaHoraFin == null;
+    public Estado getEstado() {
+        return estado;
     }
-    
-    // sosAutoDetectado y sosPendienteRevision: delegan la verificación al estado asociado
-    public boolean sosAutoDetectado() {
-            return estado.sosAutoDetectado();
-        }
-    
-    
-    public boolean sosPendienteRevision() {
-        return estado.sosPendienteRevision();
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+
+    public Empleado getResponsable() {
+        return responsable;
     }
 
     public void setResponsable(Empleado responsable) {
         this.responsable = responsable;
+    }
+
+    public boolean esEstadoActual() {
+        return this.fechaHoraFin == null;
+    }
+
+    public boolean sosAutoDetectado() {
+        return estado != null && estado.sosAutoDetectado();
+    }
+
+    public boolean sosPendienteRevision() {
+        return estado != null && estado.sosPendienteRevision();
     }
 }

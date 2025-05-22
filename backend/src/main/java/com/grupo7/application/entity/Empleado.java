@@ -1,12 +1,25 @@
 package com.grupo7.application.entity;
 
-import org.springframework.stereotype.Component;
+import jakarta.persistence.*;
 
-@Component
+@Entity
+@Table(name = "empleado")
 public class Empleado {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
     private String apellido;
+
+    @Column(nullable = false)
     private String mail;
+
+    @Column(nullable = false)
     private String nombre;
+
+    @Column
     private Long telefono;
 
     public Empleado() {
@@ -21,6 +34,10 @@ public class Empleado {
         this.mail = mail;
         this.nombre = nombre;
         this.telefono = telefono;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getApellido() {

@@ -1,20 +1,18 @@
 package com.grupo7.application.entity;
 
-import org.springframework.stereotype.Component;
-
-import com.grupo7.application.dto.DatosPrincipalesDTO;
-import com.grupo7.application.dto.DatosRegistradosDTO;
-
-import java.time.LocalDate;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Optional;
+import java.util.List;
 
-import org.springframework.stereotype.Component;
-
-@Component
-// Entidad principal que representa un evento sísmico, con atributos de localización, magnitud, estado y series temporales.
+@Entity
+@Table(name = "evento_sismico")
 public class EventoSismico {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private LocalDateTime fechaHoraFin;
     private LocalDateTime fechaHoraOcurrencia;
     private float latitudEpicentro;
@@ -22,159 +20,158 @@ public class EventoSismico {
     private float longitudEpicentro;
     private float longitudHipocentro;
     private float valorMagnitud;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "clasificacion_sismo_id")
     private ClasificacionSismo clasificacionSismo;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "magnitud_ritcher_id")
     private MagnitudRitcher magnitudRitcher;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "origen_generacion_id")
     private OrigenDeGeneracion origenDeGeneracion;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "alcance_sismo_id")
     private AlcanceSismo alcanceSismo;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "estado_actual_id")
     private Estado estadoActual;
-    private ArrayList<CambioEstado> cambioEstado;
-    private ArrayList<SerieTemporal> seriesTemporales;
 
-    public EventoSismico() {
-        this.fechaHoraFin = LocalDateTime.now();
-        this.fechaHoraOcurrencia = LocalDateTime.now();
-        this.latitudEpicentro = 0;
-        this.longitudEpicentro = 0;
-        this.latitudHipocentro = 0;
-        this.longitudHipocentro = 0;
-        this.clasificacionSismo = new ClasificacionSismo();
-        this.magnitudRitcher = new MagnitudRitcher();
-        this.origenDeGeneracion = new OrigenDeGeneracion();
-        this.alcanceSismo = new AlcanceSismo();
-        this.estadoActual = new Estado();
-        this.cambioEstado = new ArrayList<CambioEstado>();
-        this.seriesTemporales = new ArrayList<SerieTemporal>();
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "evento_sismico_id")
+    private List<CambioEstado> cambioEstado = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "evento_sismico_id")
+    private List<SerieTemporal> seriesTemporales = new ArrayList<>();
+
+    // Suggested code may be subject to a license. Learn more: ~LicenseLog:2720819793.
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:1431914826.
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:4230495766.
+
+    public Long getId() {
+        return id;
     }
 
-    public EventoSismico(Estado estado, ClasificacionSismo clasificacionSismo, MagnitudRitcher magnitudRitcher,
-                         OrigenDeGeneracion origenDeGeneracion, AlcanceSismo alcanceSismo, LocalDateTime fechaHoraFin,
-                         LocalDateTime fechaHoraOcurrencia, float latitudEpicentro, float latitudHipocentro,
-                         float longitudEpicentro, float longitudHipocentro, float valorMagnitud) {
-        this.fechaHoraFin = fechaHoraFin;
-        this.fechaHoraOcurrencia = fechaHoraOcurrencia;
-        this.latitudEpicentro = latitudEpicentro;
-        this.latitudHipocentro = latitudHipocentro;
-        this.longitudEpicentro = longitudEpicentro;
-        this.longitudHipocentro = longitudHipocentro;
-        this.valorMagnitud = valorMagnitud;
-        this.clasificacionSismo = clasificacionSismo;
-        this.magnitudRitcher = magnitudRitcher;
-        this.origenDeGeneracion = origenDeGeneracion;
-        this.alcanceSismo = alcanceSismo;
-        this.estadoActual = estado;
-        this.cambioEstado = new ArrayList<>();
-    }
-    
-    public AlcanceSismo getAlcanceSismo() {
-        return alcanceSismo;
-    }
-
-    public ClasificacionSismo getClasificacion() {
-        return clasificacionSismo;
-    }
-
-    public MagnitudRitcher getMagnitudRitcher() {
-        return magnitudRitcher;
-    }
-
-    public OrigenDeGeneracion getOrigenDeGeneracion() {
-        return origenDeGeneracion;
-    }
-
-    public Estado getEstado() {
-        return estadoActual;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public LocalDateTime getFechaHoraFin() {
         return fechaHoraFin;
     }
-    
+
+    public void setFechaHoraFin(LocalDateTime fechaHoraFin) {
+        this.fechaHoraFin = fechaHoraFin;
+    }
+
     public LocalDateTime getFechaHoraOcurrencia() {
         return fechaHoraOcurrencia;
+    }
+
+    public void setFechaHoraOcurrencia(LocalDateTime fechaHoraOcurrencia) {
+        this.fechaHoraOcurrencia = fechaHoraOcurrencia;
     }
 
     public float getLatitudEpicentro() {
         return latitudEpicentro;
     }
 
+    public void setLatitudEpicentro(float latitudEpicentro) {
+        this.latitudEpicentro = latitudEpicentro;
+    }
+
     public float getLatitudHipocentro() {
         return latitudHipocentro;
+    }
+
+    public void setLatitudHipocentro(float latitudHipocentro) {
+        this.latitudHipocentro = latitudHipocentro;
     }
 
     public float getLongitudEpicentro() {
         return longitudEpicentro;
     }
 
+    public void setLongitudEpicentro(float longitudEpicentro) {
+        this.longitudEpicentro = longitudEpicentro;
+    }
+
     public float getLongitudHipocentro() {
         return longitudHipocentro;
+    }
+
+    public void setLongitudHipocentro(float longitudHipocentro) {
+        this.longitudHipocentro = longitudHipocentro;
     }
 
     public float getValorMagnitud() {
         return valorMagnitud;
     }
 
-    public ArrayList<SerieTemporal> getSeriesTemporales() {
+    public void setValorMagnitud(float valorMagnitud) {
+        this.valorMagnitud = valorMagnitud;
+    }
+
+    public ClasificacionSismo getClasificacionSismo() {
+        return clasificacionSismo;
+    }
+
+    public void setClasificacionSismo(ClasificacionSismo clasificacionSismo) {
+        this.clasificacionSismo = clasificacionSismo;
+    }
+
+    public MagnitudRitcher getMagnitudRitcher() {
+        return magnitudRitcher;
+    }
+
+    public void setMagnitudRitcher(MagnitudRitcher magnitudRitcher) {
+        this.magnitudRitcher = magnitudRitcher;
+    }
+
+    public OrigenDeGeneracion getOrigenDeGeneracion() {
+        return origenDeGeneracion;
+    }
+
+    public void setOrigenDeGeneracion(OrigenDeGeneracion origenDeGeneracion) {
+        this.origenDeGeneracion = origenDeGeneracion;
+    }
+
+    public AlcanceSismo getAlcanceSismo() {
+        return alcanceSismo;
+    }
+
+    public void setAlcanceSismo(AlcanceSismo alcanceSismo) {
+        this.alcanceSismo = alcanceSismo;
+    }
+
+    public Estado getEstadoActual() {
+        return estadoActual;
+    }
+
+    public void setEstadoActual(Estado estadoActual) {
+        this.estadoActual = estadoActual;
+    }
+
+    public List<CambioEstado> getCambioEstado() {
+        return cambioEstado;
+    }
+
+    public void setCambioEstado(List<CambioEstado> cambioEstado) {
+        this.cambioEstado = cambioEstado;
+    }
+
+    public List<SerieTemporal> getSeriesTemporales() {
         return seriesTemporales;
     }
 
-    // esAutoDetectadoOPendienteRevision: determina si el evento está en un estado relevante para revisión.
-    public boolean esAutoDetectadoOPendienteRevision() {
-
-        for (CambioEstado c : cambioEstado) {
-            if (c.esEstadoActual()) {
-                if (c.sosAutoDetectado() || c.sosPendienteRevision()) {
-                    return true;
-                }
-            }
-        }
-
-        return true;
+    public void setSeriesTemporales(List<SerieTemporal> seriesTemporales) {
+        this.seriesTemporales = seriesTemporales;
     }
 
-    // obtenerDatosPrincipales: construye un DTO con los datos clave del evento.
-    public DatosPrincipalesDTO obtenerDatosPrincipales() {
-        return new DatosPrincipalesDTO(
-
-                fechaHoraOcurrencia,
-                latitudEpicentro,
-                longitudEpicentro,
-                latitudHipocentro,
-                longitudHipocentro
-        );
-    }
-
-    // bloquearPorRevision: cambia el estado del evento a bloqueado para revisión, registrando la hora.
-    public void bloquearPorRevision(Estado bloqueadoEnRevision, LocalDateTime fechaHoraActual) {
-        for (CambioEstado cambioEstado : cambioEstado) {
-            if (cambioEstado.esEstadoActual()) {
-                cambioEstado.setFechaHoraFin(fechaHoraActual);
-            }
-        }
-        this.cambioEstado.add(new CambioEstado(fechaHoraActual, bloqueadoEnRevision));
-    }
-
-    // buscarDatosRegistrados: método para obtener los datos completos del evento.
-    public DatosRegistradosDTO buscarDatosRegistrados() {
-        String nombreAlcance = alcanceSismo != null ? alcanceSismo.getNombre() : null;
-        String nombreClasificacion = clasificacionSismo != null ? clasificacionSismo.getNombre() : null;
-        String nombreOrigen = origenDeGeneracion != null ? origenDeGeneracion.getNombre() : null;
-        // Se retorna la lista de series temporales asociadas
-
-        // TODO - NO ESTOY SEGURO DE SI ESTO ES CORRECTO, DEVUELVE (DATO DATO DATO ARRAYDEDATOS)
-        ArrayList<Object> datosDeSeries = new ArrayList<>();
-        for (SerieTemporal serieTemporal : seriesTemporales) {
-            datosDeSeries.add(serieTemporal.getDatos());
-        }
-        return new DatosRegistradosDTO(nombreAlcance, nombreClasificacion, nombreOrigen, datosDeSeries);
-    }
-
-    public void rechazarEventoSismico(LocalDateTime fechaHoraActual, Estado punteroRechazado, Empleado empleadoActual) {
-        for (CambioEstado cambioEstado : cambioEstado) {
-            if (cambioEstado.esEstadoActual()) {
-                cambioEstado.setFechaHoraFin(fechaHoraActual);
-            }
-        }
-        this.cambioEstado.add(new CambioEstado(fechaHoraActual, punteroRechazado, empleadoActual));
-
-    }
+ 
 }
