@@ -2,6 +2,7 @@ package com.grupo7.application.controller;
 
 import org.springframework.web.bind.annotation.*;
 import com.grupo7.application.service.GestorRevisionManual;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
 @RequestMapping("/api")
@@ -9,9 +10,11 @@ public class GestorRevisionManualController {
 
     private final GestorRevisionManual gestorRevisionManual;
 
+    @Autowired
     public GestorRevisionManualController(GestorRevisionManual gestorRevisionManual) {
         this.gestorRevisionManual = gestorRevisionManual;
     }
+
     @GetMapping("/EventosSismicosAutoDetectados")
     public String ping() {
         return "✅ Server is running!";
@@ -36,5 +39,11 @@ public class GestorRevisionManualController {
     public String iniciarPrograma() {
         gestorRevisionManual.buscarEventosSismicosNoRevisados();
         return "Programa iniciado: búsqueda de eventos sísmicos no revisados ejecutada.";
+    }
+
+    @GetMapping("/registrarRevisionManual")
+    public String registrarRevisionManual() {
+        gestorRevisionManual.registrarRevisionManual();
+        return "Revisión manual registrada";
     }
 }

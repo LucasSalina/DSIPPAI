@@ -14,11 +14,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Random;
 
 @Service
 public class GestorRevisionManual {
     // Lista de eventos sísmicos a gestionar
-    private ArrayList<EventoSismico> eventoSismico;
+    private ArrayList<EventoSismico> eventoSismico = new ArrayList<>();
     // Lista de datos principales de los eventos sísmicos
     private ArrayList<DatosPrincipalesDTO> datosPrincipales;
     // Punteros a los diferentes estados posibles de un evento sísmico
@@ -43,17 +44,22 @@ public class GestorRevisionManual {
 
     // Método para registrar la revisión manual de un evento sísmico
     public void registrarRevisionManual() {
-        // Implementar lógica de registro de revisión manual
+        buscarEventosSismicosNoRevisados();
     }
 
     // Busca eventos sísmicos que no han sido revisados
     public void buscarEventosSismicosNoRevisados() {
         this.buscarEstadoNoRevisadosOAutodetectado();
         // Itera sobre los eventos sísmicos y filtra los que están autodetectados o pendientes de revisión
-        for (EventoSismico eve : eventoSismico) {
-            if (eve.esAutoDetectadoOPendienteRevision()) {
-                this.datosPrincipales.add(eve.obtenerDatosPrincipales());
+        System.out.println("a" + datosPrincipales);
+        if (eventoSismicoSeleccionado != null) {
+
+            for (EventoSismico eve : eventoSismico) {
+                if (eve.esAutoDetectadoOPendienteRevision()) {
+                    this.datosPrincipales.add(eve.obtenerDatosPrincipales());
+                }
             }
+            System.out.println("b" + datosPrincipales);
         }
     }
 
@@ -68,7 +74,6 @@ public class GestorRevisionManual {
         for (Estado estado : Estado.getTodos()) {
             if (estado.sosBloqueadoEnRevision()) {
                 punteroBloqueadoEnRevision = estado;
-//              podria hacer eventoSeleccionado.bloquear(estado) y me ahorro un atributo
             }
         }
         eventoSismicoSeleccionado.bloquearPorRevision(punteroBloqueadoEnRevision, fechaHoraActual);
@@ -154,9 +159,14 @@ public class GestorRevisionManual {
         // Validar acción
         if (accion == null) return false;
         accion = accion.trim().toLowerCase();
-        if (!(accion.equals("rechazar evento"))) {
-            return false;
+        return accion.equals("rechazar evento") || (accion.equals("aceptar evento"));
+    }
+
+    public static GestorRevisionManual crearGestorConEventosAleatorios() {
+        GestorRevisionManual gestor = new GestorRevisionManual();
+        for (int i = 0; i < 10; i++) {
+            gestor.eventoSismico.add(new EventoSismico());
         }
-        return true;
+        return gestor;
     }
 }
